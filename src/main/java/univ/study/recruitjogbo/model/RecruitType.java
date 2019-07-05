@@ -2,12 +2,21 @@ package univ.study.recruitjogbo.model;
 
 public enum RecruitType {
 
-    RESUME("RESUME"),       /* 서류 */
-    CODING("CODING"),       /* 코딩테스트 */
-    APTITUDE("APTITUDE"),   /* 인적성 테스트 */
-    NCS("NCS"),             /* NCS */
-    INTERVIEW("INTERVIEW"), /* 면접 */
-    ETC("ETC");             /* 기타 */
+    /*
+    * RESUME : 서류
+    * CODING : 코딩테스트
+    * APTITUDE : 인적성 테스트
+    * NCS : NCS
+    * INTERVIEW : 면접
+    * ETC : 기타
+    * */
+
+    RESUME("RESUME"),
+    CODING("CODING"),
+    APTITUDE("APTITUDE"),
+    NCS("NCS"),
+    INTERVIEW("INTERVIEW"),
+    ETC("ETC");
 
     private String value;
 

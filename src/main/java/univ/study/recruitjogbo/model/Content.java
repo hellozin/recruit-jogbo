@@ -1,28 +1,39 @@
 package univ.study.recruitjogbo.model;
 
+import lombok.Getter;
+import lombok.ToString;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@Entity
+@Getter
+@ToString
 public class Content {
 
+    @Id @GeneratedValue
     private final Long seq;
 
+    @NotBlank
     private final String companyName;
 
+    @NotBlank
+    @Enumerated(EnumType.STRING)
     private final RecruitType recruitType;
 
-    private final LocalDate from;
+    @NotNull
+    private final LocalDate deadLine;
 
-    private final LocalDate to;
-
-    public Content(String companyName, RecruitType recruitType, LocalDate from, LocalDate to) {
-        this(null, companyName, recruitType, from, to);
+    public Content(String companyName, RecruitType recruitType, LocalDate deadLine) {
+        this(null, companyName, recruitType, deadLine);
     }
 
-    public Content(Long seq, String companyName, RecruitType recruitType, LocalDate from, LocalDate to) {
+    public Content(Long seq, String companyName, RecruitType recruitType, LocalDate deadLine) {
         this.seq = seq;
         this.companyName = companyName;
         this.recruitType = recruitType;
-        this.from = from;
-        this.to = to;
+        this.deadLine = deadLine;
     }
 }

@@ -1,7 +1,6 @@
 package univ.study.recruitjogbo.member;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
@@ -12,32 +11,29 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Member {
 
     @Id @GeneratedValue
-    private final Long seq;
+    private Long seq;
 
     @NotBlank
     @Length(min = 4)
-    private final String userId;
+    private String userId;
 
     @NotBlank
     @Length(min = 4, max = 15)
-    private final String password;
+    private String password;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @Email
-    private final String email;
+    private String email;
 
+    @Builder
     public Member(String userId, String password, String name, String email) {
-        this(null, userId, password, name, email);
-    }
-
-    public Member(Long seq, String userId, String password, String name, String email) {
-        this.seq = seq;
         this.userId = userId;
         this.password = password;
         this.name = name;

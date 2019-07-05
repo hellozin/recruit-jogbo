@@ -1,7 +1,8 @@
-package univ.study.recruitjogbo.model;
+package univ.study.recruitjogbo.content;
 
 import lombok.Getter;
 import lombok.ToString;
+import univ.study.recruitjogbo.member.RecruitType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

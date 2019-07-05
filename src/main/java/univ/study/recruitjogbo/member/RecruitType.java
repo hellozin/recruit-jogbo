@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.model;
+package univ.study.recruitjogbo.member;
 
 public enum RecruitType {
 

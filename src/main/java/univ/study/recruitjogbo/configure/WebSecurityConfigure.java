@@ -17,6 +17,6 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .headers()
                 .disable()
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .antMatchers("/api/**").permitAll();
     }
 }

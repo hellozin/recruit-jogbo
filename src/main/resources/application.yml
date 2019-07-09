@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    show-sql: true # JPA 생성 쿼리 확인
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+logging:
+  level:
+    org.hibernate.type: trace # JPA 생성 쿼리의 파라미터 확인

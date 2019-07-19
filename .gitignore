@@ -3,6 +3,7 @@ HELP.md
 build/
 !gradle/wrapper/gradle-wrapper.jar
 src/main/resources/google.yml
+src/main/resources/mail.yml
 
 ### STS ###
 .apt_generated

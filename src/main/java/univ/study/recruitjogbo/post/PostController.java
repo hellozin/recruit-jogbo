@@ -1,5 +1,6 @@
 package univ.study.recruitjogbo.post;
 
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import univ.study.recruitjogbo.request.PostingRequest;
 
@@ -8,13 +9,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@AllArgsConstructor
 public class PostController {
 
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
 
     @PostMapping("/content")
     public Post publish(@RequestBody @Valid PostingRequest request) {

@@ -1,5 +1,6 @@
 package univ.study.recruitjogbo.post;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import univ.study.recruitjogbo.member.RecruitType;
 
@@ -7,13 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
-
-    public PostService(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
 
     public Post write(String companyName, RecruitType recruitType, LocalDate deadLine, String review) {
         return save(new Post.PostBuilder()

@@ -1,17 +1,15 @@
 package univ.study.recruitjogbo.member;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
 
     public Member join(String userId, String password, String name, String email) {
         return save(new Member.MemberBuilder()

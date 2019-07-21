@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@TestPropertySource(properties = "spring.config.location=classpath:/google.yml")
+@TestPropertySource(properties = {"spring.config.location=classpath:/google.yml,classpath:/mail.yml"})
 public class OAuthConfigTest {
 
     @Before

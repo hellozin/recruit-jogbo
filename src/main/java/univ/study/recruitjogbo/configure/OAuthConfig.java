@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilt
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.Filter;
 
@@ -32,7 +33,13 @@ public class OAuthConfig {
         oAuth2Filter.setRestTemplate(oAuth2RestTemplate);
         oAuth2Filter.setTokenServices(new UserInfoTokenServices(
                 googleResource().getUserInfoUri(), googleClient().getClientId()));
+        oAuth2Filter.setAuthenticationSuccessHandler(successHandler());
         return oAuth2Filter;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return (request, response, authentication) -> System.out.println("인증 성공");
     }
 
     @Bean

@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.mail;
+package univ.study.recruitjogbo;
 
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class EmailService {
+public class MailService {
 
     private final JavaMailSender mailSender;
 

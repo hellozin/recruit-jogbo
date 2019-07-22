@@ -4,15 +4,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
-public class RecruitJogbo {
+public class MailSenderServer {
 
     private static final String PROPERTIES =
             "spring.config.location="
             +"classpath:/application.yml"
-            +",classpath:/google.yml";
+            +",classpath:/mail.yml";
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(RecruitJogbo.class)
+        new SpringApplicationBuilder(MailSenderServer.class)
                 .properties(PROPERTIES)
                 .run(args);
     }

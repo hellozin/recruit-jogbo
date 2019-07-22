@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import univ.study.recruitjogbo.member.RecruitType;
 
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestPropertySource(properties = {"spring.config.location=classpath:/google.yml,classpath:/mail.yml"})
 class PostServiceTest {
 
     private Logger log = LoggerFactory.getLogger(getClass());
@@ -25,14 +27,14 @@ class PostServiceTest {
     private PostService postService;
 
     private String companyName;
-    private RecruitType recruitType;
+    private String recruitType;
     private LocalDate deadLine;
     private String review;
 
     @BeforeAll
     void setUp() {
         companyName = "hellozin";
-        recruitType = RecruitType.RESUME;
+        recruitType = "RESUME";
         deadLine = LocalDate.now();
         review = "review";
     }
@@ -40,10 +42,10 @@ class PostServiceTest {
     @Test
     @Order(1)
     void 포스트를_작성한다() {
-        Post post = postService.write(companyName, recruitType, deadLine, review);
+        Post post = postService.write(companyName, RecruitType.valueOf(recruitType), deadLine, review);
         assertThat(post, is(notNullValue()));
         assertThat(post.getSeq(), is(notNullValue()));
-        assertThat(post.getRecruitType(), is(recruitType));
+        assertThat(post.getRecruitType(), is(RecruitType.RESUME));
         assertThat(post.getDeadLine(), is(deadLine));
         log.info("Written post : {}", post);
     }

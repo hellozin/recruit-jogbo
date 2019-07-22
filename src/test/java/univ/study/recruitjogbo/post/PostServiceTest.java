@@ -27,14 +27,14 @@ class PostServiceTest {
     private PostService postService;
 
     private String companyName;
-    private RecruitType recruitType;
+    private String recruitType;
     private LocalDate deadLine;
     private String review;
 
     @BeforeAll
     void setUp() {
         companyName = "hellozin";
-        recruitType = RecruitType.RESUME;
+        recruitType = "RESUME";
         deadLine = LocalDate.now();
         review = "review";
     }
@@ -42,10 +42,10 @@ class PostServiceTest {
     @Test
     @Order(1)
     void 포스트를_작성한다() {
-        Post post = postService.write(companyName, recruitType, deadLine, review);
+        Post post = postService.write(companyName, RecruitType.valueOf(recruitType), deadLine, review);
         assertThat(post, is(notNullValue()));
         assertThat(post.getSeq(), is(notNullValue()));
-        assertThat(post.getRecruitType(), is(recruitType));
+        assertThat(post.getRecruitType(), is(RecruitType.RESUME));
         assertThat(post.getDeadLine(), is(deadLine));
         log.info("Written post : {}", post);
     }

@@ -22,6 +22,7 @@ public class Post {
 
     private LocalDate deadLine;
 
+    @Lob
     private String review;
 
     @Builder

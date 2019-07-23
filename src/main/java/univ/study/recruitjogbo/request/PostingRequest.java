@@ -4,9 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import univ.study.recruitjogbo.member.RecruitType;
+import univ.study.recruitjogbo.validator.Enum;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -19,9 +18,8 @@ public class PostingRequest {
     @NotBlank
     private String companyName;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private RecruitType recruitType;
+    @Enum(enumClass = RecruitType.class, ignoreCase = true)
+    private String recruitType;
 
     @NotNull
     private LocalDate deadLine;
@@ -29,4 +27,7 @@ public class PostingRequest {
     @NotBlank
     private String review;
 
+    public RecruitType getRecruitType() {
+        return RecruitType.valueOf(recruitType);
+    }
 }

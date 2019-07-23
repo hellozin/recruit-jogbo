@@ -21,7 +21,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/h2-console/**", "/favicon.ico", "/login**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and().logout().logoutSuccessUrl("/").permitAll()
                 .and().headers().frameOptions().sameOrigin()
                 .and().csrf().disable()

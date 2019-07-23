@@ -4,8 +4,6 @@ import lombok.*;
 import univ.study.recruitjogbo.member.RecruitType;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -17,17 +15,13 @@ public class Post {
     @Id @GeneratedValue
     private Long seq;
 
-    @NotBlank
     private String companyName;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private RecruitType recruitType;
 
-    @NotNull
     private LocalDate deadLine;
 
-    @NotBlank
     private String review;
 
     @Builder

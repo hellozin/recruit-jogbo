@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import univ.study.recruitjogbo.member.RecruitType;
 
 import java.time.LocalDate;
@@ -19,7 +18,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@TestPropertySource(properties = {"spring.config.location=classpath:/google.yml,classpath:/mail.yml"})
 class PostServiceTest {
 
     private Logger log = LoggerFactory.getLogger(getClass());

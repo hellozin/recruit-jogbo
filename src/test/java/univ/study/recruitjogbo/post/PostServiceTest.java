@@ -1,5 +1,6 @@
 package univ.study.recruitjogbo.post;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,7 @@ class PostServiceTest {
         companyName = "hellozin";
         recruitType = "RESUME";
         deadLine = LocalDate.now();
-        review = "review";
+        review = RandomStringUtils.randomAlphabetic(3000);
     }
 
     @Test

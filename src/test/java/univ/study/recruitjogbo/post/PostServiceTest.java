@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import univ.study.recruitjogbo.member.RecruitType;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -25,36 +25,67 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
 
+    List<Post> data;
+
     private String companyName;
     private String recruitType;
     private LocalDate deadLine;
     private String review;
 
+    private String randomString3000;
+
     @BeforeAll
     void setUp() {
-        companyName = "hellozin";
+        randomString3000 = RandomStringUtils.randomAlphabetic(3000);
+
+        companyName = "NAVER";
         recruitType = "RESUME";
         deadLine = LocalDate.now();
-        review = RandomStringUtils.randomAlphabetic(3000);
+        review = randomString3000;
+
+        data = new ArrayList<>();
+        data.add(new Post("LINE", RecruitType.RESUME, LocalDate.of(2019, 1, 1), randomString3000));
+        data.add(new Post("Kakao", RecruitType.RESUME, LocalDate.of(2017, 3, 1), randomString3000));
+        data.add(new Post("LINE", RecruitType.CODING, LocalDate.of(2019, 1, 25), randomString3000));
+        data.add(new Post("Google", RecruitType.INTERVIEW, LocalDate.of(2019, 5, 1), randomString3000));
+        data.add(new Post("LINE", RecruitType.INTERVIEW, LocalDate.of(2018, 12, 1), randomString3000));
     }
 
     @Test
     @Order(1)
     void 포스트를_작성한다() {
         Post post = postService.write(companyName, RecruitType.valueOf(recruitType), deadLine, review);
-        assertThat(post, is(notNullValue()));
-        assertThat(post.getSeq(), is(notNullValue()));
-        assertThat(post.getRecruitType(), is(RecruitType.RESUME));
-        assertThat(post.getDeadLine(), is(deadLine));
+
+        assertThat(post).isNotNull();
+        assertThat(post).isNotNull();
+        assertThat(post.getRecruitType()).isEqualByComparingTo(RecruitType.RESUME);
+        assertThat(post.getDeadLine()).isEqualTo(deadLine);
         log.info("Written post : {}", post);
     }
 
     @Test
     @Order(2)
-    void 사용자_목록을_가져온다() {
+    void 데이터_추가() {
+        data.forEach(post -> {
+            Post write = postService.write(post.getCompanyName(), post.getRecruitType(), post.getDeadLine(), post.getReview());
+            log.info("Data insert {}", write);
+        });
+    }
+
+    @Test
+    @Order(3)
+    void 전체_포스트를_조회한다() {
         List<Post> posts = postService.findAll();
-        assertThat(posts, is(notNullValue()));
-        assertThat(posts.size(), is(1));
+        assertThat(posts).isNotNull();
+        assertThat(posts.size()).isEqualTo(data.size()+1);
+    }
+
+    @Test
+    @Order(4)
+    void 기업명으로_포스트를_조회한다() {
+        List<Post> postOfLine = postService.findByCompanyName("LINE");
+        assertThat(postOfLine).isNotNull();
+        assertThat(postOfLine.size()).isEqualTo(3);
     }
 
 }

@@ -23,6 +23,10 @@ public class PostService {
         );
     }
 
+    public List<Post> findByCompanyName(String companyName) {
+        return postRepository.findByCompanyNameOrderByCreatedDateDesc(companyName);
+    }
+
     public List<Post> findAll() {
         return postRepository.findAll();
     }

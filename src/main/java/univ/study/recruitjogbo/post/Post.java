@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends AuditorEntity {
 
     @Id @GeneratedValue
     private Long seq;

@@ -10,9 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,15 +24,15 @@ class MemberServiceTest {
     @Autowired
     private MemberService memberService;
 
-    private String userId;
+    private String memberId;
     private String password;
     private String name;
     private String email;
 
     @BeforeAll
     void setUp() {
-        userId = "hellozin";
-        password = "1234";
+        memberId = "hellozin";
+        password = "12345";
         name = "hello";
         email = "hello@ynu.ac.kr";
     }
@@ -41,19 +40,26 @@ class MemberServiceTest {
     @Test
     @Order(1)
     void 사용자를_추가한다() {
-        Member member = memberService.join(userId, password, name, email);
-        assertThat(member, is(notNullValue()));
-        assertThat(member.getId(), is(notNullValue()));
-        assertThat(member.getEmail(), is(email));
+        Member member = memberService.join(memberId, password, name, email);
+        assertThat(member).isNotNull();
+        assertThat(member.getId()).isNotNull();
+        assertThat(member.getEmail()).isEqualTo(email);
         log.info("Join member : {}", member);
+    }
+
+    @Test
+    @Order(2)
+    void 추가한_사용자로_로그인한다() {
+        Member loginMember = memberService.login(memberId, password);
+        assertThat(loginMember.getEmail()).isEqualTo(email);
     }
 
     @Test
     @Order(2)
     void 사용자_목록을_가져온다() {
         List<Member> members = memberService.findAll();
-        assertThat(members, is(notNullValue()));
-        assertThat(members.size(), is(1));
+        assertThat(members).isNotNull();
+        assertThat(members.size()).isEqualTo(1);
     }
 
 }

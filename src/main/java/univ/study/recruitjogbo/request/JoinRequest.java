@@ -15,7 +15,7 @@ public class JoinRequest {
 
     @NotBlank
     @Size(min = 4)
-    private String userId;
+    private String memberId;
 
     @NotBlank
     @Size(min = 4, max = 15)

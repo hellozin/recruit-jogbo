@@ -5,27 +5,24 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceS
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.Filter;
 
-@Configuration
-@EnableOAuth2Client
+//@Configuration
+//@EnableOAuth2Client
 @AllArgsConstructor
 public class OAuthConfig {
 
     private final OAuth2ClientContext oAuth2ClientContext;
 
-    @Bean
+//    @Bean
     public Filter ssoFilter() {
         OAuth2ClientAuthenticationProcessingFilter oAuth2Filter
                 = new OAuth2ClientAuthenticationProcessingFilter("/login");
@@ -37,24 +34,24 @@ public class OAuthConfig {
         return oAuth2Filter;
     }
 
-    @Bean
+//    @Bean
     public AuthenticationSuccessHandler successHandler() {
         return (request, response, authentication) -> System.out.println("인증 성공");
     }
 
-    @Bean
+//    @Bean
     @ConfigurationProperties("google.client")
     public OAuth2ProtectedResourceDetails googleClient() {
         return new AuthorizationCodeResourceDetails();
     }
 
-    @Bean
+//    @Bean
     @ConfigurationProperties("google.resource")
     public ResourceServerProperties googleResource() {
         return new ResourceServerProperties();
     }
 
-    @Bean
+//    @Bean
     public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
         FilterRegistrationBean<OAuth2ClientContextFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(filter);

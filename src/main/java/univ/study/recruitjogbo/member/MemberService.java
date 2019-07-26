@@ -21,7 +21,24 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Member join(String userId, String password, String name, String email) {
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public Member login(@NotBlank String memberId, @NotBlank String password) {
+        Member member = findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException(Member.class, memberId));
+
+        if (!member.checkPassword(passwordEncoder, password)) {
+            throw new IllegalArgumentException("Incorrect password.");
+        }
+        return member;
+    }
+
+    @Transactional
+    public Member join(@NotBlank String memberId,
+                       @NotBlank String password,
+                       @NotBlank String name,
+                       @Email String email) {
         return save(new Member.MemberBuilder()
                 .memberId(memberId)
                 .password(passwordEncoder.encode(password))

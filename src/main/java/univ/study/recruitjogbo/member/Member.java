@@ -1,14 +1,14 @@
 package univ.study.recruitjogbo.member;
 
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Strings.isNullOrEmpty;
-import static java.util.regex.Pattern.matches;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -19,30 +19,30 @@ public class Member {
     @Id @GeneratedValue
     private Long id;
 
-    private String userId;
+    @NotBlank
+    @Size(min = 4, max = 25)
+    private String memberId;
 
+    @NotBlank
     private String password;
 
+    @NotBlank
+    @Size(min = 4, max = 25)
     private String name;
 
+    @Email
     private String email;
 
     @Builder
-    public Member(String userId, String password, String name, String email) {
-        checkArgument(!isNullOrEmpty(userId), "User id must be provided.");
-        checkArgument(!isNullOrEmpty(password), "Password must be provided.");
-        checkArgument(!isNullOrEmpty(name), "Name must be provided.");
-        checkArgument(!isNullOrEmpty(email), "Email must be provided.");
-        checkArgument(isEmail(email), "Invalid email pattern.");
-
-        this.userId = userId;
+    public Member(String memberId, String password, String name, String email) {
+        this.memberId = memberId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    private static boolean isEmail(String email) {
-        return matches("[\\w~\\-.+]+@[\\w~\\-]+(\\.[\\w~\\-]+)+", email);
+    public boolean checkPassword(PasswordEncoder passwordEncoder, String password) {
+        return passwordEncoder.matches(password, this.password);
     }
 
 }

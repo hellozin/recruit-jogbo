@@ -46,16 +46,29 @@ public final class JWT {
             builder.withExpiresAt(new Date(now.getTime() + expirySeconds * 1_000L));
         }
         builder.withClaim("memberKey", claims.memberKey);
+        builder.withClaim("memberId", claims.memberId);
         builder.withClaim("name", claims.name);
         builder.withClaim("email", claims.email);
         builder.withArrayClaim("roles", claims.roles);
         return builder.sign(algorithm);
     }
 
+    public String refreshToken(String token) {
+        Claims claims = verify(token);
+        claims.eraseIat();
+        claims.eraseExp();
+        return newToken(claims);
+    }
+
+    public Claims verify(String token) {
+        return new Claims(jwtVerifier.verify(token));
+    }
+
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @ToString
     static public class Claims {
         Long memberKey;
+        String memberId;
         String name;
         String email;
         String[] roles;
@@ -66,6 +79,10 @@ public final class JWT {
             Claim memberKey = decodedJWT.getClaim("memberKey");
             if(!memberKey.isNull())
                 this.memberKey = memberKey.asLong();
+
+            Claim memberId = decodedJWT.getClaim("memberId");
+            if (!memberId.isNull())
+                this.memberId = memberId.asString();
 
             Claim name = decodedJWT.getClaim("name");
             if (!name.isNull())
@@ -83,9 +100,10 @@ public final class JWT {
             this.exp = decodedJWT.getExpiresAt();
         }
 
-        public static Claims of(Long memberKey, String name, String email, String[] roles) {
+        public static Claims of(Long memberKey, String memberId, String name, String email, String[] roles) {
             Claims claims = new Claims();
             claims.memberKey = memberKey;
+            claims.memberId = memberId;
             claims.name = name;
             claims.email = email;
             claims.roles = roles;

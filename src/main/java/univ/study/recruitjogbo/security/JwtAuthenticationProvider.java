@@ -1,6 +1,7 @@
 package univ.study.recruitjogbo.security;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -17,6 +18,7 @@ import static org.springframework.security.core.authority.AuthorityUtils.createA
 import static org.springframework.util.ClassUtils.isAssignable;
 
 @AllArgsConstructor
+@Slf4j
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JWT jwt;
@@ -33,8 +35,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         try {
             Member member = memberService.login(request.getPrincipal(), request.getCredentials());
             JwtAuthenticationToken authenticated = new JwtAuthenticationToken(member.getId(), null, createAuthorityList(Role.MEMBER.value()));
-            String apiToken = jwt.newToken(JWT.Claims.of(member.getId(), member.getName(), member.getEmail(), new String[]{Role.MEMBER.value()}));
-
+            String apiToken = jwt.newToken(JWT.Claims.of(member.getId(), member.getMemberId(), member.getName(), member.getEmail(), new String[]{Role.MEMBER.value()}));
+            authenticated.setDetails(new AuthenticationResult(apiToken, member));
+            log.info("============== authenticated details {}", authenticated.getDetails());
             return authenticated;
         } catch (NotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());

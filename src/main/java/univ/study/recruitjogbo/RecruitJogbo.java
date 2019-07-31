@@ -9,9 +9,10 @@ public class RecruitJogbo {
     private static final String PROPERTIES =
             "spring.config.location="
             +"classpath:/application.yml"
-            +",classpath:/google.yml";
+            +",classpath:/secret.yml";
 
     public static void main(String[] args) {
+//        SpringApplication.run(RecruitJogbo.class, args);
         new SpringApplicationBuilder(RecruitJogbo.class)
                 .properties(PROPERTIES)
                 .run(args);

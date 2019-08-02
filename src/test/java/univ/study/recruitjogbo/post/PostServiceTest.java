@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import univ.study.recruitjogbo.member.Member;
+import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.member.RecruitType;
 
 import java.time.LocalDate;
@@ -25,12 +27,16 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private MemberService memberService;
+
     List<Post> data;
 
     private String companyName;
     private String recruitType;
     private LocalDate deadLine;
     private String review;
+    private Member author;
 
     private String randomString3000;
 
@@ -43,6 +49,9 @@ class PostServiceTest {
         deadLine = LocalDate.now();
         review = randomString3000;
 
+        author = memberService.save(
+                new Member("hellozin", "password1234", "paul", "hello@gmail.com"));
+
         data = new ArrayList<>();
         data.add(new Post("LINE", RecruitType.RESUME, LocalDate.of(2019, 1, 1), randomString3000));
         data.add(new Post("Kakao", RecruitType.RESUME, LocalDate.of(2017, 3, 1), randomString3000));
@@ -54,7 +63,7 @@ class PostServiceTest {
     @Test
     @Order(1)
     void 포스트를_작성한다() {
-        Post post = postService.write(companyName, RecruitType.valueOf(recruitType), deadLine, review);
+        Post post = postService.write(author.getId(), companyName, RecruitType.valueOf(recruitType), deadLine, review);
 
         assertThat(post).isNotNull();
         assertThat(post).isNotNull();
@@ -67,7 +76,7 @@ class PostServiceTest {
     @Order(2)
     void 데이터_추가() {
         data.forEach(post -> {
-            Post write = postService.write(post.getCompanyName(), post.getRecruitType(), post.getDeadLine(), post.getReview());
+            Post write = postService.write(author.getId(), post.getCompanyName(), post.getRecruitType(), post.getDeadLine(), post.getReview());
             log.info("Data insert {}", write);
         });
     }

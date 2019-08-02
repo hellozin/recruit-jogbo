@@ -26,7 +26,7 @@ public class PostService {
     private final MemberService memberService;
 
     @Transactional
-    public Post write(Long authorId,
+    public Post write(@NotNull Long authorId,
                       @NotBlank String companyName,
                       @NotNull RecruitType recruitType,
                       @NotNull LocalDate deadLine,
@@ -34,14 +34,15 @@ public class PostService {
         Member author = memberService.findById(authorId)
                 .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
 
-        return save(new Post.PostBuilder()
-                .author(author)
+        Post post = new Post.PostBuilder()
                 .companyName(companyName)
                 .recruitType(recruitType)
                 .deadLine(deadLine)
                 .review(review)
-                .build()
-        );
+                .build();
+
+        author.addPost(post);
+        return save(post);
     }
 
     @Transactional(readOnly = true)

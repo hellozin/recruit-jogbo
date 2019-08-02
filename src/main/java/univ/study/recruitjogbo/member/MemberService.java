@@ -10,6 +10,7 @@ import univ.study.recruitjogbo.error.NotFoundException;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +50,12 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Member> findByMemberId(@NotBlank String memberId) {
+    public Optional<Member> findById(@NotNull Long id) {
+        return memberRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Member> findByMemberId(@NotNull String memberId) {
         return memberRepository.findByMemberId(memberId);
     }
 

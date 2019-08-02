@@ -12,7 +12,6 @@ public class RecruitJogbo {
             +",classpath:/secret.yml";
 
     public static void main(String[] args) {
-//        SpringApplication.run(RecruitJogbo.class, args);
         new SpringApplicationBuilder(RecruitJogbo.class)
                 .properties(PROPERTIES)
                 .run(args);

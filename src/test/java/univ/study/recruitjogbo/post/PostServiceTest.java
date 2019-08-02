@@ -1,9 +1,8 @@
 package univ.study.recruitjogbo.post;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import univ.study.recruitjogbo.member.Member;
@@ -20,9 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Slf4j
 class PostServiceTest {
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private PostService postService;

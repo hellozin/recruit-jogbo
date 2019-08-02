@@ -16,9 +16,8 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/content")
-    public Post publish(@AuthenticationPrincipal JwtAuthentication authentication,
-            @RequestBody @Valid PostingRequest request) {
+    @PostMapping("/post")
+    public Post publish(@AuthenticationPrincipal JwtAuthentication authentication, @RequestBody @Valid PostingRequest request) {
         return postService.write(
                 authentication.id,
                 request.getCompanyName(),
@@ -28,7 +27,7 @@ public class PostController {
         );
     }
 
-    @GetMapping("/content/list")
+    @GetMapping("/post/list")
     public List<Post> contents() {
         return postService.findAll();
     }

@@ -95,4 +95,19 @@ class PostServiceTest {
         assertThat(postOfLine.size()).isEqualTo(3);
     }
 
+    @Test
+    @Order(5)
+    void RecruitType으로_포스트를_조회한다() {
+        List<Post> postWithResume = postService.findByRecruitType(RecruitType.RESUME);
+        assertThat(postWithResume).isNotNull();
+        assertThat(postWithResume.size()).isEqualTo(3);
+    }
+
+    @Test
+    @Order(6)
+    void 작성자아이디로_포스트를_조회한다() {
+        List<Post> posts = postService.findByAuthor(author.getId());
+        assertThat(posts.size()).isEqualTo(data.size()+1);
+    }
+
 }

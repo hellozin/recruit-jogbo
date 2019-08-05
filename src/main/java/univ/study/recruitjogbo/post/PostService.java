@@ -49,6 +49,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
+    public List<Post> findByRecruitType(@NotNull RecruitType recruitType) {
+        return postRepository.findByRecruitTypeOrderByCreatedDateDesc(recruitType);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findByAuthor(@NotNull Long authorId) {
+        return postRepository.findByAuthor_IdOrderByCreatedDateDesc(authorId);
+    }
+
+    @Transactional(readOnly = true)
     public List<Post> findAll() {
         return postRepository.findAll();
     }

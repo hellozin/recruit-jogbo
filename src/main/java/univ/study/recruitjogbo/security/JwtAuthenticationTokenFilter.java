@@ -64,14 +64,11 @@ public class JwtAuthenticationTokenFilter extends GenericFilterBean {
                     String email = claims.email;
                     List<GrantedAuthority> authorities = obtainAuthorities(claims);
 
-                    log.info("========== before set details =========");
                     if (allNotNull(memberKey, email) && isNotBlank(name) && !authorities.isEmpty()) {
-                        log.info("========== enter set details =========");
                         JwtAuthenticationToken authentication = new JwtAuthenticationToken(
                                         new JwtAuthentication(memberKey, memberId, name, email), null, authorities);
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        log.info("========== end set details =========");
                     }
                 } catch (Exception e) {
                     log.warn("JWT processing failed: {}", e.getMessage());

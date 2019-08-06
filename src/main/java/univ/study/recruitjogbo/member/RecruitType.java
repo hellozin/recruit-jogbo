@@ -28,13 +28,4 @@ public enum RecruitType {
         return value;
     }
 
-    public static boolean support(String value) {
-        for (RecruitType val : values()) {
-            if (val.value().equals(value)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

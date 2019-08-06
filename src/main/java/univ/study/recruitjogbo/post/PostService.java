@@ -1,7 +1,6 @@
 package univ.study.recruitjogbo.post;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +16,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 @Validated
 public class PostService {
 
@@ -48,6 +46,16 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<Post> findByCompanyName(@NotBlank String companyName) {
         return postRepository.findByCompanyNameOrderByCreatedDateDesc(companyName);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findByRecruitType(@NotNull RecruitType recruitType) {
+        return postRepository.findByRecruitTypeOrderByCreatedDateDesc(recruitType);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findByAuthor(@NotNull Long authorId) {
+        return postRepository.findByAuthor_IdOrderByCreatedDateDesc(authorId);
     }
 
     @Transactional(readOnly = true)

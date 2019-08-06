@@ -2,7 +2,8 @@ package univ.study.recruitjogbo.member;
 
 public enum Role {
 
-    MEMBER("ROLE_MEMBER");
+    MEMBER("ROLE_MEMBER"),
+    UNCONFIRMED("ROLE_UNCONFIRMED");
 
     private String value;
 

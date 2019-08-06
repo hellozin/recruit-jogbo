@@ -1,9 +1,8 @@
 package univ.study.recruitjogbo.post;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import univ.study.recruitjogbo.member.Member;
@@ -20,9 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Slf4j
 class PostServiceTest {
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private PostService postService;
@@ -95,6 +93,21 @@ class PostServiceTest {
         List<Post> postOfLine = postService.findByCompanyName("LINE");
         assertThat(postOfLine).isNotNull();
         assertThat(postOfLine.size()).isEqualTo(3);
+    }
+
+    @Test
+    @Order(5)
+    void RecruitType으로_포스트를_조회한다() {
+        List<Post> postWithResume = postService.findByRecruitType(RecruitType.RESUME);
+        assertThat(postWithResume).isNotNull();
+        assertThat(postWithResume.size()).isEqualTo(3);
+    }
+
+    @Test
+    @Order(6)
+    void 작성자아이디로_포스트를_조회한다() {
+        List<Post> posts = postService.findByAuthor(author.getId());
+        assertThat(posts.size()).isEqualTo(data.size()+1);
     }
 
 }

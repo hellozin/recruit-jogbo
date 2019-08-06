@@ -63,6 +63,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/api/member").permitAll()
                     .antMatchers("/api/auth").permitAll()
+                    .antMatchers("/api/confirm-email").permitAll()
                     .antMatchers("/api/**").hasRole("MEMBER")
                     .anyRequest().permitAll()
                     .and()

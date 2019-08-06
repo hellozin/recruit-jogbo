@@ -31,4 +31,12 @@ public class MemberController {
         return memberService.findAll();
     }
 
+    @RequestMapping(value = "/confirm/email", method = { RequestMethod.GET, RequestMethod.POST })
+    public String confirmEmail(@RequestParam String token) {
+        boolean isConfirmed = memberService.confirmEmailByToken(token);
+        return isConfirmed
+                ? "이메일 인증이 성공적으로 처리되었습니다."
+                : "이메일 인증에 실패하였습니다.";
+    }
+
 }

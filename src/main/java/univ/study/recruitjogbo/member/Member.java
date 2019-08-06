@@ -11,6 +11,7 @@ import univ.study.recruitjogbo.post.Post;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -37,6 +38,9 @@ public class Member {
 
     @Email
     private String email;
+
+    @NotNull
+    private boolean emailConfirmed;
 
     @OneToMany(mappedBy = "author")
     @JsonManagedReference
@@ -72,4 +76,8 @@ public class Member {
         post.setAuthor(this);
     }
 
+    public Member setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
+        return this;
+    }
 }

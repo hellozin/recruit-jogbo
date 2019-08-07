@@ -9,7 +9,7 @@ public class MailSenderServer {
     private static final String PROPERTIES =
             "spring.config.location="
             +"classpath:/application.yml"
-            +",classpath:/mail.yml";
+            +",classpath:/secret.yml";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(MailSenderServer.class)

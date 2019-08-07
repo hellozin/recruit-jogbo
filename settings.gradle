@@ -5,4 +5,7 @@ pluginManagement {
 }
 rootProject.name = 'recruit-jogbo'
 include 'mail-sender'
+include 'recruit-jogbo-common'
+include 'recruit-jogbo-api'
+include 'recruit-jogbo-web'
 

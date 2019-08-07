@@ -89,12 +89,16 @@ public class JwtAuthenticationTokenFilter extends GenericFilterBean {
     private String obtainAuthorizationToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         if (isNotBlank(token)) {
-            token = URLDecoder.decode(token, StandardCharsets.UTF_8);
-            String[] parts = token.split(" ");
-            if (parts.length == 2) {
-                String scheme = parts[0];
-                String credentials = parts[1];
-                return BEARER.matcher(scheme).matches() ? credentials : null;
+            try {
+                token = URLDecoder.decode(token, String.valueOf(StandardCharsets.UTF_8));
+                String[] parts = token.split(" ");
+                if (parts.length == 2) {
+                    String scheme = parts[0];
+                    String credentials = parts[1];
+                    return BEARER.matcher(scheme).matches() ? credentials : null;
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
         return null;

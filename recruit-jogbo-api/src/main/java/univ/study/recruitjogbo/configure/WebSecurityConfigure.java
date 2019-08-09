@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.security.JWT;
@@ -58,7 +56,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/api/member").permitAll()
                     .antMatchers("/api/auth").permitAll()
-                    .antMatchers("/api/confirm-email").permitAll()
+                    .antMatchers("/api/confirm/email").permitAll()
                     .antMatchers("/api/**").hasRole("UNCONFIRMED")/*.hasRole("MEMBER") 테스트를 위해 UNCONFIRMED 허용*/
                     .anyRequest().permitAll()
                     .and()

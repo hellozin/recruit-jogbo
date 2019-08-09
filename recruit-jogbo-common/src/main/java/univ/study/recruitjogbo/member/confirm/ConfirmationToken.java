@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,12 +23,14 @@ public class ConfirmationToken {
     @Email
     private String userEmail;
 
-    @NotEmpty
     private String confirmationToken;
+
+    private LocalDateTime createdAt;
 
     public ConfirmationToken(String userEmail) {
         this.userEmail = userEmail;
         this.confirmationToken = UUID.randomUUID().toString();
+        createdAt = LocalDateTime.now();
     }
 
 }

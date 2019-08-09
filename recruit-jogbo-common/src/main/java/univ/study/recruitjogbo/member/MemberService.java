@@ -89,6 +89,9 @@ public class MemberService {
                 .map(member -> member.setEmailConfirmed(true))
                 .map(Member::isEmailConfirmed)
                 .orElseThrow(() -> new NotFoundException(Member.class, confirmedEmail));
+        if(isConfirmed) {
+            confirmationTokenRepository.delete(confirmationToken);
+        }
         log.info("이메일 인증 요청이 처리되었습니다. 처리결과: [{}]", isConfirmed);
         return isConfirmed;
     }

@@ -2,6 +2,7 @@ package univ.study.recruitjogbo.member;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
+import univ.study.recruitjogbo.message.EmailConfirmRequestMessage;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -27,6 +29,8 @@ public class MemberService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final RabbitTemplate rabbitTemplate;
 
     @Transactional
     public Member login(@NotBlank String memberId, @NotBlank String password) {
@@ -71,12 +75,12 @@ public class MemberService {
         ConfirmationToken token = new ConfirmationToken(email);
         confirmationTokenRepository.save(token);
 
-        String subject = "[Recruit Jogbo] 이메일 인증 요청입니다.";
-        String text = "이메일을 인증하기 위해 다음 링크를 클릭해 주세요.\n 링크: " +
-                "http://localhost:8080/api/confirm/email?token="+token.getConfirmationToken();
-
-//        mailService.send(email, subject, text);
-        log.info("인증 메일을 발송했습니다. 발송된 주소: [{}]", email);
+        rabbitTemplate.convertAndSend(
+                "email.confirm.exchange",
+                "email.confirm.request",
+                new EmailConfirmRequestMessage(email, token.getConfirmationToken())
+        );
+        log.info("인증 메일을 발송했습니다. 보낸 메일 주소: [{}]", email);
     }
 
     @Transactional

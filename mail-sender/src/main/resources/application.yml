@@ -6,3 +6,5 @@ spring:
     port: 587
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
+server:
+  port: 8081

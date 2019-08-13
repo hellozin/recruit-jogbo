@@ -1,6 +1,10 @@
 package univ.study.recruitjogbo.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import univ.study.recruitjogbo.post.Post;
@@ -9,7 +13,6 @@ import univ.study.recruitjogbo.request.PostingRequest;
 import univ.study.recruitjogbo.security.JwtAuthentication;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -18,8 +21,11 @@ public class PostController {
 
     private final PostService postService;
 
+    private final PagedResourcesAssembler<Post> assembler;
+
     @PostMapping("/post")
-    public Post publish(@AuthenticationPrincipal JwtAuthentication authentication, @RequestBody @Valid PostingRequest request) {
+    public Post publish(@AuthenticationPrincipal JwtAuthentication authentication,
+                        @RequestBody @Valid PostingRequest request) {
         return postService.write(
                 authentication.id,
                 request.getCompanyName(),
@@ -30,8 +36,9 @@ public class PostController {
     }
 
     @GetMapping("/post/list")
-    public List<Post> contents(@AuthenticationPrincipal JwtAuthentication authentication) {
-        return postService.findAll();
+    public PagedResources<Resource<Post>> contents(@AuthenticationPrincipal JwtAuthentication authentication,
+                                                   Pageable pageable) {
+        return assembler.toResource(postService.findAll(pageable));
     }
 
 }

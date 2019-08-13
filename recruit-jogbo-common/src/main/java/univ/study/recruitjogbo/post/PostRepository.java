@@ -1,16 +1,18 @@
 package univ.study.recruitjogbo.post;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import univ.study.recruitjogbo.member.RecruitType;
 
-import java.util.List;
-
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    List<Post> findByCompanyNameOrderByCreatedDateDesc(String companyName);
+    Page<Post> findByCompanyName(String companyName, Pageable pageable);
 
-    List<Post> findByRecruitTypeOrderByCreatedDateDesc(RecruitType recruitType);
+    Page<Post> findByRecruitType(RecruitType recruitType, Pageable pageable);
 
-    List<Post> findByAuthor_IdOrderByCreatedDateDesc(Long authorId);
+    Page<Post> findByAuthor_Id(Long authorId, Pageable pageable);
+
+    Page<Post> findAll(Pageable pageable);
 
 }

@@ -1,6 +1,8 @@
 package univ.study.recruitjogbo.post;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -12,7 +14,6 @@ import univ.study.recruitjogbo.member.RecruitType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -44,23 +45,23 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<Post> findByCompanyName(@NotBlank String companyName) {
-        return postRepository.findByCompanyNameOrderByCreatedDateDesc(companyName);
+    public Page<Post> findByCompanyName(@NotBlank String companyName, Pageable pageable) {
+        return postRepository.findByCompanyName(companyName, pageable);
     }
 
     @Transactional(readOnly = true)
-    public List<Post> findByRecruitType(@NotNull RecruitType recruitType) {
-        return postRepository.findByRecruitTypeOrderByCreatedDateDesc(recruitType);
+    public Page<Post> findByRecruitType(@NotNull RecruitType recruitType, Pageable pageable) {
+        return postRepository.findByRecruitType(recruitType, pageable);
     }
 
     @Transactional(readOnly = true)
-    public List<Post> findByAuthor(@NotNull Long authorId) {
-        return postRepository.findByAuthor_IdOrderByCreatedDateDesc(authorId);
+    public Page<Post> findByAuthor(@NotNull Long authorId, Pageable pageable) {
+        return postRepository.findByAuthor_Id(authorId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public List<Post> findAll() {
-        return postRepository.findAll();
+    public Page<Post> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     public Post save(Post post) {

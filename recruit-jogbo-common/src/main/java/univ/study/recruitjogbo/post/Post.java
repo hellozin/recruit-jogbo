@@ -2,6 +2,7 @@ package univ.study.recruitjogbo.post;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.RecruitType;
 
@@ -27,6 +28,7 @@ public class Post extends AuditorEntity {
     private RecruitType recruitType;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadLine;
 
     @Lob

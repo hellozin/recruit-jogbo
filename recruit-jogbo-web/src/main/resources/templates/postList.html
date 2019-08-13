@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.3.0/dist/css/bootstrap.min.css">
+    <title>Post List</title>
+</head>
+<body>
+<div class="container">
+    <h2>Post List</h2>
+    <form th:action="@{/post/new}" method="get">
+        <input type="submit" class="btn btn-danger" value="새 후기 작성">
+    </form>
+    <table id="postList" class="table">
+        <thead>
+        <tr>
+            <th>기업명</th>
+            <th>전형종류</th>
+            <th>마감일</th>
+            <th>작성자</th>
+            <th>후기</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="posts : ${postList}">
+            <td th:text="${posts.companyName}" />
+            <td th:text="${posts.recruitType}" />
+            <td th:text="${posts.deadLine}" />
+            <td th:text="${posts.author.name}" />
+            <td th:text="${posts.review}" />
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script src="webjars/jquery/3.4.0/dist/jquery.min.js"></script>
+<script src="webjars/bootstrap/4.3.0/dist/js/bootstrap.min.js"></script>
+</html>

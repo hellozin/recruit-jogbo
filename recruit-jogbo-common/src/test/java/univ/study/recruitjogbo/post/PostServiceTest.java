@@ -5,6 +5,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.member.RecruitType;
@@ -82,32 +84,32 @@ class PostServiceTest {
     @Test
     @Order(3)
     void 전체_포스트를_조회한다() {
-        List<Post> posts = postService.findAll();
+        Page<Post> posts = postService.findAll(Pageable.unpaged());
         assertThat(posts).isNotNull();
-        assertThat(posts.size()).isEqualTo(data.size()+1);
+        assertThat(posts.getTotalElements()).isEqualTo(data.size()+1);
     }
 
     @Test
     @Order(4)
     void 기업명으로_포스트를_조회한다() {
-        List<Post> postOfLine = postService.findByCompanyName("LINE");
+        Page<Post> postOfLine = postService.findByCompanyName("LINE", Pageable.unpaged());
         assertThat(postOfLine).isNotNull();
-        assertThat(postOfLine.size()).isEqualTo(3);
+        assertThat(postOfLine.getTotalElements()).isEqualTo(3);
     }
 
     @Test
     @Order(5)
     void RecruitType으로_포스트를_조회한다() {
-        List<Post> postWithResume = postService.findByRecruitType(RecruitType.RESUME);
+        Page<Post> postWithResume = postService.findByRecruitType(RecruitType.RESUME, Pageable.unpaged());
         assertThat(postWithResume).isNotNull();
-        assertThat(postWithResume.size()).isEqualTo(3);
+        assertThat(postWithResume.getTotalElements()).isEqualTo(3);
     }
 
     @Test
     @Order(6)
     void 작성자아이디로_포스트를_조회한다() {
-        List<Post> posts = postService.findByAuthor(author.getId());
-        assertThat(posts.size()).isEqualTo(data.size()+1);
+        Page<Post> posts = postService.findByAuthor(author.getId(), Pageable.unpaged());
+        assertThat(posts.getTotalElements()).isEqualTo(data.size()+1);
     }
 
 }

@@ -2,13 +2,19 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/webjars/bootstrap/4.3.0/dist/css/bootstrap.min.css">
+<!--    <link rel="stylesheet" href="/webjars/bootstrap/4.3.0/dist/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css">
     <title>Post List</title>
 </head>
 <body>
+<nav class="navbar navbar-light bg-light p-3">
+    <a class="navbar-brand" href="#">
+        <h1 class="display-4">Recruit Jogbo</h1>
+    </a>
+</nav>
 <div class="container">
-    <h2>Post List</h2>
-    <form th:action="@{/post/new}" method="get">
+    <h2 class="py-4 font-weight-bold">후기 목록</h2>
+    <form th:action="@{/post/new}" method="get" class="py-3">
         <input type="submit" class="btn btn-danger" value="새 후기 작성">
     </form>
     <table id="postList" class="table">
@@ -33,6 +39,7 @@
     </table>
 </div>
 </body>
-<script src="webjars/jquery/3.4.0/dist/jquery.min.js"></script>
-<script src="webjars/bootstrap/4.3.0/dist/js/bootstrap.min.js"></script>
+<!--<script src="webjars/jquery/3.4.0/dist/jquery.min.js"></script>-->
+<!--<script src="webjars/bootstrap/4.3.0/dist/js/bootstrap.min.js"></script>-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
 </html>

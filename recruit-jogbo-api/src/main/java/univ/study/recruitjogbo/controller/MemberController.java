@@ -1,12 +1,10 @@
 package univ.study.recruitjogbo.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.request.JoinRequest;
-import univ.study.recruitjogbo.security.JwtAuthentication;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,7 +27,7 @@ public class MemberController {
     }
 
     @GetMapping("/member/list")
-    public List<Member> members(@AuthenticationPrincipal JwtAuthentication authentication) {
+    public List<Member> members() {
         return memberService.findAll();
     }
 

@@ -39,8 +39,7 @@ public class PostController {
     }
 
     @GetMapping("/post/list")
-    public PagedResources<Resource<Post>> contents(@AuthenticationPrincipal JwtAuthentication authentication,
-                                                   @RequestParam(required = false) SearchRequest request,
+    public PagedResources<Resource<Post>> contents(@RequestParam(required = false) SearchRequest request,
                                                    Pageable pageable) {
         Page<Post> postList = request == null
                 ? postService.findAll(pageable)

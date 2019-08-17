@@ -9,6 +9,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
+import univ.study.recruitjogbo.post.PostSpecs;
+import univ.study.recruitjogbo.post.SearchRequest;
 import univ.study.recruitjogbo.request.PostingRequest;
 import univ.study.recruitjogbo.security.JwtAuthentication;
 
@@ -37,8 +39,9 @@ public class PostController {
 
     @GetMapping("/post/list")
     public PagedResources<Resource<Post>> contents(@AuthenticationPrincipal JwtAuthentication authentication,
+                                                   @RequestParam(required = false) SearchRequest request,
                                                    Pageable pageable) {
-        return assembler.toResource(postService.findAll(pageable));
+        return assembler.toResource(postService.findAll(PostSpecs.searchWith(request), pageable));
     }
 
 }

@@ -3,6 +3,7 @@ package univ.study.recruitjogbo.post;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -45,23 +46,13 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Post> findByCompanyName(@NotBlank String companyName, Pageable pageable) {
-        return postRepository.findByCompanyName(companyName, pageable);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<Post> findByRecruitType(@NotNull RecruitType recruitType, Pageable pageable) {
-        return postRepository.findByRecruitType(recruitType, pageable);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<Post> findByAuthor(@NotNull Long authorId, Pageable pageable) {
-        return postRepository.findByAuthor_Id(authorId, pageable);
-    }
-
-    @Transactional(readOnly = true)
     public Page<Post> findAll(Pageable pageable) {
         return postRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Post> findAll(Specification<Post> specification, Pageable pageable) {
+        return postRepository.findAll(specification, pageable);
     }
 
     public Post save(Post post) {

@@ -92,7 +92,7 @@ class PostServiceTest {
     @Test
     @Order(4)
     void 기업명으로_포스트를_조회한다() {
-        Page<Post> postOfLine = postService.findByCompanyName("LINE", Pageable.unpaged());
+        Page<Post> postOfLine = postService.findAll(PostSpecs.withCompanyName("LINE"), Pageable.unpaged());
         assertThat(postOfLine).isNotNull();
         assertThat(postOfLine.getTotalElements()).isEqualTo(3);
     }
@@ -100,7 +100,7 @@ class PostServiceTest {
     @Test
     @Order(5)
     void RecruitType으로_포스트를_조회한다() {
-        Page<Post> postWithResume = postService.findByRecruitType(RecruitType.RESUME, Pageable.unpaged());
+        Page<Post> postWithResume = postService.findAll(PostSpecs.withRecruitType(RecruitType.RESUME), Pageable.unpaged());
         assertThat(postWithResume).isNotNull();
         assertThat(postWithResume.getTotalElements()).isEqualTo(3);
     }
@@ -108,7 +108,7 @@ class PostServiceTest {
     @Test
     @Order(6)
     void 작성자아이디로_포스트를_조회한다() {
-        Page<Post> posts = postService.findByAuthor(author.getId(), Pageable.unpaged());
+        Page<Post> posts = postService.findAll(PostSpecs.withAuthorId(author.getId()), Pageable.unpaged());
         assertThat(posts.getTotalElements()).isEqualTo(data.size()+1);
     }
 

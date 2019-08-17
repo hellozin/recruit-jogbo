@@ -15,6 +15,7 @@ import univ.study.recruitjogbo.member.RecruitType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -43,6 +44,11 @@ public class PostService {
 
         author.addPost(post);
         return save(post);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findAll() {
+        return postRepository.findAll();
     }
 
     @Transactional(readOnly = true)

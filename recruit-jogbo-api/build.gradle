@@ -12,10 +12,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-    implementation 'org.springframework.data:spring-data-commons'
     implementation 'org.springframework:spring-tx'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.security:spring-security-test'

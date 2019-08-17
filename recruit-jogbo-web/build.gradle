@@ -11,11 +11,9 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+dependencies { 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.webjars.bower:bootstrap:4.3.0'
-    implementation 'org.springframework.data:spring-data-commons'
     implementation 'org.webjars.bower:jquery:3.4.0'
     runtimeOnly 'com.h2database:h2'
 }

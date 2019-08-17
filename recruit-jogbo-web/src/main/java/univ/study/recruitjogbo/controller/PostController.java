@@ -1,13 +1,21 @@
 package univ.study.recruitjogbo.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import univ.study.recruitjogbo.member.RecruitType;
 import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
+import univ.study.recruitjogbo.post.PostSpecs;
+import univ.study.recruitjogbo.post.SearchRequest;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 
 @Controller
@@ -17,8 +25,11 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/post/list")
-    public String showPostList(Map<String, Object> model, Pageable pageable) {
-        model.put("postList", postService.findAll(pageable));
+    public String showPostList(Map<String, Object> model,
+                               @RequestParam(required = false) SearchRequest request,
+                               Pageable pageable) {
+        Page<Post> postList = postService.findAll(PostSpecs.searchWith(request), pageable);
+        model.put("postList", postList);
         return "postList";
     }
 

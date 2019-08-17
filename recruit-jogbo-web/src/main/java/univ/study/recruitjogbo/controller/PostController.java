@@ -38,7 +38,9 @@ public class PostController {
     public String showPostList(Map<String, Object> model,
                                @RequestParam(required = false) SearchRequest request,
                                Pageable pageable) {
-        Page<Post> postList = postService.findAll(PostSpecs.searchWith(request), pageable);
+        Page<Post> postList = request == null
+                ? postService.findAll(pageable)
+                : postService.findAll(PostSpecs.searchWith(request), pageable);
         model.put("postList", postList);
         return "postList";
     }

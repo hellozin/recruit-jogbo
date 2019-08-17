@@ -1,6 +1,7 @@
 package univ.study.recruitjogbo.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
@@ -41,7 +42,10 @@ public class PostController {
     public PagedResources<Resource<Post>> contents(@AuthenticationPrincipal JwtAuthentication authentication,
                                                    @RequestParam(required = false) SearchRequest request,
                                                    Pageable pageable) {
-        return assembler.toResource(postService.findAll(PostSpecs.searchWith(request), pageable));
+        Page<Post> postList = request == null
+                ? postService.findAll(pageable)
+                : postService.findAll(PostSpecs.searchWith(request), pageable);
+        return assembler.toResource(postList);
     }
 
 }

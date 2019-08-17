@@ -24,6 +24,16 @@ public class PostController {
 
     private final PostService postService;
 
+    @ModelAttribute("recruitTypes")
+    public Collection<RecruitType> recruitTypes() {
+        return Arrays.asList(RecruitType.values());
+    }
+
+    @ModelAttribute("searchKeys")
+    public Collection<PostSpecs.SearchKeys> searchKeys() {
+        return Arrays.asList(PostSpecs.SearchKeys.values());
+    }
+
     @GetMapping("/post/list")
     public String showPostList(Map<String, Object> model,
                                @RequestParam(required = false) SearchRequest request,

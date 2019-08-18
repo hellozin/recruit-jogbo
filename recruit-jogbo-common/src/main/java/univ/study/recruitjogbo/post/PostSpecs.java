@@ -1,8 +1,13 @@
 package univ.study.recruitjogbo.post;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 import univ.study.recruitjogbo.member.RecruitType;
 
+import java.util.Map;
+
+@Slf4j
 public class PostSpecs {
 
     public enum SearchKeys {
@@ -21,8 +26,9 @@ public class PostSpecs {
         }
     }
 
-    public static Specification<Post> searchWith(SearchRequest request) {
+    public static Specification<Post> searchWith(Map<SearchKeys, Object> request) {
         if (request.isEmpty()) {
+            log.warn("[request] is empty.");
             return Specification.where(null);
         }
 
@@ -51,14 +57,26 @@ public class PostSpecs {
     }
 
     public static Specification<Post> withCompanyName(String companyName) {
+        if (StringUtils.isBlank(companyName)) {
+            log.warn("[companyName] is empty.");
+            return Specification.where(null);
+        }
         return (Specification<Post>) (root, query, builder) -> builder.like(root.get("companyName"), companyName);
     }
 
     public static Specification<Post> withRecruitType(RecruitType recruitType) {
+        if (recruitType == null) {
+            log.warn("[recruitType] is empty.");
+            return Specification.where(null);
+        }
         return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("recruitType"), recruitType);
     }
 
     public static Specification<Post> withAuthorId(Long authorId) {
+        if (authorId == null) {
+            log.warn("[authorId] is empty.");
+            return Specification.where(null);
+        }
         return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("author").get("id"), authorId);
     }
 

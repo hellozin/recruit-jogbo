@@ -1,11 +1,12 @@
 package univ.study.recruitjogbo.post;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 import univ.study.recruitjogbo.member.RecruitType;
 
 import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Slf4j
 public class PostSpecs {
@@ -13,7 +14,7 @@ public class PostSpecs {
     public enum SearchKeys {
         COMPANY_NAME("companyName"),
         RECRUIT_TYPE("recruitType"),
-        AUTHOR_ID("authorId");
+        AUTHOR_NAME("authorName");
 
         private String value;
 
@@ -43,9 +44,9 @@ public class PostSpecs {
                     RecruitType recruitType = RecruitType.valueOf(String.valueOf(request.get(key)));
                     spec = appendSpec(spec, withRecruitType(recruitType));
                     break;
-                case AUTHOR_ID:
-                    Long authorId = Long.valueOf(String.valueOf(request.get(key)));
-                    spec = appendSpec(spec, withAuthorId(authorId));
+                case AUTHOR_NAME:
+                    String authorName = String.valueOf(request.get(key));
+                    spec = appendSpec(spec, withAuthorName(authorName));
                     break;
             }
         }
@@ -57,7 +58,7 @@ public class PostSpecs {
     }
 
     public static Specification<Post> withCompanyName(String companyName) {
-        if (StringUtils.isBlank(companyName)) {
+        if (isBlank(companyName)) {
             log.warn("[companyName] is empty.");
             return Specification.where(null);
         }
@@ -72,12 +73,12 @@ public class PostSpecs {
         return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("recruitType"), recruitType);
     }
 
-    public static Specification<Post> withAuthorId(Long authorId) {
-        if (authorId == null) {
-            log.warn("[authorId] is empty.");
+    public static Specification<Post> withAuthorName(String authorName) {
+        if (isBlank(authorName)) {
+            log.warn("[authorName] is empty.");
             return Specification.where(null);
         }
-        return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("author").get("id"), authorId);
+        return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("author").get("name"), authorName);
     }
 
 }

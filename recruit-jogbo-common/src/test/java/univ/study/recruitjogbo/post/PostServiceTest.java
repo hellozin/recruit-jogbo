@@ -108,7 +108,7 @@ class PostServiceTest {
     @Test
     @Order(6)
     void 작성자아이디로_포스트를_조회한다() {
-        Page<Post> posts = postService.findAll(PostSpecs.withAuthorId(author.getId()), Pageable.unpaged());
+        Page<Post> posts = postService.findAll(PostSpecs.withAuthorName(author.getName()), Pageable.unpaged());
         assertThat(posts.getTotalElements()).isEqualTo(data.size()+1);
     }
 

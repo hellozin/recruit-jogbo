@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
 import univ.study.recruitjogbo.post.PostSpecs;
-import univ.study.recruitjogbo.post.SearchRequest;
 import univ.study.recruitjogbo.request.PostingRequest;
+import univ.study.recruitjogbo.request.SearchRequest;
 import univ.study.recruitjogbo.security.JwtAuthentication;
 
 import javax.validation.Valid;
@@ -43,7 +43,7 @@ public class PostController {
                                                    Pageable pageable) {
         Page<Post> postList = request == null
                 ? postService.findAll(pageable)
-                : postService.findAll(PostSpecs.searchWith(request), pageable);
+                : postService.findAll(PostSpecs.searchWith(request.getMap()), pageable);
         return assembler.toResource(postList);
     }
 

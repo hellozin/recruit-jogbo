@@ -7,12 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import univ.study.recruitjogbo.member.RecruitType;
 import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
 import univ.study.recruitjogbo.post.PostSpecs;
-import univ.study.recruitjogbo.post.SearchRequest;
+import univ.study.recruitjogbo.request.SearchRequest;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,12 +34,12 @@ public class PostController {
     }
 
     @GetMapping("/post/list")
-    public String showPostList(Map<String, Object> model,
-                               @RequestParam(required = false) SearchRequest request,
+    public String showPostList(SearchRequest request,
+                               Map<String, Object> model,
                                Pageable pageable) {
         Page<Post> postList = request == null
                 ? postService.findAll(pageable)
-                : postService.findAll(PostSpecs.searchWith(request), pageable);
+                : postService.findAll(PostSpecs.searchWith(request.getMap()), pageable);
         model.put("postList", postList);
         return "postList";
     }

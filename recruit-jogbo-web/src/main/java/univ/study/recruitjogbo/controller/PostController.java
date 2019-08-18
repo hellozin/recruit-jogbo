@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import univ.study.recruitjogbo.member.RecruitType;
 import univ.study.recruitjogbo.post.Post;
@@ -59,6 +60,12 @@ public class PostController {
                 post.getReview()
         );
         return "redirect:/post/list";
+    }
+
+    @GetMapping("/post/{id}")
+    public String getPost(@PathVariable(value = "id") Post post, Map<String, Object> model) {
+        model.put("post", post);
+        return "post";
     }
 
 }

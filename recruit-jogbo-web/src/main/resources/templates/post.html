@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--    <link rel="stylesheet" href="/webjars/bootstrap/4.3.0/dist/css/bootstrap.min.css">-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Post</title>
+</head>
+<body>
+<nav class="navbar navbar-light bg-light p-3">
+    <a class="navbar-brand" href="#">
+        <h1 class="display-4">Recruit Jogbo</h1>
+    </a>
+</nav>
+<div class="container">
+
+    <h2 class="py-4 font-weight-bold">후기</h2>
+
+    <table class="table table-sm w-auto">
+        <tr>
+            <td class="font-weight-bold">작성자</td>
+            <td th:text="${post.author.name}"></td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">기업 명</td>
+            <td th:text="${post.companyName}"></td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">전형 종류</td>
+            <td th:text="${post.recruitType}"></td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">마감일</td>
+            <td th:text="${post.deadLine}"></td>
+        </tr>
+    </table>
+
+    <p class="border p-3 lead" th:text="${post.review}" style="white-space: pre-line;"></p>
+
+</div>
+</body>
+<!--<script src="webjars/jquery/3.4.0/dist/jquery.min.js"></script>-->
+<!--<script src="webjars/bootstrap/4.3.0/dist/js/bootstrap.min.js"></script>-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
+</html>

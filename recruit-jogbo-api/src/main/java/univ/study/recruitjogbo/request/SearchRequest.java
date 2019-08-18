@@ -1,4 +1,6 @@
-package univ.study.recruitjogbo.post;
+package univ.study.recruitjogbo.request;
+
+import univ.study.recruitjogbo.post.PostSpecs;
 
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +19,10 @@ public class SearchRequest {
 
     public Object get(PostSpecs.SearchKeys keys) {
         return this.searchKeyMap.get(keys);
+    }
+
+    public Map<PostSpecs.SearchKeys, Object> getMap() {
+        return this.searchKeyMap;
     }
 
     public boolean isEmpty() {

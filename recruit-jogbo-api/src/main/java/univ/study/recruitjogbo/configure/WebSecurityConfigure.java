@@ -20,8 +20,6 @@ import univ.study.recruitjogbo.security.JwtAuthenticationTokenFilter;
 @EnableWebSecurity
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 
-//    private final Filter ssoFilter;
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -64,7 +62,6 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .disable();
         http
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//                .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class);
     }
 
     @Override

@@ -45,12 +45,18 @@ public class PostController {
         return "postList";
     }
 
+    @GetMapping("/post/{id}")
+    public String getPost(@PathVariable(value = "id") Post post, Map<String, Object> model) {
+        model.put("post", post);
+        return "post";
+    }
+
     @GetMapping("/post/new")
     public String showPostCreateForm(Post post) {
         return "newPostForm";
     }
 
-    @PostMapping("/post")
+    @PostMapping("/post/new")
     public String createPost(Post post, Map<String, Object> model) {
         postService.write(
                 1L,
@@ -60,12 +66,6 @@ public class PostController {
                 post.getReview()
         );
         return "redirect:/post/list";
-    }
-
-    @GetMapping("/post/{id}")
-    public String getPost(@PathVariable(value = "id") Post post, Map<String, Object> model) {
-        model.put("post", post);
-        return "post";
     }
 
 }

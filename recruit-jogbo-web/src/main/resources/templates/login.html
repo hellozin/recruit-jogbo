@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--    <link rel="stylesheet" href="/webjars/bootstrap/4.3.0/dist/css/bootstrap.min.css">-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Title</title>
+    <style>
+        .login {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -moz-transform: translateX(-50%) translateY(-50%);
+            -webkit-transform: translateX(-50%) translateY(-50%);
+            transform: translateX(-50%) translateY(-50%);
+        }
+    </style>
+</head>
+<body>
+<div class="container login">
+
+    <div class="border shadow w-50 mx-auto p-3">
+
+        <p class="display-4 text-center p-3">Recruit Jogbo</p>
+
+        <form class="w-50 mx-auto" th:action="@{/login}" th:method="post" th:object="${authenticationRequest}">
+
+            <div class="form-group">
+                <input class="form-control" id="principal" placeholder="ID" th:field="*{principal}" type="text">
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" id="credentials" placeholder="Password" th:field="*{credentials}"
+                       type="password">
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit">로그인</button>
+            </div>
+
+            <a class="btn btn-outline-info w-100" href="/member/new">회원가입</a>
+
+        </form>
+
+        <div class="p-3">
+            <p class="text-center lead mb-0">Manged by Hellozin</p>
+            <p class="text-center blockquote-footer">paul26375@gmail.com</p>
+        </div>
+
+    </div>
+
+</div>
+</body>
+<!--<script src="webjars/jquery/3.4.0/dist/jquery.min.js"></script>-->
+<!--<script src="webjars/bootstrap/4.3.0/dist/js/bootstrap.min.js"></script>-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+
+<!--        $("#submit").on('click', function submitForm() {-->
+<!--            var principal = document.getElementById("principal").value;-->
+<!--            var credentials = document.getElementById("credentials").value;-->
+
+<!--            var data = {-->
+<!--                principal: principal,-->
+<!--                credentials: credentials-->
+<!--            };-->
+
+<!--            $.ajax({-->
+<!--                type: "POST",-->
+<!--                url: "/login",-->
+<!--                data: JSON.stringify(data),-->
+<!--                dataType: "text",-->
+<!--                contentType: "application/json",-->
+<!--                success: function (data) {-->
+<!--                    location.href = "/post/list";-->
+<!--                }-->
+<!--            })-->
+<!--        });-->
+
+<!--    });-->
+<!--</script>-->
+</html>

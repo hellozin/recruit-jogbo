@@ -14,13 +14,10 @@ import javax.validation.constraints.Size;
 public class JoinRequest {
 
     @Size(min = 4, max = 25)
-    private String memberId;
+    private String username;
 
     @Size(min = 4, max = 25)
     private String password;
-
-    @Size(min = 4, max = 25)
-    private String name;
 
     @Email
     @NotBlank

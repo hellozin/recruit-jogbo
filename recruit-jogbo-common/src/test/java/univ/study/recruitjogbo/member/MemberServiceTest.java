@@ -22,23 +22,21 @@ class MemberServiceTest {
     @Autowired
     private MemberService memberService;
 
-    private String memberId;
+    private String username;
     private String password;
-    private String name;
     private String email;
 
     @BeforeAll
     void setUp() {
-        memberId = "hellozin";
+        username = "hellozin";
         password = "12345";
-        name = "hello";
         email = "hello@ynu.ac.kr";
     }
 
     @Test
     @Order(1)
     void 사용자를_추가한다() {
-        Member member = memberService.join(memberId, password, name, email);
+        Member member = memberService.join(username, password, email);
         assertThat(member).isNotNull();
         assertThat(member.getId()).isNotNull();
         assertThat(member.getEmail()).isEqualTo(email);
@@ -48,7 +46,7 @@ class MemberServiceTest {
     @Test
     @Order(2)
     void 추가한_사용자로_로그인한다() {
-        Member loginMember = memberService.login(memberId, password);
+        Member loginMember = memberService.login(username, password);
         assertThat(loginMember.getEmail()).isEqualTo(email);
     }
 

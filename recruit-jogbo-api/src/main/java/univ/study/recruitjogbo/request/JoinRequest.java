@@ -15,14 +15,11 @@ public class JoinRequest {
 
     @NotBlank
     @Size(min = 4)
-    private String memberId;
+    private String username;
 
     @NotBlank
     @Size(min = 4, max = 15)
     private String password;
-
-    @NotBlank
-    private String name;
 
     @Email
     private String email;

@@ -50,7 +50,7 @@ class PostServiceTest {
         review = randomString3000;
 
         author = memberService.save(
-                new Member("hellozin", "password1234", "paul", "hello@gmail.com"));
+                new Member("hellozin", "password1234", "hello@gmail.com"));
 
         data = new ArrayList<>();
         data.add(new Post("LINE", RecruitType.RESUME, LocalDate.of(2019, 1, 1), randomString3000));
@@ -108,7 +108,7 @@ class PostServiceTest {
     @Test
     @Order(6)
     void 작성자아이디로_포스트를_조회한다() {
-        Page<Post> posts = postService.findAll(PostSpecs.withAuthorName(author.getName()), Pageable.unpaged());
+        Page<Post> posts = postService.findAll(PostSpecs.withAuthorName(author.getUsername()), Pageable.unpaged());
         assertThat(posts.getTotalElements()).isEqualTo(data.size()+1);
     }
 

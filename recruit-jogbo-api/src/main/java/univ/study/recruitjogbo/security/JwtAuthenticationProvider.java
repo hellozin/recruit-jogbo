@@ -35,7 +35,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             Member member = memberService.login(request.getPrincipal(), request.getCredentials());
             Role role = member.isEmailConfirmed() ? Role.MEMBER : Role.UNCONFIRMED;
             JwtAuthenticationToken authenticated = new JwtAuthenticationToken(member.getId(), null, createAuthorityList(role.value()));
-            String apiToken = jwt.newToken(JWT.Claims.of(member.getId(), member.getMemberId(), member.getName(), member.getEmail(), new String[]{role.value()}));
+            String apiToken = jwt.newToken(JWT.Claims.of(member.getId(), member.getUsername(), member.getEmail(), new String[]{role.value()}));
             authenticated.setDetails(new AuthenticationResult(apiToken, member));
             return authenticated;
         } catch (NotFoundException e) {

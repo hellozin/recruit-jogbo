@@ -33,9 +33,9 @@ public class MemberService {
     private final RabbitTemplate rabbitTemplate;
 
     @Transactional
-    public Member login(@NotBlank String memberId, @NotBlank String password) {
-        Member member = findByMemberId(memberId)
-                .orElseThrow(() -> new NotFoundException(Member.class, memberId));
+    public Member login(@NotBlank String username, @NotBlank String password) {
+        Member member = findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(Member.class, username));
 
         if (!member.checkPassword(passwordEncoder, password)) {
             throw new IllegalArgumentException("Incorrect password.");
@@ -45,14 +45,12 @@ public class MemberService {
     }
 
     @Transactional
-    public Member join(@NotBlank String memberId,
+    public Member join(@NotBlank String username,
                        @NotBlank String password,
-                       @NotBlank String name,
                        @Email String email) {
         Member member = save(new Member.MemberBuilder()
-                .memberId(memberId)
+                .username(username)
                 .password(passwordEncoder.encode(password))
-                .name(name)
                 .email(email)
                 .build()
         );
@@ -61,11 +59,10 @@ public class MemberService {
     }
 
     @Transactional
-    public Member joinWithEmailConfirm(@NotBlank String memberId,
+    public Member joinWithEmailConfirm(@NotBlank String username,
                                        @NotBlank String password,
-                                       @NotBlank String name,
                                        @Email String email) {
-        Member member = join(memberId, password, name, email);
+        Member member = join(username, password, email);
         sendConfirmEmail(member.getEmail());
         return member;
     }
@@ -106,8 +103,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Member> findByMemberId(@NotNull String memberId) {
-        return memberRepository.findByMemberId(memberId);
+    public Optional<Member> findByUsername(@NotNull String username) {
+        return memberRepository.findByUsername(username);
     }
 
     @Transactional(readOnly = true)

@@ -78,7 +78,7 @@ public class PostSpecs {
             log.warn("[authorName] is empty.");
             return Specification.where(null);
         }
-        return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("author").get("name"), authorName);
+        return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("author").get("username"), authorName);
     }
 
 }

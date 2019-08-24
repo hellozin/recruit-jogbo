@@ -30,9 +30,8 @@ public class MemberController {
         }
 
         memberService.join(
-                request.getMemberId(),
+                request.getUsername(),
                 request.getPassword(),
-                request.getName(),
                 request.getEmail()
         );
         return "redirect:/login";

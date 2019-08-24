@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-        Member member = memberService.findByMemberId(memberId)
+        Member member = memberService.findByUsername(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException(memberId));
 
         Set<GrantedAuthority> authorities = new HashSet<>();
@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(Role.UNCONFIRMED.value()));
         }
 
-        return new AuthMember(member.getId(), member.getMemberId(), member.getPassword(), authorities);
+        return new AuthMember(member.getId(), member.getUsername(), member.getPassword(), authorities);
     }
 
 }

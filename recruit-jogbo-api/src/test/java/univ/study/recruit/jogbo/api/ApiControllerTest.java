@@ -44,7 +44,7 @@ public class ApiControllerTest {
 
     @BeforeAll
     void setUp() {
-        member = new Member("hellozin", "hello1234", "hello", "hello@gmail.com");
+        member = new Member("hellozin", "hello1234", "hello@gmail.com");
         post = new Post("LINE",RecruitType.RESUME,LocalDate.of(2019,1,1),"Something New");
     }
 
@@ -52,9 +52,8 @@ public class ApiControllerTest {
     @Order(1)
     void 멤버를_추가한다() throws Exception {
         JoinRequest joinRequest = new JoinRequest();
-        joinRequest.setMemberId(member.getMemberId());
+        joinRequest.setUsername(member.getUsername());
         joinRequest.setPassword(member.getPassword());
-        joinRequest.setName(member.getName());
         joinRequest.setEmail(member.getEmail());
 
         mockMvc.perform(post("/api/member")
@@ -69,7 +68,7 @@ public class ApiControllerTest {
     @Test
     @Order(2)
     void 멤버_인증토큰을_발행한다() throws Exception {
-        AuthenticationRequest request = new AuthenticationRequest(member.getMemberId(), member.getPassword());
+        AuthenticationRequest request = new AuthenticationRequest(member.getUsername(), member.getPassword());
 
         MvcResult mvcResult = mockMvc.perform(post("/api/auth")
                 .contentType(MediaType.APPLICATION_JSON)

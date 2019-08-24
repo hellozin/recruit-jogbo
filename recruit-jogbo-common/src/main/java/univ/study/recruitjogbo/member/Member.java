@@ -26,15 +26,11 @@ public class Member {
 
     @NotBlank
     @Size(min = 4, max = 25)
-    private String memberId;
+    private String username;
 
     @NotBlank
     @JsonIgnore
     private String password;
-
-    @NotBlank
-    @Size(min = 4, max = 25)
-    private String name;
 
     @Email
     private String email;
@@ -47,10 +43,9 @@ public class Member {
     private Set<Post> posts;
 
     @Builder
-    public Member(String memberId, String password, String name, String email) {
-        this.memberId = memberId;
+    public Member(String username, String password, String email) {
+        this.username = username;
         this.password = password;
-        this.name = name;
         this.email = email;
     }
 

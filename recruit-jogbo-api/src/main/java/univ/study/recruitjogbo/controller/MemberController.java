@@ -19,9 +19,8 @@ public class MemberController {
     @PostMapping("/member")
     public Member join(@RequestBody @Valid JoinRequest joinRequest) {
         return memberService.join(
-                joinRequest.getMemberId(),
+                joinRequest.getUsername(),
                 joinRequest.getPassword(),
-                joinRequest.getName(),
                 joinRequest.getEmail()
         );
     }

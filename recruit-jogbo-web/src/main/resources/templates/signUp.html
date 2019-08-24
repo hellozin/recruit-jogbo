@@ -26,18 +26,13 @@
         <form class="w-50 mx-auto" th:object="${joinRequest}" th:action="@{/member/new}" th:method="post">
 
             <div class="form-group">
-                <input class="form-control" placeholder="ID" th:field="*{memberId}" type="text">
-                <small class="text-danger" th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}">ID error</small>
+                <input class="form-control" placeholder="Username" th:field="*{username}" type="text">
+                <small class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">ID error</small>
             </div>
 
             <div class="form-group">
                 <input class="form-control" placeholder="Password" th:field="*{password}" type="password">
                 <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</small>
-            </div>
-
-            <div class="form-group">
-                <input class="form-control" placeholder="Name" th:field="*{name}" type="text">
-                <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</small>
             </div>
 
             <div class="form-group">

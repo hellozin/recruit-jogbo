@@ -36,7 +36,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/post/list")
+                    .defaultSuccessUrl("/post/list", true)
                     .permitAll()
                     .and()
                 .logout();
@@ -50,7 +50,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/h2/**", "/templates/**");
+        web.ignoring().antMatchers("/h2/**");
     }
 
 }

@@ -13,18 +13,17 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class JoinRequest {
 
-    @NotBlank
-    @Size(min = 4)
+    @Size(min = 4, max = 25)
     private String memberId;
 
-    @NotBlank
-    @Size(min = 4, max = 15)
+    @Size(min = 4, max = 25)
     private String password;
 
-    @NotBlank
+    @Size(min = 4, max = 25)
     private String name;
 
     @Email
+    @NotBlank
     private String email;
 
 }

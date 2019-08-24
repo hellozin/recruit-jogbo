@@ -3,6 +3,7 @@ package univ.study.recruitjogbo.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +14,7 @@ import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
 import univ.study.recruitjogbo.post.PostSpecs;
 import univ.study.recruitjogbo.request.SearchRequest;
+import univ.study.recruitjogbo.security.AuthMember;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,9 +59,9 @@ public class PostController {
     }
 
     @PostMapping("/post/new")
-    public String createPost(Post post, Map<String, Object> model) {
+    public String createPost(@AuthenticationPrincipal AuthMember author, Post post, Map<String, Object> model) {
         postService.write(
-                1L,
+                author.getId(),
                 post.getCompanyName(),
                 post.getRecruitType(),
                 post.getDeadLine(),

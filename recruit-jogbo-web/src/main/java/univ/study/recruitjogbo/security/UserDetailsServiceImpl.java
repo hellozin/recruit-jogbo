@@ -3,7 +3,6 @@ package univ.study.recruitjogbo.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(Role.UNCONFIRMED.value()));
         }
 
-        return new User(member.getMemberId(), member.getPassword(), authorities);
+        return new AuthMember(member.getId(), member.getMemberId(), member.getPassword(), authorities);
     }
 
 }

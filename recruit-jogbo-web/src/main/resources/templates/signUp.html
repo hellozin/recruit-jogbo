@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <!--    <link rel="stylesheet" href="/webjars/bootstrap/4.3.0/dist/css/bootstrap.min.css">-->
@@ -23,7 +23,7 @@
 
         <p class="display-4 text-center p-3">Recruit Jogbo</p>
 
-        <form class="w-50 mx-auto" th:object="${joinRequest}" th:method="post">
+        <form class="w-50 mx-auto" th:object="${joinRequest}" th:action="@{/member/new}" th:method="post">
 
             <div class="form-group">
                 <input class="form-control" placeholder="ID" th:field="*{memberId}" type="text">

@@ -16,9 +16,3 @@ spring:
 logging:
   level:
     org.hibernate.type: trace
-jwt:
-  token:
-    header: api_key
-    issuer: recruit_jogbo
-    clientSecret: CLIENT_SECRET
-    expirySeconds: 0

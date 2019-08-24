@@ -15,6 +15,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework:spring-tx'
+    implementation 'com.auth0:java-jwt:3.8.0'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.security:spring-security-test'
 }

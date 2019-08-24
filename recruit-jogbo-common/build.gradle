@@ -16,7 +16,6 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.security:spring-security-crypto'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
-    implementation 'com.auth0:java-jwt:3.8.0'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.security:spring-security-test'
 }

@@ -1,6 +1,7 @@
 package univ.study.recruitjogbo.configure;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,20 @@ import univ.study.recruitjogbo.security.JwtAuthenticationTokenFilter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
+
+    @Value("${jwt.token.issuer}")
+    String issuer;
+
+    @Value("${jwt.token.clientSecret}")
+    String clientSecret;
+
+    @Value("${jwt.token.expirySeconds}")
+    int expirySeconds;
+
+    @Bean
+    public JWT jwt() {
+        return new JWT(issuer, clientSecret, expirySeconds);
+    }
 
     @Bean
     @Override

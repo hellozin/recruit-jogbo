@@ -19,7 +19,7 @@
         <div class="row">
 
             <div class="form-group col my-auto">
-                <input class="form-control" id="companyName" th:name="companyName" type="text" placeholder="기업 명">
+                <input class="form-control" id="companyName" placeholder="기업 명" th:name="companyName" type="text">
             </div>
 
             <div class="form-group col my-auto">
@@ -31,18 +31,18 @@
             </div>
 
             <div class="form-group col my-auto">
-                <input class="form-control" id="authorName" th:name="authorName" type="text" placeholder="작성자">
+                <input class="form-control" id="authorName" placeholder="작성자" th:name="authorName" type="text">
             </div>
 
             <div class="form-group col-auto my-auto">
                 <select class="form-control" id="orders" name="sort">
-                    <option value="createdAt,desc" selected>작성순</option>
+                    <option selected value="createdAt,desc">작성순</option>
                     <option value="deadLine,desc">마감일순</option>
                 </select>
             </div>
 
             <div class="form-group col-auto my-auto">
-                <button id="searchBtn" class="btn btn-primary" type="submit">검색</button>
+                <button class="btn btn-primary" id="searchBtn" type="submit">검색</button>
             </div>
 
         </div>
@@ -86,15 +86,15 @@
 <script src="/webjars/bootstrap/4.3.0/dist/js/bootstrap.min.js"></script>
 <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>-->
 <script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        crossorigin="anonymous"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"></script>
+        src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
     $(document).ready(function () {
 
         $('#postList tr').click(function () {
             var value = $(this).find('a').attr('value');
-            console.log('value is '+value);
+            console.log('value is ' + value);
             if (value) {
                 window.location = '/post/' + value;
             }

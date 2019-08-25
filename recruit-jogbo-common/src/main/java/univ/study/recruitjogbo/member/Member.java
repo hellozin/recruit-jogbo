@@ -7,10 +7,9 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import univ.study.recruitjogbo.post.Post;
+import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -24,15 +23,14 @@ public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Size(min = 4, max = 25)
     private String username;
 
-    @NotBlank
+    @Size(min = 4, max = 25)
     @JsonIgnore
     private String password;
 
-    @Email
+    @UnivEmail
     private String email;
 
     @NotNull

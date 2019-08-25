@@ -3,9 +3,8 @@ package univ.study.recruitjogbo.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import univ.study.recruitjogbo.validator.UnivEmail;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -13,15 +12,13 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class JoinRequest {
 
-    @NotBlank
-    @Size(min = 4)
+    @Size(min = 4, max = 25)
     private String username;
 
-    @NotBlank
-    @Size(min = 4, max = 15)
+    @Size(min = 4, max = 25)
     private String password;
 
-    @Email
+    @UnivEmail
     private String email;
 
 }

@@ -35,6 +35,8 @@
 
     <p class="border p-3 lead" th:text="${post.review}" style="white-space: pre-line;"></p>
 
+    <a class="btn btn-primary" th:href="@{/post/{id}/form(id=${post.id})}" th:classappend="${isAuthor} ? null : sr-only">수정</a>
+
 </div>
 </body>
 <!--<script src="/webjars/jquery/3.4.0/dist/jquery.min.js"></script>-->

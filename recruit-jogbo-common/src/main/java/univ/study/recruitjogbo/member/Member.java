@@ -10,6 +10,7 @@ import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -26,7 +27,7 @@ public class Member {
     @Size(min = 4, max = 25)
     private String username;
 
-    @Size(min = 4, max = 25)
+    @NotBlank
     @JsonIgnore
     private String password;
 

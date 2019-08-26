@@ -5,14 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import univ.study.recruitjogbo.member.RecruitType;
 import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
 import univ.study.recruitjogbo.post.PostSpecs;
+import univ.study.recruitjogbo.request.PostingRequest;
 import univ.study.recruitjogbo.request.SearchRequest;
 import univ.study.recruitjogbo.security.AuthMember;
 
@@ -48,9 +46,30 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public String getPost(@PathVariable(value = "id") Post post, Map<String, Object> model) {
+    public String getPost(@PathVariable(value = "id") Post post,
+                          @AuthenticationPrincipal AuthMember author,
+                          Map<String, Object> model) {
         model.put("post", post);
+        model.put("isAuthor", post.getAuthor().getId().equals(author.getId()));
         return "post";
+    }
+
+    @GetMapping("/post/{id}/form")
+    public String showEditPostForm(@PathVariable(value = "id") Post post, Map<String, Object> model) {
+        model.put("post", post);
+        model.put("postingRequest", new PostingRequest());
+        return "editPostForm";
+    }
+
+    @PutMapping("/post/{id}")
+    public String editPost(PostingRequest request, @PathVariable(value = "id") Long postId) {
+        postService.edit(
+                postId,
+                request.getCompanyName(),
+                RecruitType.valueOf(request.getRecruitType()),
+                request.getDeadLine(),
+                request.getReview());
+        return "redirect:/post/"+postId;
     }
 
     @GetMapping("/post/new")

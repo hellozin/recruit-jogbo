@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,6 +45,24 @@ public class PostService {
 
         author.addPost(post);
         return save(post);
+    }
+
+    @Transactional
+    public Post edit(@NotNull Long postId,
+                     @NotBlank String companyName,
+                     @NotNull RecruitType recruitType,
+                     @NotNull LocalDate deadLine,
+                     @NotBlank String review) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
+
+        post.edit(companyName, recruitType, deadLine, review);
+        return save(post);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Post> findById(Long postId) {
+        return postRepository.findById(postId);
     }
 
     @Transactional(readOnly = true)

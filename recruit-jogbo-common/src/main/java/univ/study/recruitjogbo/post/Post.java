@@ -60,4 +60,11 @@ public class Post {
         this.author = author;
     }
 
+    public void edit(String companyName, RecruitType recruitType, LocalDate deadLine, String review) {
+        this.companyName = companyName;
+        this.recruitType = recruitType;
+        this.deadLine = deadLine;
+        this.review = review;
+    }
+
 }

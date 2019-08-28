@@ -1,6 +1,7 @@
 package univ.study.recruitjogbo.post;
 
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,6 +28,8 @@ public class PostService {
 
     private final MemberService memberService;
 
+    private final RabbitTemplate rabbitTemplate;
+
     @Transactional
     public Post write(@NotNull Long authorId,
                       @NotBlank String companyName,
@@ -44,7 +47,11 @@ public class PostService {
                 .build();
 
         author.addPost(post);
-        return save(post);
+        Post savedPost = save(post);
+
+        rabbitTemplate.convertAndSend("post", "post.create", savedPost);
+
+        return savedPost;
     }
 
     @Transactional
@@ -57,7 +64,11 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
 
         post.edit(companyName, recruitType, deadLine, review);
-        return save(post);
+        Post modifiedPost = save(post);
+
+        rabbitTemplate.convertAndSend("post", "post.edit", modifiedPost);
+
+        return modifiedPost;
     }
 
     @Transactional(readOnly = true)

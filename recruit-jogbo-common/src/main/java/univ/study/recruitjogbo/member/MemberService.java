@@ -55,6 +55,7 @@ public class MemberService {
                 .build()
         );
         log.info("새로운 멤버가 추가되었습니다. 추가된 멤버: [{}]", member);
+        rabbitTemplate.convertAndSend("member", "member.create", member);
         return member;
     }
 

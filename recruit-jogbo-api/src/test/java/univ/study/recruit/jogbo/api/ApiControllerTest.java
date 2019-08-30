@@ -50,7 +50,7 @@ public class ApiControllerTest {
     @BeforeAll
     void setUp() {
         member = new Member("hellozin", "hello1234", "hello@yu.ac.kr");
-        post = new Post("LINE",RecruitType.RESUME,LocalDate.of(2019,1,1),"Something New");
+        post = new Post(member, "LINE",RecruitType.RESUME,LocalDate.of(2019,1,1),"Something New");
     }
 
     @Test

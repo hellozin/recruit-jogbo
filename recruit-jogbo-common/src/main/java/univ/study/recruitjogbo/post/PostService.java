@@ -46,7 +46,7 @@ public class PostService {
                 .review(review)
                 .build();
 
-        author.addPost(post);
+        post.setAuthor(author);
         Post savedPost = save(post);
 
         rabbitTemplate.convertAndSend("post", "post.create", savedPost);

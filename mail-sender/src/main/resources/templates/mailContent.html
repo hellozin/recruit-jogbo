@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Mail</title>
@@ -13,7 +13,7 @@
     <div class="card-body">
         <h5 class="card-title">Recruit Jogbo 가입 인증 메일입니다.</h5>
         <p class="card-text">인증을 위해 아래 버튼을 클릭해 주세요. 혹시 가입하신 적이 없다면 paul26375@gmail.com으로 문의 주시기 바랍니다.</p>
-        <a href="${token}" class="btn btn-primary">인증하기</a>
+        <a th:href="${token}" class="btn btn-primary">인증하기</a>
     </div>
 </div>
 </body>

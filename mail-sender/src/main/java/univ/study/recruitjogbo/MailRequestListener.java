@@ -18,7 +18,7 @@ public class MailRequestListener {
     public void receiveMessage(final EmailConfirmRequestMessage message) throws MessagingException {
         String targetEmail = message.getTargetEmail();
         String subject = ConfirmEmailTemplate.subject;
-        String token = ConfirmEmailTemplate.text + message.getEmailConfirmToken();
+        String token = ConfirmEmailTemplate.baseUrl + message.getEmailConfirmToken();
         mailService.sendConfirmMail(targetEmail, subject, token);
         log.info("Send confirm mail to [{}]", targetEmail);
     }

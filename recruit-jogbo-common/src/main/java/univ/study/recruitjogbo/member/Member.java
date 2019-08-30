@@ -1,24 +1,22 @@
 package univ.study.recruitjogbo.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"password", "posts"})
+@ToString(exclude = {"password"})
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +35,6 @@ public class Member {
     @NotNull
     private boolean emailConfirmed;
 
-    @OneToMany(mappedBy = "author")
-    @JsonManagedReference
-    private Set<Post> posts;
-
     @Builder
     public Member(String username, String password, String email) {
         this.username = username;
@@ -52,26 +46,9 @@ public class Member {
         return passwordEncoder.matches(password, this.password);
     }
 
-    protected Set<Post> getPostsInternal() {
-        if (this.posts == null) {
-            this.posts = new HashSet<>();
-        }
-        return this.posts;
-    }
-
-    public List<Post> getPosts() {
-        ArrayList<Post> sortedPosts = new ArrayList<>(getPostsInternal());
-        PropertyComparator.sort(sortedPosts, new MutableSortDefinition("createdDate", true, true));
-        return Collections.unmodifiableList(sortedPosts);
-    }
-
-    public void addPost(Post post) {
-        getPostsInternal().add(post);
-        post.setAuthor(this);
-    }
-
     public Member setEmailConfirmed(boolean emailConfirmed) {
         this.emailConfirmed = emailConfirmed;
         return this;
     }
+
 }

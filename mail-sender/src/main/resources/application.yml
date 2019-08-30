@@ -6,5 +6,11 @@ spring:
     port: 587
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
+  rabbitmq:
+    host: HOST_IP
+    port: 5672
+    username: USERNAME
+    password: PASSWORD
+    virtual-host: VIRTUAL_HOST
 server:
   port: 8081

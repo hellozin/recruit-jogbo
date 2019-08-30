@@ -71,7 +71,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/auth").permitAll()
                     .antMatchers("/api/confirm/email").permitAll()
                     .antMatchers("/api/**").hasRole("UNCONFIRMED")/*.hasRole("MEMBER") 테스트를 위해 UNCONFIRMED 허용*/
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
                     .and()
                 .formLogin()
                     .disable();

@@ -1,6 +1,6 @@
 package univ.study.recruitjogbo.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
@@ -41,9 +41,10 @@ public class PostController {
     @GetMapping("/post/list")
     public PagedResources<Resource<Post>> contents(@RequestParam(required = false) SearchRequest request,
                                                    Pageable pageable) {
-        Page<Post> postList = request == null
+        Page<Post> postList =
+                (request == null)
                 ? postService.findAll(pageable)
-                : postService.findAll(PostSpecs.searchWith(request.getMap()), pageable);
+                : postService.findAll(PostSpecs.searchWith(request.getSearchKeyMap()), pageable);
         return assembler.toResource(postList);
     }
 

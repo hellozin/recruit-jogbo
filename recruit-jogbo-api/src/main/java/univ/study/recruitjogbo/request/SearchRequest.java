@@ -1,17 +1,17 @@
 package univ.study.recruitjogbo.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import univ.study.recruitjogbo.post.PostSpecs;
 
 import java.util.Map;
 import java.util.Set;
 
+@AllArgsConstructor
+@Getter
 public class SearchRequest {
 
     private Map<PostSpecs.SearchKeys, Object> searchKeyMap;
-
-    public SearchRequest(Map<PostSpecs.SearchKeys, Object> searchKeyMap) {
-        this.searchKeyMap = searchKeyMap;
-    }
 
     public Set<PostSpecs.SearchKeys> keySet() {
         return this.searchKeyMap.keySet();
@@ -19,10 +19,6 @@ public class SearchRequest {
 
     public Object get(PostSpecs.SearchKeys keys) {
         return this.searchKeyMap.get(keys);
-    }
-
-    public Map<PostSpecs.SearchKeys, Object> getMap() {
-        return this.searchKeyMap;
     }
 
     public boolean isEmpty() {

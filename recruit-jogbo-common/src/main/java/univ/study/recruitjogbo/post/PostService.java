@@ -39,19 +39,17 @@ public class PostService {
         Member author = memberService.findById(authorId)
                 .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
 
-        Post post = new Post.PostBuilder()
+        Post post = save(new Post.PostBuilder()
+                .author(author)
                 .companyName(companyName)
                 .recruitType(recruitType)
                 .deadLine(deadLine)
                 .review(review)
-                .build();
+                .build());
 
-        post.setAuthor(author);
-        Post savedPost = save(post);
+        rabbitTemplate.convertAndSend("post", "post.create", post);
 
-        rabbitTemplate.convertAndSend("post", "post.create", savedPost);
-
-        return savedPost;
+        return post;
     }
 
     @Transactional

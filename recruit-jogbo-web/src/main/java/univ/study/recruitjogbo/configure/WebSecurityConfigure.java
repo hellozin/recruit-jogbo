@@ -45,7 +45,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Bean
     public PostEditableVoter postEditableVoter() {
         Pattern pattern = Pattern.compile("^/post/(\\d+)$");
-        RequestMatcher requestMatcher = new RegexRequestMatcher(pattern.pattern(), HttpMethod.PATCH.toString());
+        RequestMatcher requestMatcher = new RegexRequestMatcher(pattern.pattern(), HttpMethod.PUT.toString());
         return new PostEditableVoter(requestMatcher, (String url) -> {
             Matcher matcher = pattern.matcher(url);
             return matcher.find() ? toLong(matcher.group(1), -1) : -1;
@@ -64,7 +64,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/member/new").permitAll()
+                    .antMatchers("/member").permitAll()
                     .anyRequest().authenticated()
                     .accessDecisionManager(accessDecisionManager())
                     .and()

@@ -1,6 +1,6 @@
 package univ.study.recruitjogbo.security;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -17,7 +17,7 @@ import univ.study.recruitjogbo.request.AuthenticationRequest;
 import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
 import static org.springframework.util.ClassUtils.isAssignable;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JWT jwt;

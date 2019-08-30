@@ -21,7 +21,8 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         Map<PostSpecs.SearchKeys, Object> searchKeysMap = new HashMap<>();
         for (PostSpecs.SearchKeys key : PostSpecs.SearchKeys.values()) {
             String param = webRequest.getParameter(key.getValue());

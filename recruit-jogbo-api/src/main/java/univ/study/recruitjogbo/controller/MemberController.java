@@ -1,6 +1,6 @@
 package univ.study.recruitjogbo.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
@@ -34,8 +34,8 @@ public class MemberController {
     public String confirmEmail(@RequestParam String token) {
         boolean isConfirmed = memberService.confirmEmailByToken(token);
         return isConfirmed
-                ? "이메일 인증이 성공적으로 처리되었습니다."
-                : "이메일 인증에 실패하였습니다.";
+                ? "Email confirmation success."
+                : "Email confirmation failed.";
     }
 
 }

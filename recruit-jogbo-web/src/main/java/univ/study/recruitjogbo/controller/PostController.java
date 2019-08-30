@@ -40,7 +40,7 @@ public class PostController {
                                Pageable pageable) {
         Page<Post> postList = request == null
                 ? postService.findAll(pageable)
-                : postService.findAll(PostSpecs.searchWith(request.getMap()), pageable);
+                : postService.findAll(PostSpecs.searchWith(request.getSearchKeyMap()), pageable);
         model.put("postList", postList);
         return "postList";
     }
@@ -72,12 +72,12 @@ public class PostController {
         return "redirect:/post/"+postId;
     }
 
-    @GetMapping("/post/new")
+    @GetMapping("/post")
     public String showPostCreateForm(Post post) {
         return "newPostForm";
     }
 
-    @PostMapping("/post/new")
+    @PostMapping("/post")
     public String createPost(@AuthenticationPrincipal AuthMember author, Post post, Map<String, Object> model) {
         postService.write(
                 author.getId(),

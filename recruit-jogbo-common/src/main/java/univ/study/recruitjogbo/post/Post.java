@@ -49,15 +49,12 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(String companyName, RecruitType recruitType, LocalDate deadLine, String review) {
+    public Post(Member author, String companyName, RecruitType recruitType, LocalDate deadLine, String review) {
+        this.author = author;
         this.companyName = companyName;
         this.recruitType = recruitType;
         this.deadLine = deadLine;
         this.review = review;
-    }
-
-    public void setAuthor(Member author) {
-        this.author = author;
     }
 
     public void edit(String companyName, RecruitType recruitType, LocalDate deadLine, String review) {

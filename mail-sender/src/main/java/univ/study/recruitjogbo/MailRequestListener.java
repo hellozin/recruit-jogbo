@@ -18,7 +18,7 @@ public class MailRequestListener {
         String subject = ConfirmEmailTemplate.subject;
         String text = ConfirmEmailTemplate.text + message.getEmailConfirmToken();
         mailService.sendSimpleMessage(targetEmail, subject, text);
-        log.info("인증 이메일을 보냈습니다. 보낸 메일 주소: [{}]", targetEmail);
+        log.info("Send confirm mail to [{}]", targetEmail);
     }
 
 }

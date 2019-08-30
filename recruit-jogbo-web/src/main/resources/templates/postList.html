@@ -51,7 +51,7 @@
     </form>
 
     <div class="border rounded-lg p-3" style="background-color: azure">
-        <form class="py-3" method="get" th:action="@{/post/new}">
+        <form class="py-3" method="get" th:action="@{/post}">
             <button class="btn btn-outline-primary" type="submit">새 후기 작성</button>
         </form>
 
@@ -94,7 +94,6 @@
 
         $('#postList tr').click(function () {
             var value = $(this).find('a').attr('value');
-            console.log('value is ' + value);
             if (value) {
                 window.location = '/post/' + value;
             }

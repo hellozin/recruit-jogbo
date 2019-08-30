@@ -57,11 +57,11 @@ class PostServiceTest {
                 new Member("hellozin", "password1234", "hello@yu.ac.kr"));
 
         data = new ArrayList<>();
-        data.add(new Post("LINE", RecruitType.RESUME, LocalDate.of(2019, 1, 1), randomString3000));
-        data.add(new Post("Kakao", RecruitType.RESUME, LocalDate.of(2017, 3, 1), randomString3000));
-        data.add(new Post("LINE", RecruitType.CODING, LocalDate.of(2019, 1, 25), randomString3000));
-        data.add(new Post("Google", RecruitType.INTERVIEW, LocalDate.of(2019, 5, 1), randomString3000));
-        data.add(new Post("LINE", RecruitType.INTERVIEW, LocalDate.of(2018, 12, 1), randomString3000));
+        data.add(new Post(author, "LINE", RecruitType.RESUME, LocalDate.of(2019, 1, 1), randomString3000));
+        data.add(new Post(author, "Kakao", RecruitType.RESUME, LocalDate.of(2017, 3, 1), randomString3000));
+        data.add(new Post(author, "LINE", RecruitType.CODING, LocalDate.of(2019, 1, 25), randomString3000));
+        data.add(new Post(author, "Google", RecruitType.INTERVIEW, LocalDate.of(2019, 5, 1), randomString3000));
+        data.add(new Post(author, "LINE", RecruitType.INTERVIEW, LocalDate.of(2018, 12, 1), randomString3000));
     }
 
     @Test

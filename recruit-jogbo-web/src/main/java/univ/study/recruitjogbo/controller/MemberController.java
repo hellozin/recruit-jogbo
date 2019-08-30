@@ -17,12 +17,12 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/member/new")
+    @GetMapping("/member")
     public String signUpForm(JoinRequest request) {
         return "signUp";
     }
 
-    @PostMapping("/member/new")
+    @PostMapping("/member")
     public String signUp(@Valid JoinRequest request, BindingResult bindingResult, Map<String, Object> model) {
 
         if (bindingResult.hasErrors()) {

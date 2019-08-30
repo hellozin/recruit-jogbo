@@ -4,6 +4,12 @@ spring:
   messages:
     basename: i18n/messages
     encoding: UTF-8
+  rabbitmq:
+    host: HOST_IP
+    port: 5672
+    username: USERNAME
+    password: PASSWORD
+    virtual-host: VIRTUAL_HOST
   jpa:
     show-sql: true
     properties:

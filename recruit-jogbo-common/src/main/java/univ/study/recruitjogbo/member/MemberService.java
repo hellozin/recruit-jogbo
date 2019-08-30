@@ -1,6 +1,6 @@
 package univ.study.recruitjogbo.member;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +11,7 @@ import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
 import univ.study.recruitjogbo.message.EmailConfirmRequestMessage;
+import univ.study.recruitjogbo.message.MemberEventMessage;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Validated
 @Slf4j
 public class MemberService {
@@ -40,7 +41,7 @@ public class MemberService {
         if (!member.checkPassword(passwordEncoder, password)) {
             throw new IllegalArgumentException("Incorrect password.");
         }
-        log.info("로그인 하였습니다. 로그인 한 멤버: [{}]", member);
+        log.info("Login with [{}]", member.getUsername());
         return member;
     }
 
@@ -54,8 +55,11 @@ public class MemberService {
                 .email(email)
                 .build()
         );
-        log.info("새로운 멤버가 추가되었습니다. 추가된 멤버: [{}]", member);
-        rabbitTemplate.convertAndSend("member", "member.create", member);
+        log.info("New member joined. [{}]", member.getUsername());
+        rabbitTemplate.convertAndSend(
+                "member",
+                "member.create",
+                new MemberEventMessage(member.getId(), member.getUsername(), member.getEmail()));
         return member;
     }
 
@@ -78,7 +82,7 @@ public class MemberService {
                 "email.confirm.request",
                 new EmailConfirmRequestMessage(email, token.getConfirmationToken())
         );
-        log.info("인증 메일을 발송했습니다. 보낸 메일 주소: [{}]", email);
+        log.info("Confirmation email send. Send to [{}]", email);
     }
 
     @Transactional
@@ -91,10 +95,12 @@ public class MemberService {
                 .map(member -> member.setEmailConfirmed(true))
                 .map(Member::isEmailConfirmed)
                 .orElseThrow(() -> new NotFoundException(Member.class, confirmedEmail));
+
         if(isConfirmed) {
             confirmationTokenRepository.delete(confirmationToken);
         }
-        log.info("이메일 인증 요청이 처리되었습니다. 처리결과: [{}]", isConfirmed);
+
+        log.info("Email confirmation finished. isConfirmed [{}]", isConfirmed);
         return isConfirmed;
     }
 

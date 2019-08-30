@@ -12,7 +12,7 @@
 
 <div class="container">
     <h2 class="py-4 font-weight-bold">후기 작성</h2>
-    <form th:object="${post}" th:action="@{/post/{id}(id=${post.id})}" th:method="patch">
+    <form th:object="${post}" th:action="@{/post/{id}(id=${post.id})}" th:method="put">
         <div class="row">
             <div class="col">
                 <div class="form-group">

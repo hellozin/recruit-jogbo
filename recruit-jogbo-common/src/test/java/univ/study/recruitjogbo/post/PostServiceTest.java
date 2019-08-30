@@ -18,7 +18,11 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringBootTest
+@SpringBootTest(properties =
+        "spring.config.location=" +
+                "classpath:/application.yml" +
+                ",classpath:/secret.yml"
+)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
@@ -50,7 +54,7 @@ class PostServiceTest {
         review = randomString3000;
 
         author = memberService.save(
-                new Member("hellozin", "password1234", "hello@gmail.com"));
+                new Member("hellozin", "password1234", "hello@yu.ac.kr"));
 
         data = new ArrayList<>();
         data.add(new Post("LINE", RecruitType.RESUME, LocalDate.of(2019, 1, 1), randomString3000));

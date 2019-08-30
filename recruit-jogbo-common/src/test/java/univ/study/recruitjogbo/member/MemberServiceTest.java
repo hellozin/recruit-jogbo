@@ -13,7 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties =
+        "spring.config.location=" +
+        "classpath:/application.yml" +
+        ",classpath:/secret.yml"
+)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j

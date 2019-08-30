@@ -25,7 +25,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = RecruitJogboApi.class)
+@SpringBootTest(
+        classes = RecruitJogboApi.class,
+        properties = "spring.config.location=" +
+        "classpath:/application.yml" +
+        ",classpath:/secret.yml"
+)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
@@ -44,7 +49,7 @@ public class ApiControllerTest {
 
     @BeforeAll
     void setUp() {
-        member = new Member("hellozin", "hello1234", "hello@gmail.com");
+        member = new Member("hellozin", "hello1234", "hello@yu.ac.kr");
         post = new Post("LINE",RecruitType.RESUME,LocalDate.of(2019,1,1),"Something New");
     }
 

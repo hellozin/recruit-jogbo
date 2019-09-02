@@ -3,8 +3,10 @@ package univ.study.recruitjogbo.post;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import univ.study.recruitjogbo.member.Member;
@@ -18,11 +20,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringBootTest(properties =
-        "spring.config.location=" +
-                "classpath:/application.yml" +
-                ",classpath:/secret.yml"
-)
+@SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
@@ -33,6 +31,9 @@ class PostServiceTest {
 
     @Autowired
     private MemberService memberService;
+
+    @MockBean
+    RabbitTemplate rabbitTemplate;
 
     List<Post> data;
 

@@ -2,22 +2,17 @@ package univ.study.recruitjogbo.member;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(properties =
-        "spring.config.location=" +
-        "classpath:/application.yml" +
-        ",classpath:/secret.yml"
-)
+@SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
@@ -25,6 +20,9 @@ class MemberServiceTest {
 
     @Autowired
     private MemberService memberService;
+
+    @MockBean
+    RabbitTemplate rabbitTemplate;
 
     private String username;
     private String password;

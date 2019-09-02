@@ -18,7 +18,8 @@ public class RecruitJogboWeb {
     private static final String PROPERTIES =
             "spring.config.location="
                     +"classpath:/application.yml"
-                    +",classpath:/secret.yml";
+                    +",file:./secret-datasource.yml"
+                    +",file:./secret-rabbitmq.yml";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(RecruitJogboWeb.class)

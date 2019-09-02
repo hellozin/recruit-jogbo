@@ -2,10 +2,13 @@ package univ.study.recruit.jogbo.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import univ.study.recruitjogbo.RecruitJogboApi;
@@ -29,10 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         classes = RecruitJogboApi.class,
         properties = "spring.config.location=" +
         "classpath:/application.yml" +
-        ",classpath:/secret.yml"
+        ",classpath:/secret-jwt.yml"
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ActiveProfiles("local")
 @AutoConfigureMockMvc
 public class ApiControllerTest {
 
@@ -41,6 +45,9 @@ public class ApiControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @MockBean
+    RabbitTemplate rabbitTemplate;
 
     private Member member;
     private Post post;

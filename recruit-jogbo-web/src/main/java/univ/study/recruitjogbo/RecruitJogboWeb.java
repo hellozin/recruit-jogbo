@@ -38,7 +38,7 @@ public class RecruitJogboWeb {
 
         @Override
         public void run(String... args) {
-            Member member = memberService.join("paul", "1234", "hello@ynu.ac.kr");
+            Member member = memberService.join("paul", "1234", "paul5813@ynu.ac.kr");
             postService.write(member.getId(),"삼성", RecruitType.RESUME, LocalDate.now(), "이러저러했다.");
             postService.write(member.getId(),"삼성", RecruitType.INTERVIEW, LocalDate.now(), "이러저러했다.");
             postService.write(member.getId(),"라인", RecruitType.INTERVIEW, LocalDate.now().minusDays(10), "저러이러했다.");

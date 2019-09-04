@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import univ.study.recruitjogbo.security.AccessDeniedHandlerImpl;
+import univ.study.recruitjogbo.security.EntryPointUnauthorizedHandler;
 import univ.study.recruitjogbo.security.PostEditableVoter;
 
 import java.util.ArrayList;
@@ -35,6 +37,10 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     private final UserDetailsService userDetailsService;
+
+    private final AccessDeniedHandlerImpl accessDeniedHandlerImpl;
+
+    private final EntryPointUnauthorizedHandler entryPointUnauthorizedHandler;
 
     @Bean
     @Override
@@ -63,8 +69,14 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .exceptionHandling()
+                    .accessDeniedHandler(accessDeniedHandlerImpl)
+                    .authenticationEntryPoint(entryPointUnauthorizedHandler)
+                    .and()
                 .authorizeRequests()
                     .antMatchers("/member").permitAll()
+                    .antMatchers("/member/confirm").hasRole("UNCONFIRMED")
+                    .antMatchers("/post/**").hasRole("MEMBER")
                     .anyRequest().authenticated()
                     .accessDecisionManager(accessDecisionManager())
                     .and()
@@ -84,7 +96,9 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/h2/**");
+        web.ignoring()
+                .antMatchers("/h2/**")
+                .antMatchers("/error");
     }
 
 }

@@ -10,6 +10,6 @@ public class EmailConfirmRequestMessage {
 
     private String targetEmail;
 
-    private String emailConfirmToken;
+    private String emailConfirmLink;
 
 }

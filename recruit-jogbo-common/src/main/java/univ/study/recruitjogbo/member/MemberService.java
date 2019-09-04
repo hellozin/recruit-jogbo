@@ -12,6 +12,8 @@ import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
 import univ.study.recruitjogbo.message.EmailConfirmRequestMessage;
 import univ.study.recruitjogbo.message.MemberEventMessage;
+import univ.study.recruitjogbo.util.MessageUtils;
+import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -73,15 +75,20 @@ public class MemberService {
     }
 
     @Transactional
-    public void sendConfirmEmail(@Email String email) {
-        ConfirmationToken token = new ConfirmationToken(email);
-        confirmationTokenRepository.save(token);
+    public void sendConfirmEmail(@UnivEmail String email) {
+        String token = confirmationTokenRepository.findByUserEmail(email)
+                .map(ConfirmationToken::getConfirmationToken)
+                .orElseGet(() -> confirmationTokenRepository
+                        .save(new ConfirmationToken(email))
+                        .getConfirmationToken());
+
+        final String confirmLink = MessageUtils.getInstance().getMessage("confirm.link") + token;
 
         rabbitTemplate.convertAndSend(
                 "email.confirm.exchange",
                 "email.confirm.request",
-                new EmailConfirmRequestMessage(email, token.getConfirmationToken())
-        );
+                new EmailConfirmRequestMessage(email, confirmLink));
+
         log.info("Confirmation email send. Send to [{}]", email);
     }
 

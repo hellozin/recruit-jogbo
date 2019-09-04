@@ -18,9 +18,9 @@ public class MailService {
 
     private final TemplateEngine templateEngine;
 
-    public void sendConfirmMail(String to, String subject, String token) throws MessagingException {
+    public void sendConfirmMail(String to, String subject, String confirmLink) throws MessagingException {
         Context context = new Context();
-        context.setVariable("token", token);
+        context.setVariable("confirmLink", confirmLink);
         String htmlContent = templateEngine.process("mailContent", context);
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();

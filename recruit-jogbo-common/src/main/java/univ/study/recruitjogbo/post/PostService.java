@@ -47,7 +47,7 @@ public class PostService {
                 .review(review)
                 .build());
 
-        rabbitTemplate.convertAndSend("post", "post.create", post);
+//        rabbitTemplate.convertAndSend("post", "post.create", post);
 
         return post;
     }

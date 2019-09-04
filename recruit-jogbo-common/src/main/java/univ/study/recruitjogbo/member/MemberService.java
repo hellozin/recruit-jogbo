@@ -11,7 +11,6 @@ import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
 import univ.study.recruitjogbo.message.EmailConfirmRequestMessage;
-import univ.study.recruitjogbo.message.MemberEventMessage;
 import univ.study.recruitjogbo.util.MessageUtils;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
@@ -58,10 +57,10 @@ public class MemberService {
                 .build()
         );
         log.info("New member joined. [{}]", member.getUsername());
-        rabbitTemplate.convertAndSend(
-                "member",
-                "member.create",
-                new MemberEventMessage(member.getId(), member.getUsername(), member.getEmail()));
+//        rabbitTemplate.convertAndSend(
+//                "member",
+//                "member.create",
+//                new MemberEventMessage(member.getId(), member.getUsername(), member.getEmail()));
         return member;
     }
 

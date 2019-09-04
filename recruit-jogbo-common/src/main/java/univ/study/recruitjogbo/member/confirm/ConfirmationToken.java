@@ -3,12 +3,12 @@ package univ.study.recruitjogbo.member.confirm;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ public class ConfirmationToken {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Email
+    @UnivEmail
     private String userEmail;
 
     private String confirmationToken;

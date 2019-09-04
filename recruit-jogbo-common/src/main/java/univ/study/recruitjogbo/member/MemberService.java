@@ -14,7 +14,6 @@ import univ.study.recruitjogbo.message.EmailConfirmRequestMessage;
 import univ.study.recruitjogbo.util.MessageUtils;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -49,7 +48,7 @@ public class MemberService {
     @Transactional
     public Member join(@NotBlank String username,
                        @NotBlank String password,
-                       @Email String email) {
+                       @UnivEmail String email) {
         Member member = save(new Member.MemberBuilder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
@@ -67,7 +66,7 @@ public class MemberService {
     @Transactional
     public Member joinWithEmailConfirm(@NotBlank String username,
                                        @NotBlank String password,
-                                       @Email String email) {
+                                       @UnivEmail String email) {
         Member member = join(username, password, email);
         sendConfirmEmail(member.getEmail());
         return member;
@@ -121,7 +120,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Member> findByEmail(@Email String email) {
+    public Optional<Member> findByEmail(@UnivEmail String email) {
         return memberRepository.findByEmail(email);
     }
 

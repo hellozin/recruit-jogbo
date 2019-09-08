@@ -2,7 +2,6 @@ package univ.study.recruitjogbo.security;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import univ.study.recruitjogbo.request.AuthenticationRequest;
 
 import java.util.Collection;
 

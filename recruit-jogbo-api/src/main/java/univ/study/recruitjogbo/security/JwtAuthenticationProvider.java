@@ -12,7 +12,6 @@ import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.member.Role;
-import univ.study.recruitjogbo.request.AuthenticationRequest;
 
 import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
 import static org.springframework.util.ClassUtils.isAssignable;

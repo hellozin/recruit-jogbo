@@ -15,9 +15,9 @@ import univ.study.recruitjogbo.RecruitJogboApi;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.RecruitType;
 import univ.study.recruitjogbo.post.Post;
-import univ.study.recruitjogbo.request.AuthenticationRequest;
 import univ.study.recruitjogbo.request.JoinRequest;
 import univ.study.recruitjogbo.request.PostingRequest;
+import univ.study.recruitjogbo.security.AuthenticationRequest;
 import univ.study.recruitjogbo.security.AuthenticationResult;
 
 import java.time.LocalDate;
@@ -109,7 +109,7 @@ public class ApiControllerTest {
     void 새_포스트를_작성한다() throws Exception {
         PostingRequest request = new PostingRequest();
         request.setCompanyName(post.getCompanyName());
-        request.setRecruitType(post.getRecruitType().value());
+        request.setRecruitType(post.getRecruitType());
         request.setDeadLine(post.getDeadLine());
         request.setReview(post.getReview());
 

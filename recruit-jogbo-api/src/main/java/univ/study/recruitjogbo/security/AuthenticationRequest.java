@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.request;
+package univ.study.recruitjogbo.security;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

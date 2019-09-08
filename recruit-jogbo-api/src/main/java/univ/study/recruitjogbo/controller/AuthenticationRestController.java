@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import univ.study.recruitjogbo.error.UnauthorizedException;
-import univ.study.recruitjogbo.request.AuthenticationRequest;
+import univ.study.recruitjogbo.security.AuthenticationRequest;
 import univ.study.recruitjogbo.security.AuthenticationResult;
 import univ.study.recruitjogbo.security.JwtAuthenticationToken;
 

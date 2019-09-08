@@ -24,14 +24,14 @@ public class MemberController {
 
     @GetMapping("/member")
     public String signUpForm(JoinRequest request) {
-        return "signUp";
+        return "member/signUp";
     }
 
     @PostMapping("/member")
     public String signUp(@Valid JoinRequest request, BindingResult bindingResult, Map<String, Object> model) {
 
         if (bindingResult.hasErrors()) {
-            return "signUp";
+            return "member/signUp";
         }
 
         memberService.join(

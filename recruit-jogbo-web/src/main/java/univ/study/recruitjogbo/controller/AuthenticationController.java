@@ -13,12 +13,12 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public String loginForm() {
-        return "login";
+        return "member/login";
     }
 
     @GetMapping("/confirm")
     public String confirmForm() {
-        return "confirm";
+        return "member/confirm";
     }
 
     @GetMapping("/success")

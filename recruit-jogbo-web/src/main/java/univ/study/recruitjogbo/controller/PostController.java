@@ -36,7 +36,7 @@ public class PostController {
 
     @GetMapping("/post")
     public String showPostCreateForm(Post post) {
-        return "newPostForm";
+        return "post/newPostForm";
     }
 
     @PostMapping("/post")
@@ -59,7 +59,7 @@ public class PostController {
                 ? postService.findAll(pageable)
                 : postService.findAll(PostSpecs.searchWith(request.getSearchKeyMap()), pageable);
         model.put("postList", postList);
-        return "postList";
+        return "post/postList";
     }
 
     @GetMapping("/post/{id}")
@@ -68,14 +68,14 @@ public class PostController {
                           Map<String, Object> model) {
         model.put("post", post);
         model.put("isAuthor", post.getAuthor().getId().equals(author.getId()));
-        return "post";
+        return "post/post";
     }
 
     @GetMapping("/post/{id}/edit")
     public String showEditPostForm(@PathVariable(value = "id") Post post, Map<String, Object> model) {
         model.put("post", post);
         model.put("postingRequest", new PostingRequest());
-        return "editPostForm";
+        return "post/editPostForm";
     }
 
     @PutMapping("/post/{id}")

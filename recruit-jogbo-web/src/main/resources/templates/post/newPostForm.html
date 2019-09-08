@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-<!--    <link rel="stylesheet" href="/webjars/bootstrap/4.3.0/dist/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css">
     <title>New Post</title>
 </head>
@@ -12,7 +11,7 @@
 
 <div class="container">
     <h2 class="py-4 font-weight-bold">후기 작성</h2>
-    <form th:object="${post}" th:action="@{/post}" method="post">
+    <form th:object="${post}" th:action="@{/templates/post}" method="post">
         <div class="row">
             <div class="col">
                 <div class="form-group">
@@ -45,7 +44,5 @@
     </form>
 </div>
 </body>
-<!--<script src="/webjars/jquery/3.4.0/dist/jquery.min.js"></script>-->
-<!--<script src="/webjars/bootstrap/4.3.0/dist/js/bootstrap.min.js"></script>-->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
+<th:block th:replace="fragments/common_script"/>
 </html>

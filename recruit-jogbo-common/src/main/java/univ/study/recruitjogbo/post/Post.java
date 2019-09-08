@@ -9,8 +9,6 @@ import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.RecruitType;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -23,19 +21,14 @@ public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String companyName;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
     private RecruitType recruitType;
 
-    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadLine;
 
     @Lob
-    @NotBlank
     private String review;
 
     @ManyToOne

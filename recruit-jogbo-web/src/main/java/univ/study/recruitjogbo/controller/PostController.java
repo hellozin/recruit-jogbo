@@ -55,7 +55,7 @@ public class PostController {
     public String showPostList(SearchRequest request,
                                Map<String, Object> model,
                                Pageable pageable) {
-        Page<Post> postList = request == null
+        Page<Post> postList = request.getSearchKeyMap().isEmpty()
                 ? postService.findAll(pageable)
                 : postService.findAll(PostSpecs.searchWith(request.getSearchKeyMap()), pageable);
         model.put("postList", postList);

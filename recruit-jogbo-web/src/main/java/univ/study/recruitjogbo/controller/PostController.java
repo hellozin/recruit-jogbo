@@ -66,7 +66,7 @@ public class PostController {
         postService.edit(
                 postId,
                 request.getCompanyName(),
-                RecruitType.valueOf(request.getRecruitType()),
+                request.getRecruitType(),
                 request.getDeadLine(),
                 request.getReview());
         return "redirect:/post/"+postId;

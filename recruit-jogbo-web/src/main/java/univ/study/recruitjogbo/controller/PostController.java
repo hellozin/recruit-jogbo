@@ -34,6 +34,23 @@ public class PostController {
         return Arrays.asList(PostSpecs.SearchKeys.values());
     }
 
+    @GetMapping("/post")
+    public String showPostCreateForm(Post post) {
+        return "newPostForm";
+    }
+
+    @PostMapping("/post")
+    public String createPost(@AuthenticationPrincipal AuthMember author, Post post, Map<String, Object> model) {
+        postService.write(
+                author.getId(),
+                post.getCompanyName(),
+                post.getRecruitType(),
+                post.getDeadLine(),
+                post.getReview()
+        );
+        return "redirect:/post/list";
+    }
+
     @GetMapping("/post/list")
     public String showPostList(SearchRequest request,
                                Map<String, Object> model,
@@ -54,7 +71,7 @@ public class PostController {
         return "post";
     }
 
-    @GetMapping("/post/{id}/form")
+    @GetMapping("/post/{id}/edit")
     public String showEditPostForm(@PathVariable(value = "id") Post post, Map<String, Object> model) {
         model.put("post", post);
         model.put("postingRequest", new PostingRequest());
@@ -70,23 +87,6 @@ public class PostController {
                 request.getDeadLine(),
                 request.getReview());
         return "redirect:/post/"+postId;
-    }
-
-    @GetMapping("/post")
-    public String showPostCreateForm(Post post) {
-        return "newPostForm";
-    }
-
-    @PostMapping("/post")
-    public String createPost(@AuthenticationPrincipal AuthMember author, Post post, Map<String, Object> model) {
-        postService.write(
-                author.getId(),
-                post.getCompanyName(),
-                post.getRecruitType(),
-                post.getDeadLine(),
-                post.getReview()
-        );
-        return "redirect:/post/list";
     }
 
 }

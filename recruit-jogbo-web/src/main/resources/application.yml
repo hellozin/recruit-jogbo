@@ -47,6 +47,11 @@ spring:
     console:
       enabled: true
       path: /h2/console
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
 logging:
   level:
     org.hibernate.type: trace

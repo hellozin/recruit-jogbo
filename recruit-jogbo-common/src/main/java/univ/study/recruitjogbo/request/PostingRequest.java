@@ -18,7 +18,6 @@ public class PostingRequest {
     @NotBlank
     private String companyName;
 
-//    @Enum(enumClass = RecruitType.class, ignoreCase = true)
     @NotNull
     private RecruitType recruitType;
 

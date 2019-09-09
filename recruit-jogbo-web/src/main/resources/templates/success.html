@@ -6,7 +6,19 @@
     <title>Success</title>
 </head>
 <body>
-요청이 처리되었습니다.
+<div th:replace="~{fragments/navBar :: nav}"></div>
+
+<div class="container">
+    <div class="card my-3">
+        <div class="card-header">
+            처리 완료
+        </div>
+        <div class="card-body">
+            <p class="card-text">요청이 처리되었습니다.</p>
+            <a class="btn btn-outline-primary" href="/login">로그인 화면으로</a>
+        </div>
+    </div>
+</div>
 </body>
 <th:block th:replace="fragments/common_script"/>
 </html>

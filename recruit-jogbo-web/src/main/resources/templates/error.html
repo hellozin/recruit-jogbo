@@ -6,8 +6,19 @@
     <title>Error</title>
 </head>
 <body>
-오류가 발생했습니다.
-<a href="/login">로그인</a>
+<div th:replace="~{fragments/navBar :: nav}"></div>
+
+<div class="container">
+    <div class="card my-3">
+        <div class="card-header">
+            오류 발생
+        </div>
+        <div class="card-body">
+            <p class="card-text">오류가 발생했습니다.</p>
+            <a class="btn btn-outline-primary" href="/login">로그인 화면으로</a>
+        </div>
+    </div>
+</div>
 </body>
 <th:block th:replace="fragments/common_script"/>
 </html>

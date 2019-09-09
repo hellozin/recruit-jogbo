@@ -14,7 +14,6 @@ import univ.study.recruitjogbo.request.JoinRequest;
 import univ.study.recruitjogbo.security.AuthMember;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public String signUp(@Valid JoinRequest request, BindingResult bindingResult, Map<String, Object> model) {
+    public String signUp(@Valid JoinRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "member/signUp";
@@ -49,7 +48,7 @@ public class MemberController {
                 .orElseThrow(() -> new NotFoundException(Member.class, member.getId().toString()));
         memberService.sendConfirmEmail(email);
         SecurityContextHolder.clearContext();
-        return "redirect:/login";
+        return "redirect:/success";
     }
 
 }

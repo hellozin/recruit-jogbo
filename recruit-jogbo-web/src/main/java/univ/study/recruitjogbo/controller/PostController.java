@@ -40,13 +40,13 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public String createPost(@AuthenticationPrincipal AuthMember author, Post post, Map<String, Object> model) {
+    public String createPost(@AuthenticationPrincipal AuthMember author, PostingRequest request) {
         postService.write(
                 author.getId(),
-                post.getCompanyName(),
-                post.getRecruitType(),
-                post.getDeadLine(),
-                post.getReview()
+                request.getCompanyName(),
+                request.getRecruitType(),
+                request.getDeadLine(),
+                request.getReview()
         );
         return "redirect:/post/list";
     }

@@ -13,7 +13,7 @@ public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response.sendRedirect("/error");
+        response.sendRedirect("/login");
     }
 
 }

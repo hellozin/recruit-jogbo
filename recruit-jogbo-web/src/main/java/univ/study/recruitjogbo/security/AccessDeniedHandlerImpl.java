@@ -18,9 +18,11 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         AuthMember member = (AuthMember) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String redirectUrl = "/login";
-        for (GrantedAuthority grantedAuthority : member.getAuthorities()) {
-            if (grantedAuthority.getAuthority().equals(Role.UNCONFIRMED.value())) {
-                redirectUrl = "/confirm";
+        if (!request.getRequestURI().equals("/logout")) {
+            for (GrantedAuthority grantedAuthority : member.getAuthorities()) {
+                if (grantedAuthority.getAuthority().equals(Role.UNCONFIRMED.value())) {
+                    redirectUrl = "/confirm";
+                }
             }
         }
         response.sendRedirect(redirectUrl);

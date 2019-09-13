@@ -22,7 +22,7 @@
 
         <p class="display-4 text-center p-3">Recruit Jogbo</p>
 
-        <form class="w-50 mx-auto" th:object="${joinRequest}" th:action="@{/templates/member}" th:method="post">
+        <form class="w-50 mx-auto" th:object="${joinRequest}" th:action="@{/member}" th:method="post">
 
             <div class="form-group">
                 <input class="form-control" placeholder="Username" th:field="*{username}" type="text">

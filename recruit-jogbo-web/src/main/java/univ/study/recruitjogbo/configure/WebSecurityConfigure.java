@@ -74,19 +74,19 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(entryPointUnauthorizedHandler)
                     .and()
                 .authorizeRequests()
-                    .anyRequest().permitAll()
-//                    .antMatchers("/member").permitAll()
-//                    .antMatchers("/member/confirm").hasRole("UNCONFIRMED")
-//                    .antMatchers("/post/**").hasRole("MEMBER")
-//                    .anyRequest().authenticated()
+                    .antMatchers("/member").permitAll()
+                    .antMatchers("/member/confirm").hasRole("UNCONFIRMED")
+                    .antMatchers("/post/**").hasRole("MEMBER")
+                    .anyRequest().authenticated()
                     .accessDecisionManager(accessDecisionManager())
                     .and()
                 .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/post/list", true)
+                    .defaultSuccessUrl("/post/list?sort=createdAt,desc", true)
                     .permitAll()
                     .and()
-                .logout();
+                .logout()
+                    .logoutSuccessUrl("/login");
 
     }
 

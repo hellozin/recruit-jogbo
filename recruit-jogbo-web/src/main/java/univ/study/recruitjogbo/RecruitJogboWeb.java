@@ -49,11 +49,14 @@ public class RecruitJogboWeb {
                 recruitTypeRepository.save(new RecruitType(recruitType));
             }
 
-            Member member = memberService.join("paul", "1234", "paul5813@ynu.ac.kr");
-            postService.write(member.getId(),"삼성", new HashSet<>(Arrays.asList(RecruitTypes.RESUME)), LocalDate.now(), "이러저러했다.");
-            postService.write(member.getId(),"삼성", new HashSet<>(Arrays.asList(RecruitTypes.INTERVIEW)), LocalDate.now(), "이러저러했다.");
-            postService.write(member.getId(),"라인", new HashSet<>(Arrays.asList(RecruitTypes.INTERVIEW)), LocalDate.now().minusDays(10), "저러이러했다.");
-            postService.write(member.getId(),"라인", new HashSet<>(Arrays.asList(RecruitTypes.CODING)), LocalDate.now().minusDays(2), "저러이러했다.");
+            Member member = memberService.join("admin", "admin", "paul5813@ynu.ac.kr");
+            member.setEmailConfirmed(true);
+            Member confirmed = memberService.save(member);
+
+            postService.write(confirmed.getId(),"삼성", new HashSet<>(Arrays.asList(RecruitTypes.RESUME)), LocalDate.now(), "이러저러했다.");
+            postService.write(confirmed.getId(),"삼성", new HashSet<>(Arrays.asList(RecruitTypes.INTERVIEW)), LocalDate.now(), "이러저러했다.");
+            postService.write(confirmed.getId(),"라인", new HashSet<>(Arrays.asList(RecruitTypes.INTERVIEW)), LocalDate.now().minusDays(10), "저러이러했다.");
+            postService.write(confirmed.getId(),"라인", new HashSet<>(Arrays.asList(RecruitTypes.CODING)), LocalDate.now().minusDays(2), "저러이러했다.");
         }
     }
 

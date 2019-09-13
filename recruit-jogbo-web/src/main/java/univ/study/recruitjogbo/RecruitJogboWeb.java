@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.stereotype.Component;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.post.PostService;
@@ -31,7 +30,6 @@ public class RecruitJogboWeb {
                 .run(args);
     }
 
-    @Component
     public class Runner implements CommandLineRunner {
 
         @Autowired

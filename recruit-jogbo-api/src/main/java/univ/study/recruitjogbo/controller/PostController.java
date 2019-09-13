@@ -32,7 +32,7 @@ public class PostController {
         return postService.write(
                 authentication.id,
                 request.getCompanyName(),
-                request.getRecruitType(),
+                request.getRecruitTypes(),
                 request.getDeadLine(),
                 request.getReview()
         );

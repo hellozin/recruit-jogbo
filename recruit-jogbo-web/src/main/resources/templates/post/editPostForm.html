@@ -11,34 +11,35 @@
 
 <div class="container">
     <h2 class="py-4 font-weight-bold">후기 작성</h2>
-    <form th:object="${post}" th:action="@{/post/{id}(id=${post.id})}" th:method="put">
+    <form th:action="@{/post/{id}(id=${post.id})}" th:method="put">
         <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="companyName">기업 명</label>
-                    <input type="text" id="companyName" class="form-control" th:field="*{companyName}" th:value="${post.companyName}">
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label for="recruitType">전형 종류</label>
-                    <select id="recruitType" class="form-control" th:field="*{recruitType}">
-                        <option th:each="recruitType : ${recruitTypes}" th:value="${recruitType}"
-                                th:text="${recruitType}" th:selected="${recruitType==post.recruitType}"></option>
-                    </select>
+                    <input type="text" id="companyName" name="companyName" class="form-control" th:value="${post.companyName}">
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="deadLine">마감일</label>
-                    <input type="date" id="deadLine" class="form-control" th:field="*{deadLine}" th:datetime="${post.deadLine}">
+                    <input type="date" id="deadLine" name="deadLine" class="form-control" th:value="${post.deadLine}">
                     <small id="deadLineHelp" class="form-text text-muted">기간의 경우 끝나는 날을 적어주세요.</small>
                 </div>
             </div>
         </div>
+        <label>전형 종류</label>
+        <div class="form-group">
+            <div class="custom-control custom-checkbox custom-control-inline" th:each="recruitType : ${recruitTypes}">
+                <input type="checkbox" class="custom-control-input" name="recruitTypes"
+                       th:id="${recruitType}"
+                       th:value="${recruitType}"
+                       th:checked="${post.isRecruitTypeMatch(recruitType)}">
+                <label class="custom-control-label recruit-type-label" th:for="${recruitType}" th:text="${recruitType}"></label>
+            </div>
+        </div>
         <div class="form-group">
             <label for="review">후기</label>
-            <textarea class="form-control" id="review" th:field="*{review}" rows="15" th:value="${post.review}"></textarea>
+            <textarea class="form-control" id="review" name="review" rows="15" th:text="${post.review}" placeholder="여기에 후기를 작성하면 됩니다."></textarea>
         </div>
         <button type="submit" class="btn btn-primary">저장</button>
     </form>

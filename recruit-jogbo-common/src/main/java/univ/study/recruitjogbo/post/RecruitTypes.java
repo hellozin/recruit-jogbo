@@ -11,12 +11,12 @@ public enum RecruitTypes {
     * ETC : 기타
     * */
 
-    RESUME("RESUME"),
-    CODING("CODING"),
-    APTITUDE("APTITUDE"),
+    RESUME("서류"),
+    CODING("코딩테스트"),
+    APTITUDE("인적성"),
     NCS("NCS"),
-    INTERVIEW("INTERVIEW"),
-    ETC("ETC");
+    INTERVIEW("면접"),
+    ETC("기타");
 
     private String value;
 

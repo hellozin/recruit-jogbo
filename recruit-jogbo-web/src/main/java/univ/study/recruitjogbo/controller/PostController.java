@@ -6,10 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import univ.study.recruitjogbo.member.RecruitType;
 import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
 import univ.study.recruitjogbo.post.PostSpecs;
+import univ.study.recruitjogbo.post.RecruitTypes;
 import univ.study.recruitjogbo.request.PostingRequest;
 import univ.study.recruitjogbo.request.SearchRequest;
 import univ.study.recruitjogbo.security.AuthMember;
@@ -25,8 +25,8 @@ public class PostController {
     private final PostService postService;
 
     @ModelAttribute("recruitTypes")
-    public Collection<RecruitType> recruitTypes() {
-        return Arrays.asList(RecruitType.values());
+    public Collection<RecruitTypes> recruitTypes() {
+        return Arrays.asList(RecruitTypes.values());
     }
 
     @ModelAttribute("searchKeys")
@@ -35,16 +35,16 @@ public class PostController {
     }
 
     @GetMapping("/post")
-    public String showPostCreateForm(Post post) {
+    public String showPostCreateForm(PostingRequest postingRequest) {
         return "post/newPostForm";
     }
 
     @PostMapping("/post")
     public String createPost(@AuthenticationPrincipal AuthMember author, PostingRequest request) {
         postService.write(
-                author.getId(),
+                /*author.getId()*/1L,
                 request.getCompanyName(),
-                request.getRecruitType(),
+                request.getRecruitTypes(),
                 request.getDeadLine(),
                 request.getReview()
         );
@@ -67,7 +67,7 @@ public class PostController {
                           @AuthenticationPrincipal AuthMember author,
                           Map<String, Object> model) {
         model.put("post", post);
-        model.put("isAuthor", post.getAuthor().getId().equals(author.getId()));
+        model.put("isAuthor", post.getAuthor().getId().equals(/*author.getId()*/1L));
         return "post/post";
     }
 
@@ -83,7 +83,7 @@ public class PostController {
         postService.edit(
                 postId,
                 request.getCompanyName(),
-                request.getRecruitType(),
+                request.getRecruitTypes(),
                 request.getDeadLine(),
                 request.getReview());
         return "redirect:/post/"+postId;

@@ -2,8 +2,8 @@ package univ.study.recruitjogbo.post;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
-import univ.study.recruitjogbo.member.RecruitType;
 
+import javax.persistence.criteria.Join;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -13,7 +13,7 @@ public class PostSpecs {
 
     public enum SearchKeys {
         COMPANY_NAME("companyName"),
-        RECRUIT_TYPE("recruitType"),
+        RECRUIT_TYPE("recruitTypes"),
         AUTHOR_NAME("authorName");
 
         private String value;
@@ -41,8 +41,8 @@ public class PostSpecs {
                     spec = appendSpec(spec, withCompanyName(companyName));
                     break;
                 case RECRUIT_TYPE:
-                    RecruitType recruitType = RecruitType.valueOf(String.valueOf(request.get(key)));
-                    spec = appendSpec(spec, withRecruitType(recruitType));
+                    RecruitTypes recruitTypes = RecruitTypes.valueOf(String.valueOf(request.get(key)));
+                    spec = appendSpec(spec, withRecruitType(recruitTypes));
                     break;
                 case AUTHOR_NAME:
                     String authorName = String.valueOf(request.get(key));
@@ -65,12 +65,15 @@ public class PostSpecs {
         return (Specification<Post>) (root, query, builder) -> builder.like(root.get("companyName"), companyName);
     }
 
-    public static Specification<Post> withRecruitType(RecruitType recruitType) {
+    public static Specification<Post> withRecruitType(RecruitTypes recruitType) {
         if (recruitType == null) {
-            log.warn("[recruitType] is empty.");
+            log.warn("[recruitTypes] is empty.");
             return Specification.where(null);
         }
-        return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("recruitType"), recruitType);
+        return (Specification<Post>) (root, query, builder) -> {
+            Join<Post, RecruitTypes> joined = root.join("recruitTypes");
+            return builder.equal(joined.get("recruitType"), recruitType);
+        };
     }
 
     public static Specification<Post> withAuthorName(String authorName) {

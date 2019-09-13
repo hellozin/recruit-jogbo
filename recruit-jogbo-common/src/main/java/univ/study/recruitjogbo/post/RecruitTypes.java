@@ -1,6 +1,6 @@
-package univ.study.recruitjogbo.member;
+package univ.study.recruitjogbo.post;
 
-public enum RecruitType {
+public enum RecruitTypes {
 
     /*
     * RESUME : 서류
@@ -20,7 +20,7 @@ public enum RecruitType {
 
     private String value;
 
-    RecruitType(String value) {
+    RecruitTypes(String value) {
         this.value = value;
     }
 

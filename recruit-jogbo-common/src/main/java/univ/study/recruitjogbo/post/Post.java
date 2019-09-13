@@ -6,11 +6,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.member.RecruitType;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,7 +23,8 @@ public class Post {
 
     private String companyName;
 
-    private RecruitType recruitType;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<RecruitType> recruitTypes;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadLine;
@@ -42,19 +43,28 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(Member author, String companyName, RecruitType recruitType, LocalDate deadLine, String review) {
+    public Post(Member author, String companyName, Set<RecruitType> recruitTypes, LocalDate deadLine, String review) {
         this.author = author;
         this.companyName = companyName;
-        this.recruitType = recruitType;
+        this.recruitTypes = recruitTypes;
         this.deadLine = deadLine;
         this.review = review;
     }
 
-    public void edit(String companyName, RecruitType recruitType, LocalDate deadLine, String review) {
+    public void edit(String companyName, Set<RecruitType> recruitTypes, LocalDate deadLine, String review) {
         this.companyName = companyName;
-        this.recruitType = recruitType;
+        this.recruitTypes = recruitTypes;
         this.deadLine = deadLine;
         this.review = review;
+    }
+
+    public boolean isRecruitTypeMatch(RecruitTypes recruitType) {
+        for (RecruitType type : recruitTypes) {
+            if (type.getRecruitType().equals(recruitType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

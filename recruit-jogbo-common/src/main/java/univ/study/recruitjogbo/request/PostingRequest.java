@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import univ.study.recruitjogbo.member.RecruitType;
+import univ.study.recruitjogbo.post.RecruitTypes;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,8 +20,8 @@ public class PostingRequest {
     @NotBlank
     private String companyName;
 
-    @NotNull
-    private RecruitType recruitType;
+    @NotEmpty
+    private Set<RecruitTypes> recruitTypes;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")

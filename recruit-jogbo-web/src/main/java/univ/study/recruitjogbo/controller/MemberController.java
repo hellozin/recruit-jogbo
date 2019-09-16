@@ -30,7 +30,15 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public String signUp(@Valid JoinRequest request, BindingResult bindingResult) {
+    public String signUp(@Valid JoinRequest joinRequest, BindingResult bindingResult, HttpServletRequest request) {
+
+        if (memberService.findByUsername(joinRequest.getUsername()).isPresent()) {
+            bindingResult.rejectValue("username", "duplicate.username", "중복된 아이디입니다.");
+        }
+
+        if (memberService.findByEmail(joinRequest.getEmail()).isPresent()) {
+            bindingResult.rejectValue("email", "duplicate.email", "이미 사용중인 Email 입니다.");
+        }
 
         if (bindingResult.hasErrors()) {
             return "member/signUp";

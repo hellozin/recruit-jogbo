@@ -11,7 +11,6 @@ import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
 import univ.study.recruitjogbo.message.EmailConfirmRequestMessage;
-import univ.study.recruitjogbo.util.MessageUtils;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.validation.constraints.NotBlank;
@@ -66,21 +65,22 @@ public class MemberService {
     @Transactional
     public Member joinWithEmailConfirm(@NotBlank String username,
                                        @NotBlank String password,
-                                       @UnivEmail String email) {
+                                       @UnivEmail String email,
+                                       String confirmUrl) {
         Member member = join(username, password, email);
-        sendConfirmEmail(member.getEmail());
+        sendConfirmEmail(member.getEmail(), confirmUrl);
         return member;
     }
 
     @Transactional
-    public void sendConfirmEmail(@UnivEmail String email) {
+    public void sendConfirmEmail(@UnivEmail String email, String confirmUrl) {
         String token = confirmationTokenRepository.findByUserEmail(email)
                 .map(ConfirmationToken::getConfirmationToken)
                 .orElseGet(() -> confirmationTokenRepository
                         .save(new ConfirmationToken(email))
                         .getConfirmationToken());
 
-        final String confirmLink = MessageUtils.getInstance().getMessage("confirm.link") + token;
+        final String confirmLink = confirmUrl + "?token=" + token;
 
         rabbitTemplate.convertAndSend(
                 "email.confirm.exchange",

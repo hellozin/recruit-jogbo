@@ -7,12 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.request.JoinRequest;
 import univ.study.recruitjogbo.security.AuthMember;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -33,22 +36,38 @@ public class MemberController {
             return "member/signUp";
         }
 
-        memberService.join(
-                request.getUsername(),
-                request.getPassword(),
-                request.getEmail()
+        String confirmUrl = String.format("%s://%s:%d/member/confirm", request.getScheme(), request.getServerName(), request.getServerPort());
+        memberService.joinWithEmailConfirm(
+                joinRequest.getUsername(),
+                joinRequest.getPassword(),
+                joinRequest.getEmail(),
+                confirmUrl
         );
+
         return "redirect:/login";
     }
 
-    @PostMapping("/member/confirm")
-    public String emailConfirm(@AuthenticationPrincipal AuthMember member) {
+    @PostMapping("/member/confirm/request")
+    public String requestEmailConfirm(@AuthenticationPrincipal AuthMember member, HttpServletRequest request) {
         String email = memberService.findById(member.getId())
                 .map(Member::getEmail)
                 .orElseThrow(() -> new NotFoundException(Member.class, member.getId().toString()));
-        memberService.sendConfirmEmail(email);
+
+        String confirmUrl = String.format("%s://%s:%d/member/confirm", request.getScheme(), request.getServerName(), request.getServerPort());
+        memberService.sendConfirmEmail(email, confirmUrl);
+
         SecurityContextHolder.clearContext();
         return "redirect:/success";
+    }
+
+    @RequestMapping("/member/confirm")
+    public String emailConfirm(@RequestParam String token) {
+        boolean isConfirmMailSendSuccess = memberService.confirmEmailByToken(token);
+        if (isConfirmMailSendSuccess) {
+            return "redirect:/success";
+        } else {
+            return "redirect:/error";
+        }
     }
 
 }

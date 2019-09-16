@@ -6,6 +6,7 @@ import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.request.JoinRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -17,11 +18,13 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/member")
-    public Member join(@RequestBody @Valid JoinRequest joinRequest) {
+    public Member join(@RequestBody @Valid JoinRequest joinRequest, HttpServletRequest request) {
+        String confirmUrl = String.format("%s://%s:%d", request.getScheme(), request.getServerName(), request.getServerPort());
         return memberService.joinWithEmailConfirm(
                 joinRequest.getUsername(),
                 joinRequest.getPassword(),
-                joinRequest.getEmail()
+                joinRequest.getEmail(),
+                confirmUrl
         );
     }
 

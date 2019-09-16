@@ -75,7 +75,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .and()
                 .authorizeRequests()
                     .antMatchers("/member").permitAll()
-                    .antMatchers("/member/confirm").hasRole("UNCONFIRMED")
+                    .antMatchers("/member/confirm/request").hasRole("UNCONFIRMED")
                     .antMatchers("/post/**").hasRole("MEMBER")
                     .anyRequest().authenticated()
                     .accessDecisionManager(accessDecisionManager())
@@ -99,7 +99,9 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers("/h2/**")
-                .antMatchers("/error");
+                .antMatchers("/member/confirm") // Email authentication URL
+                .antMatchers("/error")
+                .antMatchers("/success");
     }
 
 }

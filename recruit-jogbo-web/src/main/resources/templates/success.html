@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet">
     <title>Success</title>
 </head>
 <body>
@@ -15,7 +15,7 @@
         </div>
         <div class="card-body">
             <p class="card-text">요청이 처리되었습니다.</p>
-            <a class="btn btn-outline-primary" href="/login">로그인 화면으로</a>
+            <a class="btn btn-outline-primary" th:href="@{/login}">로그인 화면으로</a>
         </div>
     </div>
 </div>

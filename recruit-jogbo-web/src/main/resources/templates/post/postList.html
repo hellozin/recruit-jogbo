@@ -13,7 +13,7 @@
 
     <h2 class="py-4 font-weight-bold">후기 목록</h2>
 
-    <form class="border border-info p-3 my-3 rounded-lg" method="get" th:action="@{/post/list}">
+    <form class="border border-info p-3 my-3 rounded-lg" th:action="@{/post/list}" th:method="get">
 
         <div class="row">
 
@@ -48,7 +48,7 @@
     </form>
 
     <div class="border rounded-lg p-3" style="background-color: azure">
-        <form class="py-3" method="get" th:action="@{/post}">
+        <form class="py-3" th:action="@{/post}" th:method="get">
             <button class="btn btn-outline-primary" type="submit">새 후기 작성</button>
         </form>
 
@@ -67,7 +67,8 @@
             <tr th:each="post : ${postList}">
                 <td hidden><a th:value="${post.id}"></a></td>
                 <td th:text="${post.companyName}"/>
-                <td><p class="recruit-type-label my-0" th:each="recruitType : ${post.recruitTypes}" th:text="${recruitType.recruitType.value()}"></p> </td>
+                <td><p class="recruit-type-label my-0" th:each="recruitType : ${post.recruitTypes}"
+                       th:text="${recruitType.recruitType.value()}"></p></td>
                 <td th:text="${post.deadLine}"/>
                 <td th:text="${post.author.username}"/>
             </tr>
@@ -89,32 +90,5 @@
         });
 
     });
-
-    function LocaleRecruitType() {
-        var elementsByClassName = document.getElementsByClassName('recruit-type-label');
-        for (var i = 0; i < elementsByClassName.length; i++) {
-            var recruitType = elementsByClassName.item(i);
-            switch (recruitType.innerHTML) {
-                case "RESUME":
-                    recruitType.innerHTML = "서류";
-                    break;
-                case "CODING":
-                    recruitType.innerHTML = "코딩테스트";
-                    break;
-                case "APTITUDE":
-                    recruitType.innerHTML = "인적성";
-                    break;
-                case "NCS":
-                    recruitType.innerHTML = "NCS";
-                    break;
-                case "INTERVIEW":
-                    recruitType.innerHTML = "면접";
-                    break;
-                case "ETC":
-                    recruitType.innerHTML = "기타";
-                    break;
-            }
-        }
-    }
 </script>
 </html>

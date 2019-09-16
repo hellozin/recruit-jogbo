@@ -24,7 +24,8 @@
         </tr>
         <tr>
             <td class="font-weight-bold">전형 종류</td>
-            <td><span class="mx-1 recruit-type-label" th:each="recruitType : ${post.recruitTypes}" th:text="${recruitType.recruitType.value()}"></span></td>
+            <td><span class="mx-1 recruit-type-label" th:each="recruitType : ${post.recruitTypes}"
+                      th:text="${recruitType.recruitType.value()}"></span></td>
         </tr>
         <tr>
             <td class="font-weight-bold">마감일</td>
@@ -32,9 +33,10 @@
         </tr>
     </table>
 
-    <p class="border p-3 lead" th:text="${post.review}" style="white-space: pre-line;"></p>
+    <p class="border p-3 lead" style="white-space: pre-line;" th:text="${post.review}"></p>
 
-    <a class="btn btn-primary" th:href="@{/post/{id}/edit(id=${post.id})}" th:classappend="${isAuthor} ? null : sr-only">수정</a>
+    <a class="btn btn-primary" th:classappend="${isAuthor} ? null : sr-only"
+       th:href="@{/post/{id}/edit(id=${post.id})}">수정</a>
 
 </div>
 </body>

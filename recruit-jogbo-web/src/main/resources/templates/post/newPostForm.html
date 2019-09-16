@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet">
     <title>New Post</title>
 </head>
 <body>
@@ -13,21 +13,21 @@
 
     <h2 class="py-4 font-weight-bold">후기 작성</h2>
 
-    <form th:object="${postingRequest}" th:action="@{/post}" method="post">
+    <form th:action="@{/post}" th:method="post" th:object="${postingRequest}">
 
         <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="companyName">기업 명</label>
-                    <input type="text" id="companyName" class="form-control" th:field="*{companyName}">
+                    <input class="form-control" id="companyName" th:field="*{companyName}" type="text">
                 </div>
             </div>
 
             <div class="col">
                 <div class="form-group">
                     <label for="deadLine">마감일</label>
-                    <input type="date" id="deadLine" class="form-control" th:field="*{deadLine}">
-                    <small id="deadLineHelp" class="form-text text-muted">기간의 경우 끝나는 날을 적어주세요.</small>
+                    <input class="form-control" id="deadLine" th:field="*{deadLine}" type="date">
+                    <small class="form-text text-muted" id="deadLineHelp">기간의 경우 끝나는 날을 적어주세요.</small>
                 </div>
             </div>
         </div>
@@ -35,20 +35,22 @@
         <label>전형 종류</label>
         <div class="form-group">
             <div class="custom-control custom-checkbox custom-control-inline" th:each="recruitType : ${recruitTypes}">
-                <input type="checkbox" class="custom-control-input"
+                <input class="custom-control-input" th:field="*{recruitTypes}"
                        th:id="${recruitType}"
-                        th:value="${recruitType}"
-                       th:field="*{recruitTypes}">
-                <label class="custom-control-label recruit-type-label" th:for="${recruitType}" th:text="${recruitType.value()}"></label>
+                       th:value="${recruitType}"
+                       type="checkbox">
+                <label class="custom-control-label recruit-type-label" th:for="${recruitType}"
+                       th:text="${recruitType.value()}"></label>
             </div>
         </div>
 
         <div class="form-group">
             <label for="review">후기</label>
-            <textarea class="form-control" id="review" th:field="*{review}" rows="15" placeholder="여기에 후기를 작성하면 됩니다."></textarea>
+            <textarea class="form-control" id="review" placeholder="여기에 후기를 작성하면 됩니다." rows="15"
+                      th:field="*{review}"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">저장</button>
+        <button class="btn btn-primary" type="submit">저장</button>
 
     </form>
 </div>
@@ -56,35 +58,7 @@
 <th:block th:replace="fragments/common_script"/>
 <script>
     $(document).ready(function () {
-        document.getElementById('deadLine').value = new Date().toISOString().slice(0,10);
-        LocaleRecruitType();
+        document.getElementById('deadLine').value = new Date().toISOString().slice(0, 10);
     });
-
-    function LocaleRecruitType() {
-        var elementsByClassName = document.getElementsByClassName('recruit-type-label');
-        for (var i = 0; i < elementsByClassName.length; i++) {
-            var recruitType = elementsByClassName.item(i);
-            switch (recruitType.innerHTML) {
-                case "RESUME":
-                    recruitType.innerHTML = "서류";
-                    break;
-                case "CODING":
-                    recruitType.innerHTML = "코딩테스트";
-                    break;
-                case "APTITUDE":
-                    recruitType.innerHTML = "인적성";
-                    break;
-                case "NCS":
-                    recruitType.innerHTML = "NCS";
-                    break;
-                case "INTERVIEW":
-                    recruitType.innerHTML = "면접";
-                    break;
-                case "ETC":
-                    recruitType.innerHTML = "기타";
-                    break;
-            }
-        }
-    }
 </script>
 </html>

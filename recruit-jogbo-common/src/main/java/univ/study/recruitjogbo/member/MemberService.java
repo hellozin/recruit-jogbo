@@ -55,10 +55,7 @@ public class MemberService {
                 .build()
         );
         log.info("New member joined. [{}]", member.getUsername());
-//        rabbitTemplate.convertAndSend(
-//                "member",
-//                "member.create",
-//                new MemberEventMessage(member.getId(), member.getUsername(), member.getEmail()));
+
         return member;
     }
 

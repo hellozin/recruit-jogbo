@@ -42,7 +42,7 @@ public class PostController {
     @PostMapping("/post")
     public String createPost(@AuthenticationPrincipal AuthMember author, PostingRequest request) {
         postService.write(
-                /*author.getId()*/1L,
+                author.getId(),
                 request.getCompanyName(),
                 request.getRecruitTypes(),
                 request.getDeadLine(),
@@ -67,7 +67,7 @@ public class PostController {
                           @AuthenticationPrincipal AuthMember author,
                           Map<String, Object> model) {
         model.put("post", post);
-        model.put("isAuthor", post.getAuthor().getId().equals(/*author.getId()*/1L));
+        model.put("isAuthor", post.getAuthor().getId().equals(author.getId()));
         return "post/post";
     }
 

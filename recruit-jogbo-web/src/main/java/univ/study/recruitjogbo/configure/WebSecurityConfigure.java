@@ -82,7 +82,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/post/list?sort=createdAt,desc", true)
+                    .defaultSuccessUrl("/post/list", true)
                     .permitAll()
                     .and()
                 .logout()

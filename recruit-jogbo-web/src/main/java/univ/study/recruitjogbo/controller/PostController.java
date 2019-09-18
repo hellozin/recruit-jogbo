@@ -3,6 +3,8 @@ package univ.study.recruitjogbo.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +56,7 @@ public class PostController {
     @GetMapping("/post/list")
     public String showPostList(SearchRequest request,
                                Map<String, Object> model,
+                               @PageableDefault(sort = {"createdAt"}, direction = Sort.Direction.DESC)
                                Pageable pageable) {
         Page<Post> postList = request.getSearchKeyMap().isEmpty()
                 ? postService.findAll(pageable)

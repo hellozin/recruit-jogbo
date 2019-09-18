@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
-public class EmailConfirmRequestMessage {
+public class EmailConfirmRequest {
 
     private String targetEmail;
 

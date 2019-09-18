@@ -10,7 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
-import univ.study.recruitjogbo.message.EmailConfirmRequestMessage;
+import univ.study.recruitjogbo.message.EmailConfirmRequest;
+import univ.study.recruitjogbo.message.RabbitMQ;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.validation.constraints.NotBlank;
@@ -80,9 +81,9 @@ public class MemberService {
         final String confirmLink = confirmUrl + "?token=" + token;
 
         rabbitTemplate.convertAndSend(
-                "email.confirm.exchange",
-                "email.confirm.request",
-                new EmailConfirmRequestMessage(email, confirmLink));
+                RabbitMQ.EXCHANGE,
+                RabbitMQ.CONFIRM_EMAIL_REQUEST,
+                new EmailConfirmRequest(email, confirmLink));
 
         log.info("Confirmation email send. Send to [{}]", email);
     }

@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -46,6 +45,12 @@ public class PostService {
                 .deadLine(deadLine)
                 .review(review)
                 .build());
+
+        rabbitTemplate.convertAndSend(
+                RabbitMQ.EXCHANGE,
+                RabbitMQ.POST_CREATE,
+                new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum())
+        );
 
         return post;
     }

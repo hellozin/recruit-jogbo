@@ -1,6 +1,7 @@
 package univ.study.recruitjogbo.post;
 
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
+import univ.study.recruitjogbo.message.PostEvent;
+import univ.study.recruitjogbo.message.RabbitMQ;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -28,16 +31,18 @@ public class PostService {
 
     private final MemberService memberService;
 
+    private final RabbitTemplate rabbitTemplate;
+
     @Transactional
     public Post write(@NotNull Long authorId,
                       @NotBlank String companyName,
-                      @NotNull Set<RecruitTypes> recruitTypes,
+                      @NotNull List<RecruitTypes> recruitTypes,
                       @NotNull LocalDate deadLine,
                       @NotBlank String review) {
         Member author = memberService.findById(authorId)
                 .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
 
-        Set<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(recruitTypes);
+        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(recruitTypes);
         Post post = save(new Post.PostBuilder()
                 .author(author)
                 .companyName(companyName)
@@ -58,13 +63,13 @@ public class PostService {
     @Transactional
     public Post edit(@NotNull Long postId,
                      @NotBlank String companyName,
-                     @NotNull Set<RecruitTypes> recruitTypes,
+                     @NotNull List<RecruitTypes> recruitTypes,
                      @NotNull LocalDate deadLine,
                      @NotBlank String review) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
 
-        Set<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(recruitTypes);
+        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(recruitTypes);
         post.edit(companyName, byRecruitTypeIn, deadLine, review);
         Post modifiedPost = save(post);
 

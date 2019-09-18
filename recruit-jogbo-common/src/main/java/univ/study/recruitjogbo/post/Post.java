@@ -10,7 +10,8 @@ import univ.study.recruitjogbo.member.Member;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ public class Post {
     private String companyName;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<RecruitType> recruitTypes;
+    private List<RecruitType> recruitTypes;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadLine;
@@ -43,7 +44,7 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(Member author, String companyName, Set<RecruitType> recruitTypes, LocalDate deadLine, String review) {
+    public Post(Member author, String companyName, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
         this.author = author;
         this.companyName = companyName;
         this.recruitTypes = recruitTypes;
@@ -51,7 +52,7 @@ public class Post {
         this.review = review;
     }
 
-    public void edit(String companyName, Set<RecruitType> recruitTypes, LocalDate deadLine, String review) {
+    public void edit(String companyName, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
         this.companyName = companyName;
         this.recruitTypes = recruitTypes;
         this.deadLine = deadLine;
@@ -65,6 +66,14 @@ public class Post {
             }
         }
         return false;
+    }
+
+    public List<RecruitTypes> getRecruitTypesEnum() {
+        List<RecruitTypes> recruitTypesList = new ArrayList<>();
+        for (RecruitType recruitType : recruitTypes) {
+            recruitTypesList.add(recruitType.getRecruitType());
+        }
+        return recruitTypesList;
     }
 
 }

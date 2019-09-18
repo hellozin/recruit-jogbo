@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +21,7 @@ public class PostingRequest {
     private String companyName;
 
     @NotEmpty
-    private Set<RecruitTypes> recruitTypes;
+    private List<RecruitTypes> recruitTypes;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")

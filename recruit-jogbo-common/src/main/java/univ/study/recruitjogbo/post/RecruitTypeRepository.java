@@ -2,8 +2,8 @@ package univ.study.recruitjogbo.post;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Set;
+import java.util.List;
 
 public interface RecruitTypeRepository extends JpaRepository<RecruitType, Long> {
-    Set<RecruitType> findByRecruitTypeIn(Set<RecruitTypes> recruitTypes);
+    List<RecruitType> findByRecruitTypeIn(List<RecruitTypes> recruitTypes);
 }

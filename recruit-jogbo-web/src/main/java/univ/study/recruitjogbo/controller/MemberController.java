@@ -25,7 +25,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/member")
-    public String signUpForm(JoinRequest request) {
+    public String signUpForm(JoinRequest joinRequest) {
         return "member/signUp";
     }
 

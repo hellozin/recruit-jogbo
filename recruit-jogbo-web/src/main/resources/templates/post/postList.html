@@ -56,15 +56,15 @@
 
             <thead class="thead-light">
             <tr>
-                <th>기업명</th>
-                <th>전형종류</th>
-                <th>마감일</th>
-                <th>작성자</th>
+                <th class="w-25 text-center">기업명</th>
+                <th class="w-25 text-center">전형종류</th>
+                <th class="w-25 text-center">마감일</th>
+                <th class="w-25 text-center">작성자</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="post : ${postList}">
+            <tr class="text-center" th:each="post : ${postList}">
                 <td hidden><a th:value="${post.id}"></a></td>
                 <td th:text="${post.companyName}"/>
                 <td><p class="recruit-type-label my-0" th:each="recruitType : ${post.recruitTypes}"
@@ -76,6 +76,7 @@
 
         </table>
     </div>
+
 </div>
 </body>
 <th:block th:replace="fragments/common_script"/>

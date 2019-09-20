@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import univ.study.recruitjogbo.request.JoinRequest;
 
 import java.util.List;
 
@@ -38,7 +39,12 @@ class MemberServiceTest {
     @Test
     @Order(1)
     void 사용자를_추가한다() {
-        Member member = memberService.join(username, password, email);
+        JoinRequest joinRequest = new JoinRequest();
+        joinRequest.setUsername(username);
+        joinRequest.setPassword(password);
+        joinRequest.setEmail(email);
+
+        Member member = memberService.join(joinRequest);
         assertThat(member).isNotNull();
         assertThat(member.getId()).isNotNull();
         assertThat(member.getEmail()).isEqualTo(email);

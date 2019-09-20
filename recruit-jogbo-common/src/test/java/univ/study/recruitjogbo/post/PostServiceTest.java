@@ -1,7 +1,6 @@
 package univ.study.recruitjogbo.post;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
+import univ.study.recruitjogbo.request.PostingRequest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,92 +36,100 @@ class PostServiceTest {
     @MockBean
     RabbitTemplate rabbitTemplate;
 
-    List<Post> data;
+    private Member author1;
+    private Member author2;
 
-    private String companyName;
-    private RecruitTypes recruitType;
-    private LocalDate deadLine;
-    private String review;
-    private Member author;
-
-    private String randomString3000;
+    final String companyName = "company";
+    final LocalDate someDay = LocalDate.of(2019,1,1);
+    final String review = "review";
 
     @BeforeAll
     void setUp() {
-        randomString3000 = RandomStringUtils.randomAlphabetic(3000);
-
-        companyName = "NAVER";
-        recruitType = RecruitTypes.RESUME;
-        deadLine = LocalDate.now();
-        review = randomString3000;
-
-        author = memberService.save(
-                new Member("hellozin", "password1234", "hello@yu.ac.kr"));
+        author1 = memberService.save(new Member("author1", "author1", "author1@ynu.ac.kr"));
+        author2 = memberService.save(new Member("author2", "author2", "author2@ynu.ac.kr"));
 
         for (RecruitTypes recruitType : RecruitTypes.values()) {
             recruitTypeRepository.save(new RecruitType(recruitType));
         }
-
-        data = new ArrayList<>();
-        data.add(new Post(author, "LINE", Arrays.asList(new RecruitType(RecruitTypes.RESUME)), LocalDate.of(2019, 1, 1), randomString3000));
-        data.add(new Post(author, "Kakao", Arrays.asList(new RecruitType(RecruitTypes.CODING)), LocalDate.of(2017, 3, 1), randomString3000));
-        data.add(new Post(author, "LINE", Arrays.asList(new RecruitType(RecruitTypes.CODING)), LocalDate.of(2019, 1, 25), randomString3000));
-        data.add(new Post(author, "Google", Arrays.asList(new RecruitType(RecruitTypes.RESUME), new RecruitType(RecruitTypes.INTERVIEW)), LocalDate.of(2019, 5, 1), randomString3000));
-        data.add(new Post(author, "LINE", Arrays.asList(new RecruitType(RecruitTypes.ETC)), LocalDate.of(2018, 12, 1), randomString3000));
     }
 
     @Test
     @Order(1)
     void 포스트를_작성한다() {
-        Post post = postService.write(author.getId(), companyName, Arrays.asList(recruitType), deadLine, review);
+        PostingRequest request = new PostingRequest();
+        request.setCompanyName(companyName);
+        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
+        request.setDeadLine(someDay);
+        request.setReview(review);
+        Post post = postService.write(author1.getId(), request);
 
         assertThat(post).isNotNull();
-        assertThat(post).isNotNull();
-//        assertThat(post.getRecruitTypes()).contains(RecruitTypes.RESUME);
-        assertThat(post.getDeadLine()).isEqualTo(deadLine);
+        assertThat(post.getCompanyName()).isEqualTo(companyName);
+        assertThat(post.getRecruitTypes().size()).isEqualTo(RecruitTypes.values().length);
+        assertThat(post.getDeadLine()).isEqualTo(someDay);
+        assertThat(post.getReview()).isEqualTo(review);
         log.info("Written post : {}", post);
     }
 
     @Test
     @Order(2)
-    void 데이터_추가() {
-        data.forEach(post -> {
-            Post write = postService.write(
-                    author.getId(),
-                    post.getCompanyName(), post.getRecruitTypesEnum(), post.getDeadLine(), post.getReview());
-            log.info("Data insert {}", write);
-        });
+    void 전체_포스트를_조회한다() {
+        Page<Post> posts = postService.findAll(Pageable.unpaged());
+        assertThat(posts).isNotEmpty();
+        assertThat(posts.getTotalElements()).isEqualTo(1);
     }
 
     @Test
     @Order(3)
-    void 전체_포스트를_조회한다() {
-        Page<Post> posts = postService.findAll(Pageable.unpaged());
-        assertThat(posts).isNotNull();
-        assertThat(posts.getTotalElements()).isEqualTo(data.size()+1);
+    void 기업명으로_포스트를_조회한다() {
+        PostingRequest request = new PostingRequest();
+        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
+        request.setDeadLine(someDay);
+        request.setReview(review);
+
+        request.setCompanyName("newCompany");
+
+        postService.write(author1.getId(), request);
+        postService.write(author2.getId(), request);
+
+        Page<Post> postOfLine = postService.findAll(PostSpecs.withCompanyName("newCompany"), Pageable.unpaged());
+        assertThat(postOfLine).isNotEmpty();
+        assertThat(postOfLine.getTotalElements()).isEqualTo(2);
     }
 
     @Test
     @Order(4)
-    void 기업명으로_포스트를_조회한다() {
-        Page<Post> postOfLine = postService.findAll(PostSpecs.withCompanyName("LINE"), Pageable.unpaged());
-        assertThat(postOfLine).isNotNull();
-        assertThat(postOfLine.getTotalElements()).isEqualTo(3);
+    void RecruitType으로_포스트를_조회한다() {
+        PostingRequest request = new PostingRequest();
+        request.setCompanyName(companyName);
+        request.setDeadLine(someDay);
+        request.setReview(review);
+
+        request.setRecruitTypes(Arrays.asList(RecruitTypes.RESUME));
+
+        postService.write(author1.getId(), request);
+
+        long total = postService.findAll(PostSpecs.withRecruitType(RecruitTypes.INTERVIEW), Pageable.unpaged()).getTotalElements();
+        Page<Post> postWithResume = postService.findAll(PostSpecs.withRecruitType(RecruitTypes.RESUME), Pageable.unpaged());
+        assertThat(postWithResume).isNotNull();
+        assertThat(postWithResume.getTotalElements()).isEqualTo(total+1);
     }
 
     @Test
     @Order(5)
-    void RecruitType으로_포스트를_조회한다() {
-        Page<Post> postWithResume = postService.findAll(PostSpecs.withRecruitType(RecruitTypes.RESUME), Pageable.unpaged());
-        assertThat(postWithResume).isNotNull();
-        assertThat(postWithResume.getTotalElements()).isEqualTo(3);
-    }
-
-    @Test
-    @Order(6)
     void 작성자아이디로_포스트를_조회한다() {
-        Page<Post> posts = postService.findAll(PostSpecs.withAuthorName(author.getUsername()), Pageable.unpaged());
-        assertThat(posts.getTotalElements()).isEqualTo(data.size()+1);
+        Member newAuthor =
+                memberService.save(new Member("authorNew", "authorNew", "new@ynu.ac.kr"));
+
+        PostingRequest request = new PostingRequest();
+        request.setCompanyName(companyName);
+        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
+        request.setDeadLine(someDay);
+        request.setReview(review);
+        postService.write(newAuthor.getId(), request);
+
+        Page<Post> posts = postService.findAll(PostSpecs.withAuthorName(newAuthor.getUsername()), Pageable.unpaged());
+        assertThat(posts.getTotalElements()).isEqualTo(1);
     }
 
 }

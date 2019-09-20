@@ -10,6 +10,7 @@ import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.post.RecruitType;
 import univ.study.recruitjogbo.post.RecruitTypeRepository;
 import univ.study.recruitjogbo.post.RecruitTypes;
+import univ.study.recruitjogbo.request.JoinRequest;
 
 @SpringBootApplication
 public class RecruitJogboWeb {
@@ -40,7 +41,11 @@ public class RecruitJogboWeb {
                 recruitTypeRepository.save(new RecruitType(recruitType));
             }
 
-            Member member = memberService.join("admin", "admin", "paul5813@ynu.ac.kr");
+            JoinRequest joinRequest = new JoinRequest();
+            joinRequest.setUsername("admin");
+            joinRequest.setPassword("admin");
+            joinRequest.setEmail("paul5813@ynu.ac.kr");
+            Member member = memberService.join(joinRequest);
             member.setEmailConfirmed(true);
             memberService.save(member);
         }

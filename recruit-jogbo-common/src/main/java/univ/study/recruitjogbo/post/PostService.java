@@ -13,10 +13,9 @@ import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.message.PostEvent;
 import univ.study.recruitjogbo.message.RabbitMQ;
+import univ.study.recruitjogbo.request.PostingRequest;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,21 +33,17 @@ public class PostService {
     private final RabbitTemplate rabbitTemplate;
 
     @Transactional
-    public Post write(@NotNull Long authorId,
-                      @NotBlank String companyName,
-                      @NotNull List<RecruitTypes> recruitTypes,
-                      @NotNull LocalDate deadLine,
-                      @NotBlank String review) {
+    public Post write(@NotNull Long authorId, PostingRequest request) {
         Member author = memberService.findById(authorId)
                 .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
 
-        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(recruitTypes);
+        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(request.getRecruitTypes());
         Post post = save(new Post.PostBuilder()
                 .author(author)
-                .companyName(companyName)
+                .companyName(request.getCompanyName())
                 .recruitTypes(byRecruitTypeIn)
-                .deadLine(deadLine)
-                .review(review)
+                .deadLine(request.getDeadLine())
+                .review(request.getReview())
                 .build());
 
         rabbitTemplate.convertAndSend(
@@ -61,16 +56,12 @@ public class PostService {
     }
 
     @Transactional
-    public Post edit(@NotNull Long postId,
-                     @NotBlank String companyName,
-                     @NotNull List<RecruitTypes> recruitTypes,
-                     @NotNull LocalDate deadLine,
-                     @NotBlank String review) {
+    public Post edit(@NotNull Long postId, PostingRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
 
-        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(recruitTypes);
-        post.edit(companyName, byRecruitTypeIn, deadLine, review);
+        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(request.getRecruitTypes());
+        post.edit(request.getCompanyName(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
         Post modifiedPost = save(post);
 
         return modifiedPost;

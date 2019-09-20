@@ -45,12 +45,7 @@ public class MemberController {
         }
 
         String confirmUrl = String.format("%s://%s:%d/member/confirm", request.getScheme(), request.getServerName(), request.getServerPort());
-        memberService.joinWithEmailConfirm(
-                joinRequest.getUsername(),
-                joinRequest.getPassword(),
-                joinRequest.getEmail(),
-                confirmUrl
-        );
+        memberService.joinWithEmailConfirm(joinRequest, confirmUrl);
 
         return "redirect:/login";
     }

@@ -42,14 +42,8 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public String createPost(@AuthenticationPrincipal AuthMember author, PostingRequest request) {
-        postService.write(
-                author.getId(),
-                request.getCompanyName(),
-                request.getRecruitTypes(),
-                request.getDeadLine(),
-                request.getReview()
-        );
+    public String createPost(@AuthenticationPrincipal AuthMember author, PostingRequest postingRequest) {
+        postService.write(author.getId(), postingRequest);
         return "redirect:/post/list";
     }
 
@@ -69,26 +63,22 @@ public class PostController {
     public String getPost(@PathVariable(value = "id") Post post,
                           @AuthenticationPrincipal AuthMember author,
                           Map<String, Object> model) {
-        model.put("post", post);
+//        model.put("post", post);
         model.put("isAuthor", post.getAuthor().getId().equals(author.getId()));
         return "post/post";
     }
 
     @GetMapping("/post/{id}/edit")
-    public String showEditPostForm(@PathVariable(value = "id") Post post, Map<String, Object> model) {
-        model.put("post", post);
-        model.put("postingRequest", new PostingRequest());
+    public String showEditPostForm(@PathVariable(value = "id") Post post,
+                                   PostingRequest postingRequest,
+                                   Map<String, Object> model) {
+//        model.put("post", post);
         return "post/editPostForm";
     }
 
     @PutMapping("/post/{id}")
-    public String editPost(PostingRequest request, @PathVariable(value = "id") Long postId) {
-        postService.edit(
-                postId,
-                request.getCompanyName(),
-                request.getRecruitTypes(),
-                request.getDeadLine(),
-                request.getReview());
+    public String editPost(@PathVariable(value = "id") Long postId, PostingRequest postingRequest) {
+        postService.edit(postId, postingRequest);
         return "redirect:/post/"+postId;
     }
 

@@ -12,6 +12,7 @@ import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
 import univ.study.recruitjogbo.message.EmailConfirmRequest;
 import univ.study.recruitjogbo.message.RabbitMQ;
+import univ.study.recruitjogbo.request.JoinRequest;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.validation.constraints.NotBlank;
@@ -46,13 +47,11 @@ public class MemberService {
     }
 
     @Transactional
-    public Member join(@NotBlank String username,
-                       @NotBlank String password,
-                       @UnivEmail String email) {
+    public Member join(JoinRequest request) {
         Member member = save(new Member.MemberBuilder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .email(email)
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
                 .build()
         );
         log.info("New member joined. [{}]", member.getUsername());
@@ -61,17 +60,14 @@ public class MemberService {
     }
 
     @Transactional
-    public Member joinWithEmailConfirm(@NotBlank String username,
-                                       @NotBlank String password,
-                                       @UnivEmail String email,
-                                       String confirmUrl) {
-        Member member = join(username, password, email);
+    public Member joinWithEmailConfirm(JoinRequest request, String confirmUrl) {
+        Member member = join(request);
         sendConfirmEmail(member.getEmail(), confirmUrl);
         return member;
     }
 
     @Transactional
-    public void sendConfirmEmail(@UnivEmail String email, String confirmUrl) {
+    public void sendConfirmEmail(String email, String confirmUrl) {
         String token = confirmationTokenRepository.findByUserEmail(email)
                 .map(ConfirmationToken::getConfirmationToken)
                 .orElseGet(() -> confirmationTokenRepository

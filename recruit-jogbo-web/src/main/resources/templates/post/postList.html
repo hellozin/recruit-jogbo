@@ -79,9 +79,9 @@
         <nav aria-label="Page navigation example" th:if="${postList.totalPages > 0}">
             <ul class="pagination justify-content-center">
 
-                <li class="page-item disabled">
+                <li class="page-item disabled" th:if="${postList.hasNext()}">
                     <a class="page-link"
-                       th:href="@{/post/list(size=${postList.size}, page=${prevPageNumber})}">Previous</a>
+                       th:href="@{/post/list(size=${postList.size}, page=${prevPageNumber})}">이전</a>
                 </li>
 
                 <li class="page-item" th:each="pageNumber : ${pageNumbers}">
@@ -91,10 +91,11 @@
                        th:classappend="${pageNumber==postList.number + 1} ? active"></a>
                 </li>
 
-                <li class="page-item">
+                <li class="page-item" th:if="${postList.hasNext()}">
                     <a class="page-link"
-                       th:href="@{/post/list(size=${postList.size}, page=${nextPageNumber})}">Next</a>
+                       th:href="@{/post/list(size=${postList.size}, page=${nextPageNumber})}">다음</a>
                 </li>
+
             </ul>
         </nav>
 

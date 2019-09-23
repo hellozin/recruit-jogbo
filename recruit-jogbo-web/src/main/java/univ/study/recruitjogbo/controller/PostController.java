@@ -18,7 +18,10 @@ import univ.study.recruitjogbo.security.AuthMember;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -56,6 +59,24 @@ public class PostController {
                 ? postService.findAll(pageable)
                 : postService.findAll(PostSpecs.searchWith(request.getSearchKeyMap()), pageable);
         model.put("postList", postList);
+
+        int totalPages = postList.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.put("pageNumbers", pageNumbers);
+        }
+
+        if (postList.hasPrevious()) {
+            int prevPageNumber = postList.previousPageable().getPageNumber();
+            model.put("prevPageNumber", prevPageNumber);
+        }
+
+        if (postList.hasNext()) {
+            int nextPageNumber = postList.nextPageable().getPageNumber();
+            model.put("nextPageNumber", nextPageNumber);
+        }
         return "post/postList";
     }
 

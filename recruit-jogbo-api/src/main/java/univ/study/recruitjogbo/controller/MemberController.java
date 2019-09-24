@@ -20,12 +20,7 @@ public class MemberController {
     @PostMapping("/member")
     public Member join(@RequestBody @Valid JoinRequest joinRequest, HttpServletRequest request) {
         String confirmUrl = String.format("%s://%s:%d", request.getScheme(), request.getServerName(), request.getServerPort());
-        return memberService.joinWithEmailConfirm(
-                joinRequest.getUsername(),
-                joinRequest.getPassword(),
-                joinRequest.getEmail(),
-                confirmUrl
-        );
+        return memberService.joinWithEmailConfirm(joinRequest, confirmUrl);
     }
 
     @GetMapping("/member/list")

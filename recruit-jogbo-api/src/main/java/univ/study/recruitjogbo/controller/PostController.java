@@ -28,14 +28,8 @@ public class PostController {
 
     @PostMapping("/post")
     public Post publish(@AuthenticationPrincipal JwtAuthentication authentication,
-                        @RequestBody @Valid PostingRequest request) {
-        return postService.write(
-                authentication.id,
-                request.getCompanyName(),
-                request.getRecruitTypes(),
-                request.getDeadLine(),
-                request.getReview()
-        );
+                        @RequestBody @Valid PostingRequest postingRequest) {
+        return postService.write(authentication.id, postingRequest);
     }
 
     @GetMapping("/post/list")

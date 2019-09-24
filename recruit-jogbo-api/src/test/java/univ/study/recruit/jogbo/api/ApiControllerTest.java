@@ -13,8 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import univ.study.recruitjogbo.RecruitJogboApi;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.post.Post;
-import univ.study.recruitjogbo.post.RecruitType;
 import univ.study.recruitjogbo.post.RecruitTypes;
 import univ.study.recruitjogbo.request.JoinRequest;
 import univ.study.recruitjogbo.request.PostingRequest;
@@ -23,7 +21,6 @@ import univ.study.recruitjogbo.security.AuthenticationResult;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashSet;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,18 +50,12 @@ public class ApiControllerTest {
     RabbitTemplate rabbitTemplate;
 
     private Member member;
-    private Post post;
 
     private String APITOKEN;
 
     @BeforeAll
     void setUp() {
         member = new Member("hellozin", "hello1234", "hello@yu.ac.kr");
-        post = new Post(member,
-                "LINE",
-                new HashSet<>(Arrays.asList(new RecruitType(RecruitTypes.RESUME))),
-                LocalDate.of(2019,1,1),
-                "Something New");
     }
 
     @Test
@@ -115,10 +106,10 @@ public class ApiControllerTest {
     @Order(4)
     void 새_포스트를_작성한다() throws Exception {
         PostingRequest request = new PostingRequest();
-        request.setCompanyName(post.getCompanyName());
-        request.setRecruitTypes(new HashSet<>(Arrays.asList(RecruitTypes.RESUME)));
-        request.setDeadLine(post.getDeadLine());
-        request.setReview(post.getReview());
+        request.setCompanyName("Company Name");
+        request.setRecruitTypes(Arrays.asList(RecruitTypes.RESUME));
+        request.setDeadLine(LocalDate.of(2019,1,1));
+        request.setReview("New review");
 
         mockMvc.perform(post("/api/post")
                 .header("api_key", "Bearer " + APITOKEN)

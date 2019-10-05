@@ -68,7 +68,7 @@ class PostServiceTest {
         assertThat(post.getRecruitTypes().size()).isEqualTo(RecruitTypes.values().length);
         assertThat(post.getDeadLine()).isEqualTo(someDay);
         assertThat(post.getReview()).isEqualTo(review);
-        log.info("Written post : {}", post);
+//        log.info("Written post : {}", post);
     }
 
     @Test

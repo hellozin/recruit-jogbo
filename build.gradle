@@ -21,21 +21,21 @@ jar {
     enabled = true
 }
 
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 subprojects {
 
     apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
-
-    configurations {
-        developmentOnly
-        runtimeClasspath {
-            extendsFrom developmentOnly
-        }
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
 
     dependencies {
         api 'org.apache.commons:commons-lang3'

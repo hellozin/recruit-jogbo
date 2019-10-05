@@ -48,7 +48,7 @@ class MemberServiceTest {
         assertThat(member).isNotNull();
         assertThat(member.getId()).isNotNull();
         assertThat(member.getEmail()).isEqualTo(email);
-        log.info("Join member : {}", member);
+//        log.info("Join member : {}", member);
     }
 
     @Test

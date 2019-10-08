@@ -5,8 +5,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import univ.study.recruitjogbo.post.PostSpecs;
-import univ.study.recruitjogbo.request.SearchRequest;
+import univ.study.recruitjogbo.api.request.SearchRequest;
+import univ.study.recruitjogbo.post.PostSpecs.SearchKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +23,8 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        Map<PostSpecs.SearchKeys, Object> searchKeysMap = new HashMap<>();
-        for (PostSpecs.SearchKeys key : PostSpecs.SearchKeys.values()) {
+        Map<SearchKeys, Object> searchKeysMap = new HashMap<>();
+        for (SearchKeys key : SearchKeys.values()) {
             String param = webRequest.getParameter(key.getValue());
             if (isNotBlank(param)) {
                 searchKeysMap.put(key, param);

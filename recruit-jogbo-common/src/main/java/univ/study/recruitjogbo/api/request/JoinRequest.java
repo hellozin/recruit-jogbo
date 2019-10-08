@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.request;
+package univ.study.recruitjogbo.api.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

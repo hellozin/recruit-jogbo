@@ -5,6 +5,7 @@ import univ.study.recruitjogbo.util.MessageUtils;
 public class NotFoundException extends ServiceRuntimeException {
 
     private static final String MESSAGE_KEY = "error.notfound";
+
     private static final String MESSAGE_DETAILS = "error.notfound.details";
 
     public NotFoundException(Class cls, String... values) {

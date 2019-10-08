@@ -8,12 +8,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import univ.study.recruitjogbo.api.request.PostingRequest;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.message.PostEvent;
 import univ.study.recruitjogbo.message.RabbitMQ;
-import univ.study.recruitjogbo.request.PostingRequest;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

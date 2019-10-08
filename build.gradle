@@ -48,15 +48,3 @@ subprojects {
     }
     
 }
-
-project(':recruit-jogbo-api') {
-    dependencies {
-        compile project(':recruit-jogbo-common')
-    }
-}
-
-project(':recruit-jogbo-web') {
-    dependencies {
-        compile project(':recruit-jogbo-common')
-    }
-}

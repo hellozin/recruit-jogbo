@@ -15,7 +15,7 @@ jwt:
     clientSecret: CLIENT_SECRET
     expirySeconds: 3600
 server:
-  port: 8082
+  port: 8080
 
 ---
 
@@ -36,7 +36,7 @@ jwt:
     clientSecret: CLIENT_SECRET
     expirySeconds: 3600
 server:
-  port: 8082
+  port: 8080
 
 ---
 
@@ -59,19 +59,19 @@ spring:
     console:
       enabled: true
       path: /h2/console
-  jwt:
-    token:
-      header: api_key
-      issuer: recruit_jogbo
-      clientSecret: CLIENT_SECRET
-      expirySeconds: 3600
   devtools:
     restart:
       enabled: true
     livereload:
       enabled: true
+jwt:
+  token:
+    header: api_key
+    issuer: recruit_jogbo
+    clientSecret: CLIENT_SECRET
+    expirySeconds: 3600
 logging:
   level:
     org.hibernate.type: trace
 server:
-  port: 8082
+  port: 8080

@@ -102,7 +102,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/auth").permitAll()
                     .antMatchers("/api/member").permitAll()
                     .antMatchers("/member/confirm/request").hasRole("UNCONFIRMED")
-                    .antMatchers("/post/**").hasRole("MEMBER")
+                    .antMatchers("/post/**").hasRole("UNCONFIRMED")
                     .anyRequest().authenticated()
                     .accessDecisionManager(accessDecisionManager())
                     .and()

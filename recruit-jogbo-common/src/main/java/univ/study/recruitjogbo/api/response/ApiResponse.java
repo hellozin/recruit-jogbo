@@ -1,17 +1,16 @@
 package univ.study.recruitjogbo.api.response;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
 public class ApiResponse<T> {
 
-    private final boolean success;
+    private boolean success;
 
-    private final T response;
+    private T response;
 
     public static <T> ApiResponse<T> OK(T response) {
         return new ApiResponse<>(true, response);

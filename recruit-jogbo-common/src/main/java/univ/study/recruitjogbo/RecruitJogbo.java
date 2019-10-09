@@ -1,7 +1,14 @@
 package univ.study.recruitjogbo;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import univ.study.recruitjogbo.api.request.JoinRequest;
+import univ.study.recruitjogbo.member.MemberService;
+import univ.study.recruitjogbo.post.RecruitType;
+import univ.study.recruitjogbo.post.RecruitTypeRepository;
+import univ.study.recruitjogbo.post.RecruitTypes;
 
 @SpringBootApplication
 public class RecruitJogbo {
@@ -17,4 +24,26 @@ public class RecruitJogbo {
                 .properties(PROPERTIES)
                 .run(args);
     }
+
+    @RequiredArgsConstructor
+    class Runner implements CommandLineRunner {
+
+        private final MemberService memberService;
+
+        private final RecruitTypeRepository recruitTypeRepository;
+
+        @Override
+        public void run(String... args) {
+            for (RecruitTypes recruitType : RecruitTypes.values()) {
+                recruitTypeRepository.save(new RecruitType(recruitType));
+            }
+
+            JoinRequest request = new JoinRequest();
+            request.setUsername("username");
+            request.setPassword("password");
+            request.setEmail("user@ynu.ac.kr");
+            memberService.join(request);
+        }
+    }
+
 }

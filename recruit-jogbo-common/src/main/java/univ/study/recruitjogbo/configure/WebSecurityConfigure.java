@@ -114,6 +114,8 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
+                .antMatchers("/")
+                .antMatchers("/static/**")
                 .antMatchers("/h2/**")
                 .antMatchers("/member/confirm"); // Email authentication URL
     }

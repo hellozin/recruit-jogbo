@@ -11,16 +11,20 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import univ.study.recruitjogbo.RecruitJogbo;
 import univ.study.recruitjogbo.api.request.AuthenticationRequest;
 import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.api.request.PostingRequest;
-import univ.study.recruitjogbo.api.response.AuthenticationResult;
+import univ.study.recruitjogbo.api.response.ApiResponse;
 import univ.study.recruitjogbo.member.Member;
+import univ.study.recruitjogbo.post.RecruitType;
+import univ.study.recruitjogbo.post.RecruitTypeRepository;
 import univ.study.recruitjogbo.post.RecruitTypes;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -40,6 +44,9 @@ public class ApiControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    RecruitTypeRepository recruitTypeRepository;
+
     @MockBean
     RabbitTemplate rabbitTemplate;
 
@@ -50,6 +57,10 @@ public class ApiControllerTest {
     @BeforeAll
     void setUp() {
         member = new Member("hellozin", "hello1234", "hello@yu.ac.kr");
+
+        for (RecruitTypes recruitType : RecruitTypes.values()) {
+            recruitTypeRepository.save(new RecruitType(recruitType));
+        }
     }
 
     @Test
@@ -63,10 +74,11 @@ public class ApiControllerTest {
         mockMvc.perform(post("/api/member")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(joinRequest))
+                .with(csrf())
         )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(member.getEmail()));
+                .andExpect(jsonPath("$.response.email").value(member.getEmail()));
     }
 
     @Test
@@ -77,13 +89,15 @@ public class ApiControllerTest {
         MvcResult mvcResult = mockMvc.perform(post("/api/auth")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request))
+                .with(csrf())
         )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        AuthenticationResult result = objectMapper.readValue(contentAsString, AuthenticationResult.class);
-        APITOKEN = result.getApiToken();
+        ApiResponse apiResponse = objectMapper.readValue(contentAsString, ApiResponse.class);
+        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) apiResponse.getResponse();
+        APITOKEN = (String) map.get("apiToken");
     }
 
     @Test
@@ -91,6 +105,7 @@ public class ApiControllerTest {
     void 포스트_목록을_가져온다() throws Exception {
         mockMvc.perform(get("/api/post/list")
                 .header("api_key", "Bearer " + APITOKEN)
+                .with(csrf())
         )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -101,7 +116,7 @@ public class ApiControllerTest {
     void 새_포스트를_작성한다() throws Exception {
         PostingRequest request = new PostingRequest();
         request.setCompanyName("Company Name");
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.RESUME));
+        request.setRecruitTypes(new RecruitTypes[]{RecruitTypes.RESUME});
         request.setDeadLine(LocalDate.of(2019,1,1));
         request.setReview("New review");
 
@@ -109,6 +124,7 @@ public class ApiControllerTest {
                 .header("api_key", "Bearer " + APITOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request))
+                .with(csrf())
         )
                 .andDo(print())
                 .andExpect(status().isOk());

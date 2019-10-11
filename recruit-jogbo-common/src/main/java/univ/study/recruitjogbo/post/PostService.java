@@ -62,19 +62,17 @@ public class PostService {
 
         List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
         post.edit(request.getCompanyName(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
-        Post modifiedPost = save(post);
+        return save(post);
+    }
 
-        return modifiedPost;
+    @Transactional
+    public void delete(Long postId) {
+        postRepository.deleteById(postId);
     }
 
     @Transactional(readOnly = true)
     public Optional<Post> findById(Long postId) {
         return postRepository.findById(postId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Post> findAll() {
-        return postRepository.findAll();
     }
 
     @Transactional(readOnly = true)
@@ -87,7 +85,8 @@ public class PostService {
         return postRepository.findAll(specification, pageable);
     }
 
-    public Post save(Post post) {
+    @Transactional
+    protected Post save(Post post) {
         return postRepository.save(post);
     }
 

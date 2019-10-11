@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.stereotype.Component;
 import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.post.RecruitType;
@@ -25,6 +26,7 @@ public class RecruitJogbo {
                 .run(args);
     }
 
+    @Component
     @RequiredArgsConstructor
     class Runner implements CommandLineRunner {
 

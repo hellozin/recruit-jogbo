@@ -2,9 +2,9 @@ package univ.study.recruitjogbo.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -35,7 +35,7 @@ public class PostEditableVoter implements AccessDecisionVoter<FilterInvocation> 
             return ACCESS_ABSTAIN;
         }
 
-        if (!authentication.getClass().isAssignableFrom(UsernamePasswordAuthenticationToken.class)) {
+        if (!authentication.getClass().isAssignableFrom(JwtAuthenticationToken.class)) {
             return ACCESS_ABSTAIN;
         }
 

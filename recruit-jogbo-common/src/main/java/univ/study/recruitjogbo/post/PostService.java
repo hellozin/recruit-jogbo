@@ -16,6 +16,7 @@ import univ.study.recruitjogbo.message.PostEvent;
 import univ.study.recruitjogbo.message.RabbitMQ;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class PostService {
         Member author = memberService.findById(authorId)
                 .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
 
-        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(request.getRecruitTypes());
+        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
         Post post = save(new Post.PostBuilder()
                 .author(author)
                 .companyName(request.getCompanyName())
@@ -51,7 +52,6 @@ public class PostService {
                 RabbitMQ.POST_CREATE,
                 new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum())
         );
-
         return post;
     }
 
@@ -60,7 +60,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
 
-        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(request.getRecruitTypes());
+        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
         post.edit(request.getCompanyName(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
         Post modifiedPost = save(post);
 

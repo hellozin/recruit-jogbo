@@ -59,15 +59,6 @@ public class Post {
         this.review = review;
     }
 
-    public boolean isRecruitTypeMatch(RecruitTypes recruitType) {
-        for (RecruitType type : recruitTypes) {
-            if (type.getRecruitType().equals(recruitType)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public List<RecruitTypes> getRecruitTypesEnum() {
         List<RecruitTypes> recruitTypesList = new ArrayList<>();
         for (RecruitType recruitType : recruitTypes) {

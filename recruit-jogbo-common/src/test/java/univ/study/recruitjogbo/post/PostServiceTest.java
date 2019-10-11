@@ -8,12 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import univ.study.recruitjogbo.api.request.PostingRequest;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ActiveProfiles("local")
 @Slf4j
 class PostServiceTest {
 
@@ -47,10 +48,6 @@ class PostServiceTest {
     void setUp() {
         author1 = memberService.save(new Member("author1", "author1", "author1@ynu.ac.kr"));
         author2 = memberService.save(new Member("author2", "author2", "author2@ynu.ac.kr"));
-
-        for (RecruitTypes recruitType : RecruitTypes.values()) {
-            recruitTypeRepository.save(new RecruitType(recruitType));
-        }
     }
 
     @Test
@@ -58,7 +55,7 @@ class PostServiceTest {
     void 포스트를_작성한다() {
         PostingRequest request = new PostingRequest();
         request.setCompanyName(companyName);
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
+        request.setRecruitTypes(RecruitTypes.values());
         request.setDeadLine(someDay);
         request.setReview(review);
         Post post = postService.write(author1.getId(), request);
@@ -83,7 +80,7 @@ class PostServiceTest {
     @Order(3)
     void 기업명으로_포스트를_조회한다() {
         PostingRequest request = new PostingRequest();
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
+        request.setRecruitTypes(RecruitTypes.values());
         request.setDeadLine(someDay);
         request.setReview(review);
 
@@ -105,7 +102,7 @@ class PostServiceTest {
         request.setDeadLine(someDay);
         request.setReview(review);
 
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.RESUME));
+        request.setRecruitTypes(new RecruitTypes[]{RecruitTypes.RESUME});
 
         postService.write(author1.getId(), request);
 
@@ -123,7 +120,7 @@ class PostServiceTest {
 
         PostingRequest request = new PostingRequest();
         request.setCompanyName(companyName);
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
+        request.setRecruitTypes(RecruitTypes.values());
         request.setDeadLine(someDay);
         request.setReview(review);
         postService.write(newAuthor.getId(), request);

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.UnanimousBased;
@@ -70,7 +69,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Bean
     public PostEditableVoter postEditableVoter() {
         Pattern pattern = Pattern.compile("^/api/post/(\\d+)$");
-        RequestMatcher requestMatcher = new RegexRequestMatcher(pattern.pattern(), HttpMethod.PUT.toString());
+        RequestMatcher requestMatcher = new RegexRequestMatcher(pattern.pattern(), null);
         return new PostEditableVoter(requestMatcher, (String url) -> {
             Matcher matcher = pattern.matcher(url);
             return matcher.find() ? toLong(matcher.group(1), -1) : -1;

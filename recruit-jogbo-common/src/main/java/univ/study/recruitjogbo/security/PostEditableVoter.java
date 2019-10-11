@@ -31,7 +31,7 @@ public class PostEditableVoter implements AccessDecisionVoter<FilterInvocation> 
     public int vote(Authentication authentication, FilterInvocation object, Collection<ConfigAttribute> attributes) {
         HttpServletRequest request = object.getRequest();
 
-        if (!requestMatcher.matches(request)) {
+        if (!requestMatcher.matches(request) || request.getMethod().equals(HttpMethod.GET.name())) {
             return ACCESS_ABSTAIN;
         }
 

@@ -49,7 +49,6 @@ export default {
           localStorage.setItem('apiToken', res.data.response.apiToken)
           this.$router.push('/')
         }).catch(error => {
-          console.log('error', error.response.data.response)
           this.$bvToast.toast(error.response.data.response.errorMessage, {
             title: '로그인 에러',
             variant: 'danger'

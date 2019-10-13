@@ -55,7 +55,7 @@ export default {
       return recruitTypes.map((type) => type[0]).join(' | ')
     },
     showPost (postId) {
-      this.$router.push(`post/${postId}`)
+      this.$router.push(`${postId}`)
     }
   },
   created: function () {

@@ -12,6 +12,8 @@ Vue.use(BootstrapVue)
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 
+axios.defaults.headers['Content-Type'] = 'application/json'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

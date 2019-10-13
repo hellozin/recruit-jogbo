@@ -1,6 +1,5 @@
 package univ.study.recruitjogbo.post;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -34,7 +33,6 @@ public class Post {
     private String review;
 
     @ManyToOne
-    @JsonBackReference
     private Member author;
 
     @CreationTimestamp

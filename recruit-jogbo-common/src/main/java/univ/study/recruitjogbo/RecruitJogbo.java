@@ -6,10 +6,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.stereotype.Component;
 import univ.study.recruitjogbo.api.request.JoinRequest;
+import univ.study.recruitjogbo.api.request.PostingRequest;
+import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
-import univ.study.recruitjogbo.post.RecruitType;
-import univ.study.recruitjogbo.post.RecruitTypeRepository;
-import univ.study.recruitjogbo.post.RecruitTypes;
+import univ.study.recruitjogbo.post.PostService;
+import univ.study.recruitjogbo.post.recruitType.RecruitType;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class RecruitJogbo {
@@ -32,6 +37,8 @@ public class RecruitJogbo {
 
         private final MemberService memberService;
 
+        private final PostService postService;
+
         private final RecruitTypeRepository recruitTypeRepository;
 
         @Override
@@ -44,7 +51,17 @@ public class RecruitJogbo {
             request.setUsername("username");
             request.setPassword("password");
             request.setEmail("user@ynu.ac.kr");
-            memberService.join(request);
+            Member join = memberService.join(request);
+
+            LocalDate today = LocalDate.now();
+            for (int i = 0; i < 10; i++) {
+                PostingRequest postingRequest = new PostingRequest();
+                postingRequest.setCompanyName("company" + i);
+                postingRequest.setRecruitTypes(new RecruitTypes[]{RecruitTypes.RESUME, RecruitTypes.APTITUDE});
+                postingRequest.setDeadLine(today.minusDays(i));
+                postingRequest.setReview("review" + i);
+                postService.write(join.getId(), postingRequest);
+            }
         }
     }
 

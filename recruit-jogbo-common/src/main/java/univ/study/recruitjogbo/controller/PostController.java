@@ -14,11 +14,12 @@ import univ.study.recruitjogbo.api.response.ApiResponse;
 import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
 import univ.study.recruitjogbo.post.PostSpecs;
-import univ.study.recruitjogbo.post.RecruitTypes;
 import univ.study.recruitjogbo.security.JwtAuthentication;
+import univ.study.recruitjogbo.util.EnumMapper;
+import univ.study.recruitjogbo.util.EnumValue;
 
-import java.util.Arrays;
-import java.util.Collection;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +27,8 @@ import java.util.Collection;
 public class PostController {
 
     private final PostService postService;
+
+    private final EnumMapper enumMapper;
 
     private final PagedResourcesAssembler<Post> assembler;
 
@@ -36,8 +39,8 @@ public class PostController {
 
     @PostMapping("/post")
     public ApiResponse createPost(@AuthenticationPrincipal JwtAuthentication author,
-                                  @RequestBody PostingRequest postingRequest) {
-        Post post = postService.write(author.id, postingRequest);
+                                  @RequestBody @Valid PostingRequest postingRequest) {
+        Post post = postService.write(1L, postingRequest);
         return ApiResponse.OK(post);
     }
 
@@ -56,7 +59,7 @@ public class PostController {
     }
 
     @PutMapping("/post/{id}")
-    public ApiResponse editPost(@PathVariable(value = "id") Long postId, @RequestBody PostingRequest postingRequest) {
+    public ApiResponse editPost(@PathVariable(value = "id") Long postId, @RequestBody @Valid PostingRequest postingRequest) {
         Post post = postService.edit(postId, postingRequest);
         return ApiResponse.OK(post);
     }

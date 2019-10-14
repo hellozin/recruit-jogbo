@@ -10,6 +10,8 @@ import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.security.JwtAuthentication;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/member")
-    public ApiResponse join(@RequestBody JoinRequest joinRequest) {
+    public ApiResponse join(@RequestBody @Valid JoinRequest joinRequest) {
         Member member = memberService.join(joinRequest);
         return ApiResponse.OK(member);
     }

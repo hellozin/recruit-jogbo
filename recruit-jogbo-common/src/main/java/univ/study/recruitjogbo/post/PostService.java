@@ -12,8 +12,8 @@ import univ.study.recruitjogbo.api.request.PostingRequest;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
-import univ.study.recruitjogbo.message.PostEvent;
-import univ.study.recruitjogbo.message.RabbitMQ;
+import univ.study.recruitjogbo.post.recruitType.RecruitType;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
 
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
@@ -47,11 +47,11 @@ public class PostService {
                 .review(request.getReview())
                 .build());
 
-        rabbitTemplate.convertAndSend(
-                RabbitMQ.EXCHANGE,
-                RabbitMQ.POST_CREATE,
-                new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum())
-        );
+//        rabbitTemplate.convertAndSend(
+//                RabbitMQ.EXCHANGE,
+//                RabbitMQ.POST_CREATE,
+//                new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum())
+//        );
         return post;
     }
 
@@ -67,7 +67,9 @@ public class PostService {
 
     @Transactional
     public void delete(Long postId) {
-        postRepository.deleteById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
+        postRepository.delete(post);
     }
 
     @Transactional(readOnly = true)

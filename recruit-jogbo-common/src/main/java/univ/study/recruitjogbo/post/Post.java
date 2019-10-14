@@ -1,10 +1,13 @@
 package univ.study.recruitjogbo.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import univ.study.recruitjogbo.member.Member;
+import univ.study.recruitjogbo.post.recruitType.RecruitType;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -24,6 +27,7 @@ public class Post {
     private String companyName;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<RecruitType> recruitTypes;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -29,9 +29,9 @@ public class PostController {
 
     private final PagedResourcesAssembler<Post> assembler;
 
-    @ModelAttribute("recruitTypes")
-    public Collection<RecruitTypes> recruitTypes() {
-        return Arrays.asList(RecruitTypes.values());
+    @GetMapping("/recruit-types")
+    public List<EnumValue> recruitTypes() {
+        return enumMapper.getEnumValues("recruitTypes");
     }
 
     @PostMapping("/post")

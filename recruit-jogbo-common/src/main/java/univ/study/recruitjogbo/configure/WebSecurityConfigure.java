@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import univ.study.recruitjogbo.member.MemberService;
@@ -88,8 +87,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
-                    .csrfTokenRepository(new CookieCsrfTokenRepository())
-                    .and()
+                    .disable()
                 .exceptionHandling()
                     .accessDeniedHandler(accessDeniedHandlerImpl)
                     .authenticationEntryPoint(entryPointUnauthorizedHandler)

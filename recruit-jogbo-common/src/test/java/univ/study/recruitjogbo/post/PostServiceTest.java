@@ -12,6 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import univ.study.recruitjogbo.api.request.PostingRequest;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
 

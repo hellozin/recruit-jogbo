@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.post;
+package univ.study.recruitjogbo.post.recruitType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

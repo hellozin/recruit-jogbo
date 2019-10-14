@@ -1,6 +1,8 @@
-package univ.study.recruitjogbo.post;
+package univ.study.recruitjogbo.post.recruitType;
 
-public enum RecruitTypes {
+import univ.study.recruitjogbo.util.EnumModel;
+
+public enum RecruitTypes implements EnumModel {
 
     /*
     * RESUME : 서류
@@ -24,8 +26,13 @@ public enum RecruitTypes {
         this.value = value;
     }
 
-    public String value() {
-        return value;
+    @Override
+    public String getKey() {
+        return name();
     }
 
+    @Override
+    public String getValue() {
+        return value;
+    }
 }

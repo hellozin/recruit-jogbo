@@ -16,7 +16,7 @@ import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.api.request.PostingRequest;
 import univ.study.recruitjogbo.api.response.ApiResponse;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.post.RecruitTypes;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;

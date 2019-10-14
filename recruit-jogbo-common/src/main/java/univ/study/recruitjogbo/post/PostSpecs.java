@@ -2,6 +2,7 @@ package univ.study.recruitjogbo.post;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 
 import javax.persistence.criteria.Join;
 import java.util.Map;

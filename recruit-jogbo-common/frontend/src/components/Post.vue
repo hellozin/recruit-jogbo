@@ -38,7 +38,6 @@ export default {
   created: function () {
     const postId = this.$route.params.id
     this.$axios.get(`http://localhost:8080/api/post/${postId}`).then(res => {
-      console.log(res.data)
       this.post = res.data.response
     }).catch(error => {
       console.log(error)

@@ -14,7 +14,7 @@
 
         <b-button class="w-100 my-3" type="submit" variant="primary">로그인</b-button>
 
-        <router-link to="/signup" class="btn btn-outline-info w-100" th:href="@{/member}">회원가입</router-link>
+        <router-link to="/signup" class="btn btn-outline-info w-100">회원가입</router-link>
 
       </b-form>
 

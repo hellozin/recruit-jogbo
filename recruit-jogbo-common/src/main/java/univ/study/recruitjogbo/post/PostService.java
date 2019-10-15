@@ -61,7 +61,7 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
 
         List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
-        post.edit(request.getCompanyName(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
+        post.edit(request.getCompanyName(), request.getCompanyDetail(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
         return save(post);
     }
 

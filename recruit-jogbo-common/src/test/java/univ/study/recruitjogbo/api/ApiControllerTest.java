@@ -21,6 +21,8 @@ import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -56,10 +58,10 @@ public class ApiControllerTest {
     @Test
     @Order(1)
     void 멤버를_추가한다() throws Exception {
-        JoinRequest joinRequest = new JoinRequest();
-        joinRequest.setUsername(member.getUsername());
-        joinRequest.setPassword(member.getPassword());
-        joinRequest.setEmail(member.getEmail());
+        JoinRequest joinRequest = mock(JoinRequest.class);
+        when(joinRequest.getUsername()).thenReturn(member.getUsername());
+        when(joinRequest.getPassword()).thenReturn(member.getPassword());
+        when(joinRequest.getEmail()).thenReturn(member.getEmail());
 
         mockMvc.perform(post("/api/member")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,11 +106,12 @@ public class ApiControllerTest {
     @Test
     @Order(4)
     void 새_포스트를_작성한다() throws Exception {
-        PostingRequest request = new PostingRequest();
-        request.setCompanyName("Company Name");
-        request.setRecruitTypes(new RecruitTypes[]{RecruitTypes.RESUME});
-        request.setDeadLine(LocalDate.of(2019,1,1));
-        request.setReview("New review");
+        PostingRequest request = mock(PostingRequest.class);
+        when(request.getCompanyName()).thenReturn("Company Name");
+        when(request.getCompanyDetail()).thenReturn("Company Detail");
+        when(request.getRecruitTypes()).thenReturn(new RecruitTypes[]{RecruitTypes.RESUME});
+        when(request.getDeadLine()).thenReturn(LocalDate.of(2019,1,1));
+        when(request.getReview()).thenReturn("New review");
 
         mockMvc.perform(post("/api/post")
                 .header("api_key", "Bearer " + APITOKEN)

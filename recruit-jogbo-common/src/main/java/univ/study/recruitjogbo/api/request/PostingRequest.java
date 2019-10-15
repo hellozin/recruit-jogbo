@@ -2,7 +2,6 @@ package univ.study.recruitjogbo.api.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 
@@ -12,12 +11,13 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class PostingRequest {
 
     @NotBlank(message = "기업명을 입력해주세요.")
     private String companyName;
+
+    private String companyDetail;
 
     @NotEmpty(message = "전형 종류를 입력해주세요.")
     private RecruitTypes[] recruitTypes;

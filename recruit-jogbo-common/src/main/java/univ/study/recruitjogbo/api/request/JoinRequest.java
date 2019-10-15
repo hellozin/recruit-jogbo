@@ -2,13 +2,11 @@ package univ.study.recruitjogbo.api.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.validation.constraints.Size;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class JoinRequest {
 

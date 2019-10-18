@@ -23,6 +23,7 @@ public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setHeader("content-type", "application/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.getWriter().write(objectMapper.writeValueAsString(
                 ApiResponse.ERROR(new ApiError(authException.getMessage(), HttpStatus.UNAUTHORIZED))));
         response.getWriter().flush();

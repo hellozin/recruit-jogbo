@@ -23,6 +23,7 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setHeader("content-type", "application/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.getWriter().write(objectMapper.writeValueAsString(
                 ApiResponse.ERROR(new ApiError(accessDeniedException.getMessage(), HttpStatus.FORBIDDEN))));
         response.getWriter().flush();

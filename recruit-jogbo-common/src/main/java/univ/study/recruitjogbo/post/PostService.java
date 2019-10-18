@@ -42,6 +42,7 @@ public class PostService {
         Post post = save(new Post.PostBuilder()
                 .author(author)
                 .companyName(request.getCompanyName())
+                .companyDetail(request.getCompanyDetail())
                 .recruitTypes(byRecruitTypeIn)
                 .deadLine(request.getDeadLine())
                 .review(request.getReview())

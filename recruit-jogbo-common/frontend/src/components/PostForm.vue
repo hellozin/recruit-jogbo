@@ -1,36 +1,44 @@
 <template>
   <div>
-    <h2 class="py-4 font-weight-bold">후기 작성</h2>
+    <h3 class="pt-4 font-weight-bold">후기 작성</h3>
     <b-form @submit="onSubmit" v-if="show" autocomplete="off">
-      <div class="mb-3">
-        <small class="text-muted">기업명: 카카오, 삼성전자, 한국전력공사 등 가장 보편적인 이름을 적어주세요.</small><br />
-        <small class="text-muted">날짜: 전형이 시작되는 날짜를 입력해 주세요. (서류 마감일, 코딩테스트 날짜, 시험 날짜 등)</small><br />
-        <small class="text-muted">전형 종류: 후기에 포함된 전형을 모두 체크해 주세요.</small><br />
-      </div>
+
+      <a v-b-toggle.collapse-1 class="text-primary"><i class="fas fa-angle-down"></i> 설명</a>
+      <b-collapse id="collapse-1" class="mt-0">
+        <b-card>
+          <table>
+            <tr v-for="guide in guides" :key="guide.id">
+              <td class="pr-3">{{ guide.name }}</td><td class="text-muted">{{ guide.description }}</td>
+            </tr>
+          </table>
+        </b-card>
+      </b-collapse>
 
       <b-row>
         <b-col cols="3">
           <b-form-group label="기업명">
-            <b-form-input v-model="form.companyName" required placeholder="ex) 카카오"
-            v-b-popover.focus.bottom="'카카오, 삼성전자, 한국전력공사 등 가장 보편적인 이름을 적어주세요.'"></b-form-input>
+            <b-form-input v-model="form.companyName" required placeholder="ex) 카카오"></b-form-input>
+          </b-form-group>
+        </b-col>
+
+        <b-col cols="3">
+          <b-form-group label="추가정보">
+            <b-form-input v-model="form.companyDetail" placeholder="ex) 플랫폼 개발"></b-form-input>
           </b-form-group>
         </b-col>
 
         <b-col cols="3">
           <b-form-group label="날짜">
-            <b-form-input v-model="form.deadLine" required type="date"
-            v-b-popover.focus.bottom="'전형이 시작되는 날짜를 입력해 주세요. (서류 마감일, 코딩테스트 날짜, 시험 날짜 등)'"></b-form-input>
-          </b-form-group>
-        </b-col>
-
-        <b-col>
-          <b-form-group label="전형 종류">
-            <b-form-checkbox-group v-model="form.recruitTypes">
-              <b-form-checkbox v-for="type in recruitTypes" :key="type.id" :value="type.key">{{ type.value }}</b-form-checkbox>
-            </b-form-checkbox-group>
+            <b-form-input v-model="form.deadLine" required type="date"></b-form-input>
           </b-form-group>
         </b-col>
       </b-row>
+
+      <b-form-group label="전형 종류">
+        <b-form-checkbox-group v-model="form.recruitTypes">
+          <b-form-checkbox v-for="type in recruitTypes" :key="type.id" :value="type.key">{{ type.value }}</b-form-checkbox>
+        </b-form-checkbox-group>
+      </b-form-group>
 
       <b-form-group label="후기">
         <b-form-textarea v-model="form.review" rows="3" max-rows="15" placeholder="여기에 후기를 입력해 주세요."></b-form-textarea>
@@ -47,11 +55,18 @@ export default {
     return {
       form: {
         companyName: '',
+        companyDetail: '',
         deadLine: new Date().toISOString().slice(0, 10),
         recruitTypes: [],
         review: ''
       },
       recruitTypes: [],
+      guides: [
+        { name: '기업명', description: '카카오, 삼성전자, 한국전력공사 등 가장 보편적인 이름을 적어주세요.' },
+        { name: '추가정보', description: '지원 부서명, 채용 공지 이름 등 추가적인 내용을 적어주세요.' },
+        { name: '날짜', description: '전형이 시작되는 날짜를 입력해 주세요. (서류 마감일, 코딩테스트 날짜, 시험 날짜 등)' },
+        { name: '전형 종류', description: '후기에 포함된 전형을 모두 체크해 주세요.' }
+      ],
       show: true
     }
   },

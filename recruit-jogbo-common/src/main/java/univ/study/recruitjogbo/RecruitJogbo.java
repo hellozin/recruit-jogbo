@@ -4,17 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import univ.study.recruitjogbo.api.request.JoinRequest;
-import univ.study.recruitjogbo.api.request.PostingRequest;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.member.MemberService;
-import univ.study.recruitjogbo.post.PostService;
+import univ.study.recruitjogbo.member.MemberRepository;
+import univ.study.recruitjogbo.post.Post;
+import univ.study.recruitjogbo.post.PostRepository;
 import univ.study.recruitjogbo.post.recruitType.RecruitType;
 import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
 import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class RecruitJogbo {
@@ -35,11 +37,13 @@ public class RecruitJogbo {
     @RequiredArgsConstructor
     class Runner implements CommandLineRunner {
 
-        private final MemberService memberService;
+        private final MemberRepository memberRepository;
 
-        private final PostService postService;
+        private final PostRepository postRepository;
 
         private final RecruitTypeRepository recruitTypeRepository;
+
+        private final PasswordEncoder passwordEncoder;
 
         @Override
         public void run(String... args) {
@@ -47,20 +51,20 @@ public class RecruitJogbo {
                 recruitTypeRepository.save(new RecruitType(recruitType));
             }
 
-            JoinRequest request = new JoinRequest();
-            request.setUsername("username");
-            request.setPassword("password");
-            request.setEmail("user@ynu.ac.kr");
-            Member join = memberService.join(request);
+            Member member = new Member("username", passwordEncoder.encode("password"), "user@ynu.ac.kr");
+            memberRepository.save(member);
 
             LocalDate today = LocalDate.now();
             for (int i = 0; i < 10; i++) {
-                PostingRequest postingRequest = new PostingRequest();
-                postingRequest.setCompanyName("company" + i);
-                postingRequest.setRecruitTypes(new RecruitTypes[]{RecruitTypes.RESUME, RecruitTypes.APTITUDE});
-                postingRequest.setDeadLine(today.minusDays(i));
-                postingRequest.setReview("review" + i);
-                postService.write(join.getId(), postingRequest);
+                List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(RecruitTypes.RESUME, RecruitTypes.APTITUDE));
+                Post post = new Post(
+                        member,
+                        "company" + i,
+                        "detail" + i,
+                        byRecruitTypeIn,
+                        today.minusDays(i),
+                        "review" + i);
+                postRepository.save(post);
             }
         }
     }

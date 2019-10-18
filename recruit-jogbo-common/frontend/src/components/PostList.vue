@@ -37,18 +37,20 @@
       <table class="table table-hover" id="postList">
         <thead class="thead-light">
           <tr>
-            <th class="w-25 text-center">기업명</th>
-            <th class="w-25 text-center">전형종류</th>
-            <th class="w-25 text-center">마감일</th>
-            <th class="w-25 text-center">작성자</th>
+            <th class="text-center">기업명</th>
+            <th class="text-center">기업추가정보</th>
+            <th class="text-center">전형종류</th>
+            <th class="text-center">마감일</th>
+            <th class="text-center">작성자</th>
           </tr>
         </thead>
 
         <tbody>
           <tr class="text-center" v-for="post in postList" :key="post.id" v-on:click="showPost(post.id)">
-            <td>{{ post.companyName}}</td>
+            <td>{{ post.companyName }}</td>
+            <td>{{ post.companyDetail }}</td>
             <td><span class="badge badge-info mx-1" v-for="type in post.recruitTypesEnum" :key="type.id">
-              {{ type[0] }}
+              {{ type.value[0] }}
             </span></td>
             <td>{{ post.deadLine }}</td>
             <td>{{ post.author.username }}</td>
@@ -103,9 +105,6 @@ export default {
     }
   },
   methods: {
-    linkGen (pageNum) {
-      return pageNum === 1 ? '?' : `?page=${pageNum}`
-    },
     shortRecruitTypes (recruitTypes) {
       return recruitTypes.map((type) => type[0]).join(' | ')
     },
@@ -113,7 +112,10 @@ export default {
       this.$router.push(`${postId}`)
     },
     getPostList (param) {
-      this.$axios.get(`http://localhost:8080/api/post/list`, { params: param })
+      const config = {
+        params: param
+      }
+      this.$axios.get(`http://localhost:8080/api/post/list`, config)
         .then(res => {
           const response = res.data.response
           this.postList = response.content
@@ -122,7 +124,7 @@ export default {
           this.prevPage = this.currPage > 0 ? this.currPage - 1 : null
           this.nextPage = this.currPage < this.totalPages - 1 ? this.currPage + 1 : null
         }).catch(error => {
-          console.log(error.response)
+          console.log('post list : ', error.response)
         })
     },
     toPage (page) {
@@ -143,12 +145,18 @@ export default {
     }
   },
   created: function () {
-    this.$axios.get(`http://localhost:8080/api/recruit-types`)
+    const config = {
+      headers: {
+        api_key: 'Bearer ' + localStorage.getItem('apiToken')
+      }
+    }
+    this.$axios.get(`http://localhost:8080/api/recruit-types`, config)
       .then(res => {
         console.log(res.data)
         this.recruitTypes = res.data
       })
-      .catch(error => {
+      .catch((error) => {
+        console.log('recruit Type Error : ', error.response)
         this.$bvToast.toast(error.response, {
           title: '전형 정보 로드 실패',
           variant: 'danger'

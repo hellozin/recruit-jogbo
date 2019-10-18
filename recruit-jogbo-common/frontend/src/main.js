@@ -9,10 +9,18 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
-Vue.prototype.$axios = axios
 Vue.config.productionTip = false
+const instance = axios.create({
+  headers: {
+    common: {
+      api_key: 'Bearer ' + localStorage.getItem('apiToken')
+    }
+  }
+})
 
-axios.defaults.headers['Content-Type'] = 'application/json'
+instance.defaults.headers['Content-Type'] = 'application/json'
+
+Vue.prototype.$axios = instance
 
 /* eslint-disable no-new */
 new Vue({

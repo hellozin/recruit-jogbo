@@ -20,6 +20,7 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.cors.CorsUtils;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.security.*;
 
@@ -96,6 +97,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
+                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                     .antMatchers("/api/auth").permitAll()
                     .antMatchers("/api/member").permitAll()
                     .antMatchers("/member/confirm/request").hasRole("UNCONFIRMED")

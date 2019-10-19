@@ -1,0 +1,77 @@
+spring.profiles: aws
+spring.profiles.include:
+  - rabbitmq-rasp
+  - datasource-aws
+spring:
+  application:
+    name: recruit_jogbo
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+jwt:
+  token:
+    header: api_key
+    issuer: recruit_jogbo
+    clientSecret: CLIENT_SECRET
+    expirySeconds: 3600
+server:
+  port: 8080
+
+---
+
+spring.profiles: rasp
+spring.profiles.include:
+  - rabbitmq-rasp
+  - datasource-rasp
+spring:
+  application:
+    name: recruit_jogbo
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+jwt:
+  token:
+    header: api_key
+    issuer: recruit_jogbo
+    clientSecret: CLIENT_SECRET
+    expirySeconds: 3600
+server:
+  port: 8080
+
+---
+
+spring.profiles: local
+spring.profiles.include:
+  - rabbitmq-rasp
+  - datasource-local
+spring:
+  application:
+    name: recruit_jogbo
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2/console
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+jwt:
+  token:
+    header: api_key
+    issuer: recruit_jogbo
+    clientSecret: CLIENT_SECRET
+    expirySeconds: 3600
+logging:
+  level:
+    org.hibernate.type: trace
+server:
+  port: 8080

@@ -7,12 +7,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
 import univ.study.recruitjogbo.message.EmailConfirmRequest;
 import univ.study.recruitjogbo.message.RabbitMQ;
-import univ.study.recruitjogbo.request.JoinRequest;
 import univ.study.recruitjogbo.validator.UnivEmail;
 
 import javax.validation.constraints.NotBlank;

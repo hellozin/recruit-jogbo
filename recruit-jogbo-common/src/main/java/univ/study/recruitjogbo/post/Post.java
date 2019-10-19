@@ -1,11 +1,13 @@
 package univ.study.recruitjogbo.post;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import univ.study.recruitjogbo.member.Member;
+import univ.study.recruitjogbo.post.recruitType.RecruitType;
+import univ.study.recruitjogbo.util.EnumValue;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -24,7 +26,10 @@ public class Post {
 
     private String companyName;
 
+    private String companyDetail;
+
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<RecruitType> recruitTypes;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -34,7 +39,6 @@ public class Post {
     private String review;
 
     @ManyToOne
-    @JsonBackReference
     private Member author;
 
     @CreationTimestamp
@@ -44,34 +48,27 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(Member author, String companyName, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
+    public Post(Member author, String companyName, String companyDetail, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
         this.author = author;
         this.companyName = companyName;
+        this.companyDetail = companyDetail;
         this.recruitTypes = recruitTypes;
         this.deadLine = deadLine;
         this.review = review;
     }
 
-    public void edit(String companyName, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
+    public void edit(String companyName, String companyDetail, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
         this.companyName = companyName;
+        this.companyDetail = companyDetail;
         this.recruitTypes = recruitTypes;
         this.deadLine = deadLine;
         this.review = review;
     }
 
-    public boolean isRecruitTypeMatch(RecruitTypes recruitType) {
-        for (RecruitType type : recruitTypes) {
-            if (type.getRecruitType().equals(recruitType)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<RecruitTypes> getRecruitTypesEnum() {
-        List<RecruitTypes> recruitTypesList = new ArrayList<>();
+    public List<EnumValue> getRecruitTypesEnum() {
+        List<EnumValue> recruitTypesList = new ArrayList<>();
         for (RecruitType recruitType : recruitTypes) {
-            recruitTypesList.add(recruitType.getRecruitType());
+            recruitTypesList.add(new EnumValue(recruitType.getRecruitType()));
         }
         return recruitTypesList;
     }

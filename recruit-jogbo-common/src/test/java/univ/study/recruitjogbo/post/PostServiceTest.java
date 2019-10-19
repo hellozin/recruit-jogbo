@@ -8,19 +8,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
+import univ.study.recruitjogbo.api.request.PostingRequest;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
-import univ.study.recruitjogbo.request.PostingRequest;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ActiveProfiles("local")
 @Slf4j
 class PostServiceTest {
 
@@ -47,20 +52,16 @@ class PostServiceTest {
     void setUp() {
         author1 = memberService.save(new Member("author1", "author1", "author1@ynu.ac.kr"));
         author2 = memberService.save(new Member("author2", "author2", "author2@ynu.ac.kr"));
-
-        for (RecruitTypes recruitType : RecruitTypes.values()) {
-            recruitTypeRepository.save(new RecruitType(recruitType));
-        }
     }
 
     @Test
     @Order(1)
     void 포스트를_작성한다() {
-        PostingRequest request = new PostingRequest();
-        request.setCompanyName(companyName);
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
-        request.setDeadLine(someDay);
-        request.setReview(review);
+        PostingRequest request = mock(PostingRequest.class);
+        when(request.getCompanyName()).thenReturn(companyName);
+        when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
+        when(request.getDeadLine()).thenReturn(someDay);
+        when(request.getReview()).thenReturn(review);
         Post post = postService.write(author1.getId(), request);
 
         assertThat(post).isNotNull();
@@ -82,12 +83,11 @@ class PostServiceTest {
     @Test
     @Order(3)
     void 기업명으로_포스트를_조회한다() {
-        PostingRequest request = new PostingRequest();
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
-        request.setDeadLine(someDay);
-        request.setReview(review);
-
-        request.setCompanyName("newCompany");
+        PostingRequest request = mock(PostingRequest.class);
+        when(request.getCompanyName()).thenReturn("newCompany");
+        when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
+        when(request.getDeadLine()).thenReturn(someDay);
+        when(request.getReview()).thenReturn(review);
 
         postService.write(author1.getId(), request);
         postService.write(author2.getId(), request);
@@ -100,12 +100,11 @@ class PostServiceTest {
     @Test
     @Order(4)
     void RecruitType으로_포스트를_조회한다() {
-        PostingRequest request = new PostingRequest();
-        request.setCompanyName(companyName);
-        request.setDeadLine(someDay);
-        request.setReview(review);
-
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.RESUME));
+        PostingRequest request = mock(PostingRequest.class);
+        when(request.getCompanyName()).thenReturn(companyName);
+        when(request.getRecruitTypes()).thenReturn(new RecruitTypes[]{RecruitTypes.RESUME});
+        when(request.getDeadLine()).thenReturn(someDay);
+        when(request.getReview()).thenReturn(review);
 
         postService.write(author1.getId(), request);
 
@@ -121,11 +120,11 @@ class PostServiceTest {
         Member newAuthor =
                 memberService.save(new Member("authorNew", "authorNew", "new@ynu.ac.kr"));
 
-        PostingRequest request = new PostingRequest();
-        request.setCompanyName(companyName);
-        request.setRecruitTypes(Arrays.asList(RecruitTypes.values()));
-        request.setDeadLine(someDay);
-        request.setReview(review);
+        PostingRequest request = mock(PostingRequest.class);
+        when(request.getCompanyName()).thenReturn(companyName);
+        when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
+        when(request.getDeadLine()).thenReturn(someDay);
+        when(request.getReview()).thenReturn(review);
         postService.write(newAuthor.getId(), request);
 
         Page<Post> posts = postService.findAll(PostSpecs.withAuthorName(newAuthor.getUsername()), Pageable.unpaged());

@@ -1,7 +1,7 @@
 package univ.study.recruitjogbo.message;
 
 import lombok.*;
-import univ.study.recruitjogbo.post.RecruitTypes;
+import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
 
 import java.util.List;
 

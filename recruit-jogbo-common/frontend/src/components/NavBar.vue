@@ -11,7 +11,8 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
-        <b-nav-item disabled>로그아웃</b-nav-item>
+        <b-nav-item v-if="!loged" v-on:click="login()">로그인</b-nav-item>
+        <b-nav-item v-if="loged" v-on:click="logout()">로그아웃</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -19,10 +20,36 @@
 
 <script>
 export default {
+  data () {
+    return {
+      loged: false
+    }
+  },
   methods: {
     forward (link) {
       this.$router.push(link)
+    },
+    login () {
+      this.$router.push('/login')
+    },
+    logout () {
+      localStorage.removeItem('apiToken')
+      this.loged = this.checkIsLogged()
+      this.$router.push('/login')
+    },
+    checkIsLogged () {
+      const apiToken = localStorage.getItem('apiToken')
+      if (apiToken) {
+        return true
+      } else {
+        return false
+      }
     }
+  },
+  created: function () {
+    this.$bus.$on('logged', () => {
+      this.loged = this.checkIsLogged()
+    })
   }
 }
 </script>

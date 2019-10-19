@@ -43,18 +43,25 @@ export default {
     onSubmit (event) {
       event.preventDefault()
       const formData = JSON.stringify(this.form)
-      console.log(formData)
       this.$axios.post(`http://localhost:8080/api/auth`, formData)
         .then(res => {
           localStorage.setItem('apiToken', res.data.response.apiToken)
+          this.$bus.$emit('logged', true)
           this.$router.push('/')
         }).catch(error => {
-          this.$bvToast.toast(error.response.data.response.errorMessage, {
+          const errorMessage = error.response.data.response.errorMessage
+          this.$bvToast.toast(errorMessage, {
             title: '로그인 에러',
             variant: 'danger'
           })
         })
     }
+  },
+  created: function () {
+    const message = this.$route.query.message
+    this.$bvToast.toast(message, {
+      variant: 'danger'
+    })
   }
 }
 </script>

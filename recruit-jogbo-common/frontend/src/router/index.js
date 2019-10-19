@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Welcome from '@/components/Welcome'
-import SignIn from '@/components/SignIn'
+import Login from '@/components/Login'
 import PostList from '@/components/PostList'
 import Post from '@/components/Post'
 import PostForm from '@/components/PostForm'
@@ -16,9 +16,9 @@ export default new Router({
       component: Welcome
     },
     {
-      path: '/signin',
-      name: 'SignIn',
-      component: SignIn
+      path: '/login',
+      name: 'Login',
+      component: Login
     }, {
       path: '/post/list',
       name: 'PostList',

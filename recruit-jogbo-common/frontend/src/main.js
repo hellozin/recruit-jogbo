@@ -45,6 +45,7 @@ instance.interceptors.response.use(
 )
 
 Vue.prototype.$axios = instance
+Vue.prototype.$bus = EventBus
 
 /* eslint-disable no-new */
 new Vue({

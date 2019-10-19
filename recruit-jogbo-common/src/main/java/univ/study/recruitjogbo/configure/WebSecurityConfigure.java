@@ -117,7 +117,8 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .antMatchers("/")
                 .antMatchers("/static/**")
                 .antMatchers("/h2/**")
-                .antMatchers("/member/confirm"); // Email authentication URL
+                .antMatchers("/api/member/confirm")
+                .antMatchers("/api/recruit-types");
     }
 
 }

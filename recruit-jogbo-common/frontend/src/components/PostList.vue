@@ -12,7 +12,7 @@
 
         <b-col>
           <b-form-select v-model="form.recruitTypes">
-            <option :value="emptyString" disabled>전형종류</option>
+            <option :value="emptyString">전형종류</option>
             <option v-for="type in recruitTypes" :key="type.id" :value="type.key">{{ type.value }}</option>
           </b-form-select>
         </b-col>
@@ -123,8 +123,13 @@ export default {
           this.currPage = response.page.number
           this.prevPage = this.currPage > 0 ? this.currPage - 1 : null
           this.nextPage = this.currPage < this.totalPages - 1 ? this.currPage + 1 : null
-        }).catch(error => {
-          console.log('post list : ', error.response)
+        })
+        .catch(error => {
+          const errorMessage = error.response.data.response.errorMessage
+          this.$bvToast.toast(errorMessage, {
+            title: '후기목록 가져오기 실패',
+            variant: 'danger'
+          })
         })
     },
     toPage (page) {
@@ -145,24 +150,17 @@ export default {
     }
   },
   created: function () {
-    const config = {
-      headers: {
-        api_key: 'Bearer ' + localStorage.getItem('apiToken')
-      }
-    }
-    this.$axios.get(`http://localhost:8080/api/recruit-types`, config)
+    this.$axios.get(`http://localhost:8080/api/recruit-types`)
       .then(res => {
-        console.log(res.data)
         this.recruitTypes = res.data
       })
-      .catch((error) => {
-        console.log('recruit Type Error : ', error.response)
-        this.$bvToast.toast(error.response, {
-          title: '전형 정보 로드 실패',
+      .catch(error => {
+        const errorMessage = error.response.data.response.errorMessage
+        this.$bvToast.toast(errorMessage, {
+          title: '전형정보 가져오기 실패',
           variant: 'danger'
         })
       })
-
     this.getPostList()
   }
 }

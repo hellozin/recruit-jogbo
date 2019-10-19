@@ -79,7 +79,6 @@ export default {
         .then(res => {
           this.$router.push('/post/list')
         }).catch(error => {
-          console.log(error.response)
           const errors = error.response.data.response.errorMessage.split('\n')
           for (var i in errors) {
             this.$bvToast.toast(errors[i], {
@@ -91,10 +90,7 @@ export default {
     }
   },
   created: function () {
-    const token = localStorage.getItem('apiToken')
-    console.log(token)
     this.$axios.get(`http://localhost:8080/api/recruit-types`).then(res => {
-      console.log(res)
       this.recruitTypes = res.data
     }).catch(error => {
       this.$bvToast.toast(error.response, {

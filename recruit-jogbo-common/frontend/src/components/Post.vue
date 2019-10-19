@@ -40,7 +40,11 @@ export default {
     this.$axios.get(`http://localhost:8080/api/post/${postId}`).then(res => {
       this.post = res.data.response
     }).catch(error => {
-      console.log(error)
+      const errorMessage = error.response.data.response.errorMessage
+      this.$bvToast.toast(errorMessage, {
+        title: '포스트 저장 실패',
+        variant: 'danger'
+      })
     })
   }
 }

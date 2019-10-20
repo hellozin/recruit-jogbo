@@ -11,9 +11,16 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
-        <b-nav-item v-if="!loged" v-on:click="login()">로그인</b-nav-item>
-        <b-nav-item v-if="loged" v-on:click="logout()">로그아웃</b-nav-item>
+        <b-nav-item-dropdown right>
+          <!-- Using 'button-content' slot -->
+          <template v-slot:button-content>
+            <a>{{ username }} 님 </a>
+          </template>
+          <b-dropdown-item v-if="!loged" v-on:click="login()">로그인</b-dropdown-item>
+          <b-dropdown-item v-if="loged" v-on:click="logout()">로그아웃</b-dropdown-item>
+        </b-nav-item-dropdown>
       </b-navbar-nav>
+
     </b-collapse>
   </b-navbar>
 </template>
@@ -22,24 +29,30 @@
 export default {
   data () {
     return {
-      loged: false
+      loged: false,
+      username: 'User'
     }
   },
   methods: {
     forward (link) {
-      this.$router.push(link)
+      if (link !== this.$route.path) {
+        this.$router.push(link)
+      }
     },
     login () {
       this.$router.push('/login')
     },
     logout () {
       localStorage.removeItem('apiToken')
+      localStorage.removeItem('username')
+      this.username = 'User'
       this.loged = this.checkIsLogged()
       this.$router.push('/login')
     },
     checkIsLogged () {
       const apiToken = localStorage.getItem('apiToken')
       if (apiToken) {
+        this.username = localStorage.getItem('username')
         return true
       } else {
         return false
@@ -50,6 +63,11 @@ export default {
     this.$bus.$on('logged', () => {
       this.loged = this.checkIsLogged()
     })
+    const username = localStorage.getItem('username')
+    if (username) {
+      this.username = username
+    }
+    this.loged = this.checkIsLogged()
   }
 }
 </script>

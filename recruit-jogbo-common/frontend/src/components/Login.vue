@@ -3,7 +3,7 @@
     <div class="border shadow mx-auto p-5">
       <p class="display-4 text-center p-3">Recruit Jogbo</p>
 
-      <b-form class="w-75 mx-auto" @submit="onSubmit" v-if="show">
+      <b-form class="w-75 mx-auto" @submit="onSubmit">
         <b-form-group>
           <b-form-input v-model="form.principal" required placeholder="ID"></b-form-input>
         </b-form-group>
@@ -14,8 +14,7 @@
 
         <b-button class="w-100 my-3" type="submit" variant="primary">로그인</b-button>
 
-        <router-link to="/signup" class="btn btn-outline-info w-100">회원가입</router-link>
-
+        <router-link to="/join" class="btn btn-outline-info w-100">회원가입</router-link>
       </b-form>
 
       <div class="p-3">
@@ -24,8 +23,7 @@
       </div>
 
     </div>
-
-</div>
+  </div>
 </template>
 
 <script>
@@ -35,8 +33,7 @@ export default {
       form: {
         principal: '',
         credentials: ''
-      },
-      show: true
+      }
     }
   },
   methods: {
@@ -45,7 +42,9 @@ export default {
       const formData = JSON.stringify(this.form)
       this.$axios.post(`http://localhost:8080/api/auth`, formData)
         .then(res => {
-          localStorage.setItem('apiToken', res.data.response.apiToken)
+          const response = res.data.response
+          localStorage.setItem('apiToken', response.apiToken)
+          localStorage.setItem('username', response.member.username)
           this.$bus.$emit('logged', true)
           this.$router.push('/')
         }).catch(error => {
@@ -56,23 +55,18 @@ export default {
           })
         })
     }
-  },
-  created: function () {
-    const message = this.$route.query.message
-    this.$bvToast.toast(message, {
-      variant: 'danger'
-    })
   }
 }
 </script>
 
 <style scoped>
 .login {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    transform: translateX(-50%) translateY(-50%);
+  width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>

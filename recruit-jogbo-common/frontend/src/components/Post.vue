@@ -13,7 +13,7 @@
       </tr>
       <tr>
         <td class="font-weight-bold">전형 종류</td>
-        <td v-if="post"><span>{{ post.recruitTypesEnum }}</span></td>
+        <td v-if="post"><span class="mr-2" v-for="type in post.recruitTypesEnum" :key="type.id">{{ type.value }}</span></td>
       </tr>
       <tr>
         <td class="font-weight-bold">마감일</td>

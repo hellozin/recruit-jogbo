@@ -18,7 +18,7 @@
         </b-col>
 
         <b-col>
-          <b-form-input v-model="form.author" placeholder="작성자"></b-form-input>
+          <b-form-input v-model="form.authorName" placeholder="작성자"></b-form-input>
         </b-col>
 
         <b-col cols="2">
@@ -88,7 +88,7 @@ export default {
       form: {
         companyName: '',
         recruitTypes: '',
-        author: '',
+        authorName: '',
         sort: ''
       },
       recruitTypes: [],

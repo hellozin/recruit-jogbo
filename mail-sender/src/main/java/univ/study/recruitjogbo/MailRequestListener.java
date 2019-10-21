@@ -16,7 +16,7 @@ public class MailRequestListener {
 
     private final MailService mailService;
 
-    @RabbitListener(queues = "confirm.email.request")
+    @RabbitListener(queues = "confirm.email")
     public void receiveMessage(final EmailConfirmRequest message) throws MessagingException {
         String targetEmail = message.getTargetEmail();
         String confirmLink = message.getEmailConfirmLink();

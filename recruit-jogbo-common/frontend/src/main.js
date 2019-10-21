@@ -33,7 +33,6 @@ instance.interceptors.response.use(
     return response
   }, function (error) {
     if (error.response) {
-      console.log('error response')
       const response = error.response.data.response
       if (response.status === 'UNAUTHORIZED') {
         localStorage.removeItem('apiToken')

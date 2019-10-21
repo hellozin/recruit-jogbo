@@ -23,8 +23,7 @@
 
     <p class="border p-3 lead" style="white-space: pre-line;" v-if="post">{{ post.review }}</p>
 
-    <a class="btn btn-primary" th:classappend="${isAuthor} ? null : sr-only"
-       th:href="@{/post/{id}/edit(id=${post.id})}">수정</a>
+    <button class="btn btn-primary" v-on:click="edit()">수정</button>
   </div>
 </template>
 
@@ -33,6 +32,14 @@ export default {
   data () {
     return {
       post: undefined
+    }
+  },
+  methods: {
+    edit () {
+      this.$router.push({
+        name: 'PostForm',
+        params: this.post
+      })
     }
   },
   created: function () {

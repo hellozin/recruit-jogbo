@@ -98,6 +98,15 @@ export default {
         variant: 'danger'
       })
     })
+
+    const params = this.$route.params
+    if (params.companyName) {
+      this.form.companyName = params.companyName
+      this.form.companyDetail = params.companyDetail
+      this.form.deadLine = params.deadLine
+      this.form.recruitTypes = params.recruitTypesEnum.map(type => type.key)
+      this.form.review = params.review
+    }
   }
 }
 </script>

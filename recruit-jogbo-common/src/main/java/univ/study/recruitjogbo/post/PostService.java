@@ -1,6 +1,8 @@
 package univ.study.recruitjogbo.post;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,8 @@ import univ.study.recruitjogbo.api.request.PostingRequest;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
+import univ.study.recruitjogbo.message.PostEvent;
+import univ.study.recruitjogbo.message.RabbitMQ;
 import univ.study.recruitjogbo.post.recruitType.RecruitType;
 import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
 
@@ -23,6 +27,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Validated
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
@@ -48,11 +53,12 @@ public class PostService {
                 .review(request.getReview())
                 .build());
 
-//        rabbitTemplate.convertAndSend(
-//                RabbitMQ.EXCHANGE,
-//                RabbitMQ.POST_CREATE,
-//                new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum())
-//        );
+        try {
+            rabbitTemplate.convertAndSend(RabbitMQ.EXCHANGE, RabbitMQ.POST_CREATE,
+                    new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum()));
+        } catch (AmqpException exception) {
+            log.warn("Fail MQ send post write message. {}", exception.getMessage());
+        }
         return post;
     }
 
@@ -63,6 +69,14 @@ public class PostService {
 
         List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
         post.edit(request.getCompanyName(), request.getCompanyDetail(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
+
+        try {
+            rabbitTemplate.convertAndSend(RabbitMQ.EXCHANGE, RabbitMQ.POST_UPDATE,
+                    new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum()));
+        } catch (AmqpException exception) {
+            log.warn("Fail MQ send post edit message. {}", exception.getMessage());
+        }
+
         return save(post);
     }
 

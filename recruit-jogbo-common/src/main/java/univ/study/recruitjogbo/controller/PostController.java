@@ -40,7 +40,7 @@ public class PostController {
     @PostMapping("/post")
     public ApiResponse createPost(@AuthenticationPrincipal JwtAuthentication author,
                                   @RequestBody @Valid PostingRequest postingRequest) {
-        Post post = postService.write(1L, postingRequest);
+        Post post = postService.write(author.id, postingRequest);
         return ApiResponse.OK(post);
     }
 

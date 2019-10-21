@@ -76,12 +76,15 @@ public class MemberService {
 
         final String confirmLink = confirmUrl + "?token=" + token;
 
-        rabbitTemplate.convertAndSend(
-                RabbitMQ.EXCHANGE,
-                RabbitMQ.CONFIRM_EMAIL_REQUEST,
-                new EmailConfirmRequest(email, confirmLink));
-
-        log.info("Confirmation email send. Send to [{}]", email);
+        try {
+            rabbitTemplate.convertAndSend(
+                    RabbitMQ.EXCHANGE,
+                    RabbitMQ.CONFIRM_EMAIL_REQUEST,
+                    new EmailConfirmRequest(email, confirmLink));
+            log.info("Confirmation email send. Send to [{}]", email);
+        } catch (AmqpException exception) {
+            log.error("Sending email confirm message failed. with {}", email);
+        }
     }
 
     @Transactional

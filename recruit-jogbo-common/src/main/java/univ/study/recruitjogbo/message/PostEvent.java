@@ -1,7 +1,7 @@
 package univ.study.recruitjogbo.message;
 
 import lombok.*;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.util.EnumValue;
 
 import java.util.List;
 
@@ -15,6 +15,6 @@ public class PostEvent {
 
     private String companyName;
 
-    private List<RecruitTypes> recruitTypes;
+    private List<EnumValue> recruitTypes;
 
 }

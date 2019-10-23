@@ -79,7 +79,7 @@ export default {
 
       this.$axios({
         method: this.isNew ? 'POST' : 'PUT',
-        url: this.isNew ? `http://localhost:8080/api/post` : `http://localhost:8080/api/post/${postId}`,
+        url: this.isNew ? `post` : `post/${postId}`,
         data: formData
       })
         .then(res => {
@@ -98,7 +98,7 @@ export default {
     }
   },
   created: function () {
-    this.$axios.get(`http://localhost:8080/api/recruit-types`).then(res => {
+    this.$axios.get(`recruit-types`).then(res => {
       this.recruitTypes = res.data
     }).catch(error => {
       this.$bvToast.toast(error.response, {
@@ -110,7 +110,7 @@ export default {
     const postId = this.$route.params.id
     if (postId) {
       this.isNew = false
-      this.$axios.get(`http://localhost:8080/api/post/${postId}`)
+      this.$axios.get(`post/${postId}`)
         .then(res => {
           const post = res.data.response
           this.form.companyName = post.companyName

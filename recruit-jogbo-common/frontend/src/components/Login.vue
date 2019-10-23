@@ -40,7 +40,7 @@ export default {
     onSubmit (event) {
       event.preventDefault()
       const formData = JSON.stringify(this.form)
-      this.$axios.post(`http://localhost:8080/api/auth`, formData)
+      this.$axios.post(`auth`, formData)
         .then(res => {
           const response = res.data.response
           localStorage.setItem('apiToken', response.apiToken)
@@ -48,11 +48,13 @@ export default {
           this.$bus.$emit('logged', true)
           this.$router.push('/')
         }).catch(error => {
-          const errorMessage = error.response.data.response.errorMessage
-          this.$bvToast.toast(errorMessage, {
-            title: '로그인 에러',
-            variant: 'danger'
-          })
+          if (error.response) {
+            const response = error.response.data.response
+            this.$bvToast.toast(response.errorMessage, {
+              title: '로그인 실패',
+              variant: 'danger'
+            })
+          }
         })
     }
   }

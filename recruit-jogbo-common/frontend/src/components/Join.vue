@@ -44,16 +44,18 @@ export default {
     onSubmit (event) {
       event.preventDefault()
       const formData = JSON.stringify(this.form)
-      this.$axios.post(`http://localhost:8080/api/member`, formData)
+      this.$axios.post(`member`, formData)
         .then(res => {
           alert(`가입 요청이 완료되었습니다.\n인증을 위해 ${this.form.email}을 확인해주세요.`)
           this.$router.push('/login')
         }).catch(error => {
-          const errorMessage = error.response.data.response.errorMessage
-          this.$bvToast.toast(errorMessage, {
-            title: '가입 실패',
-            variant: 'danger'
-          })
+          if (error.response) {
+            const response = error.response.data.response
+            this.$bvToast.toast(response.errorMessage, {
+              title: '가입 실패',
+              variant: 'danger'
+            })
+          }
         })
     }
   }

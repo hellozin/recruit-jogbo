@@ -12,6 +12,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 const instance = axios.create({
+  baseURL: 'http://localhost:8080/api/'
 })
 
 instance.defaults.headers['Content-Type'] = 'application/json'
@@ -33,10 +34,15 @@ instance.interceptors.response.use(
     return response
   }, function (error) {
     if (error.response) {
-      const response = error.response.data.response
-      if (response.status === 'UNAUTHORIZED') {
-        localStorage.removeItem('apiToken')
-        window.location.href = '#/login'
+      let response = error.response
+      if (response.data) {
+        response = response.data.response
+        if (response.status === 'UNAUTHORIZED') {
+          localStorage.removeItem('apiToken')
+          window.location.href = '#/login'
+        }
+      } else {
+        console.log(response)
       }
     }
     return Promise.reject(error)

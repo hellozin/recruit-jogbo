@@ -37,11 +37,7 @@
       <table class="table table-hover" id="postList">
         <thead class="thead-light">
           <tr>
-            <th class="text-center">기업명</th>
-            <th class="text-center">기업추가정보</th>
-            <th class="text-center">전형종류</th>
-            <th class="text-center">마감일</th>
-            <th class="text-center">작성자</th>
+            <th class="text-center" v-for="header in tableHeaders" :key="header.id">{{ header }}</th>
           </tr>
         </thead>
 
@@ -92,6 +88,7 @@ export default {
         sort: ''
       },
       recruitTypes: [],
+      tableHeaders: ['기업명', '기업추가정보', '전형종류', '마감일', '작성자'],
       sort: [
         { value: '', text: '정렬', disabled: true },
         { value: 'createdAt,desc', text: '작성순' },
@@ -115,7 +112,7 @@ export default {
       const config = {
         params: param
       }
-      this.$axios.get(`http://localhost:8080/api/post/list`, config)
+      this.$axios.get(`post/list`, config)
         .then(res => {
           const response = res.data.response
           this.postList = response.content
@@ -150,7 +147,7 @@ export default {
     }
   },
   created: function () {
-    this.$axios.get(`http://localhost:8080/api/recruit-types`)
+    this.$axios.get(`recruit-types`)
       .then(res => {
         this.recruitTypes = res.data
       })

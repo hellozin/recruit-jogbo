@@ -23,7 +23,7 @@
 
     <p class="border p-3 lead" style="white-space: pre-line;" v-if="post">{{ post.review }}</p>
 
-    <button class="btn btn-primary" v-on:click="edit()">수정</button>
+    <button class="btn btn-primary" v-if="this.post.author.username === this.username" v-on:click="edit()">수정</button>
   </div>
 </template>
 
@@ -31,7 +31,8 @@
 export default {
   data () {
     return {
-      post: undefined
+      post: undefined,
+      username: ''
     }
   },
   methods: {
@@ -42,15 +43,21 @@ export default {
   },
   created: function () {
     const postId = this.$route.params.id
-    this.$axios.get(`http://localhost:8080/api/post/${postId}`).then(res => {
+    this.$axios.get(`post/${postId}`).then(res => {
       this.post = res.data.response
     }).catch(error => {
-      const errorMessage = error.response.data.response.errorMessage
-      this.$bvToast.toast(errorMessage, {
-        title: '포스트 저장 실패',
-        variant: 'danger'
-      })
+      if (error.response) {
+        const response = error.response.data.response
+        this.$bvToast.toast(response.errorMessage, {
+          title: '포스트 저장 실패',
+          variant: 'danger'
+        })
+      }
     })
+    const username = localStorage.getItem('username')
+    if (username) {
+      this.username = username
+    }
   }
 }
 </script>

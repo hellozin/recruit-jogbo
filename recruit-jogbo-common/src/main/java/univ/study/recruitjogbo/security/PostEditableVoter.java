@@ -15,7 +15,9 @@ import univ.study.recruitjogbo.post.Post;
 import univ.study.recruitjogbo.post.PostService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -25,14 +27,20 @@ public class PostEditableVoter implements AccessDecisionVoter<FilterInvocation> 
 
     private final Function<String, Long> idExtractor;
 
+    private static final List<String> ignoreMethods = Arrays.asList(HttpMethod.GET.name(), HttpMethod.OPTIONS.name());
+
     private PostService postService;
 
     @Override
     public int vote(Authentication authentication, FilterInvocation object, Collection<ConfigAttribute> attributes) {
         HttpServletRequest request = object.getRequest();
 
-        if (!requestMatcher.matches(request) || request.getMethod().equals(HttpMethod.GET.name())) {
+        if (!requestMatcher.matches(request)) {
             return ACCESS_ABSTAIN;
+        }
+
+        if (ignoreMethods.contains(request.getMethod())) {
+            return ACCESS_GRANTED;
         }
 
         if (!authentication.getClass().isAssignableFrom(JwtAuthenticationToken.class)) {
@@ -45,8 +53,8 @@ public class PostEditableVoter implements AccessDecisionVoter<FilterInvocation> 
                 .map(Member::getId)
                 .orElseThrow(() -> new NotFoundException(Post.class, requestPostId.toString()));
 
-        AuthenticationResult currentMember = (AuthenticationResult) authentication.getDetails();
-        if (currentMember.getMember().getId().equals(authorId)) {
+        JwtAuthentication currentMember = (JwtAuthentication) authentication.getPrincipal();
+        if (currentMember.id.equals(authorId)) {
             return ACCESS_GRANTED;
         }
 

@@ -67,6 +67,7 @@ export default {
         { name: '날짜', description: '전형이 시작되는 날짜를 입력해 주세요. (서류 마감일, 코딩테스트 날짜, 시험 날짜 등)' },
         { name: '전형 종류', description: '후기에 포함된 전형을 모두 체크해 주세요.' }
       ],
+      isNew: true,
       show: true
     }
   },
@@ -74,17 +75,24 @@ export default {
     onSubmit (event) {
       event.preventDefault()
       const formData = JSON.stringify(this.form)
-      console.log(formData)
-      this.$axios.post(`http://localhost:8080/api/post`, formData)
+      const postId = this.$route.params.id
+
+      this.$axios({
+        method: this.isNew ? 'POST' : 'PUT',
+        url: this.isNew ? `http://localhost:8080/api/post` : `http://localhost:8080/api/post/${postId}`,
+        data: formData
+      })
         .then(res => {
           this.$router.push('/post/list')
         }).catch(error => {
-          const errors = error.response.data.response.errorMessage.split('\n')
-          for (var i in errors) {
-            this.$bvToast.toast(errors[i], {
-              title: '포스트 저장 실패',
-              variant: 'danger'
-            })
+          if (error.response) {
+            const errors = error.response.data.response.errorMessage.split('\n')
+            for (var i in errors) {
+              this.$bvToast.toast(errors[i], {
+                title: '포스트 저장 실패',
+                variant: 'danger'
+              })
+            }
           }
         })
     }
@@ -99,13 +107,24 @@ export default {
       })
     })
 
-    const params = this.$route.params
-    if (params.companyName) {
-      this.form.companyName = params.companyName
-      this.form.companyDetail = params.companyDetail
-      this.form.deadLine = params.deadLine
-      this.form.recruitTypes = params.recruitTypesEnum.map(type => type.key)
-      this.form.review = params.review
+    const postId = this.$route.params.id
+    if (postId) {
+      this.isNew = false
+      this.$axios.get(`http://localhost:8080/api/post/${postId}`)
+        .then(res => {
+          const post = res.data.response
+          this.form.companyName = post.companyName
+          this.form.companyDetail = post.companyDetail
+          this.form.deadLine = post.deadLine
+          this.form.recruitTypes = post.recruitTypesEnum.map(type => type.key)
+          this.form.review = post.review
+        })
+        .catch(error => {
+          this.$bvToast.toast(error.response, {
+            title: '후기 정보 가져오기 실패',
+            variant: 'danger'
+          })
+        })
     }
   }
 }

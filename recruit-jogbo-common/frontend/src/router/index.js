@@ -34,9 +34,12 @@ export default new Router({
       component: PostList
     }, {
       path: '/post/form',
-      name: 'PostForm',
-      component: PostForm,
-      props: true
+      name: 'PostCreateForm',
+      component: PostForm
+    }, {
+      path: '/post/form/:id',
+      name: 'PostUpdateForm',
+      component: PostForm
     }, {
       path: '/post/:id',
       name: 'Post',

@@ -36,10 +36,8 @@ export default {
   },
   methods: {
     edit () {
-      this.$router.push({
-        name: 'PostForm',
-        params: this.post
-      })
+      const postId = this.post.id
+      this.$router.push(`/post/form/${postId}`)
     }
   },
   created: function () {

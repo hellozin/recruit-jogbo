@@ -1,13 +1,13 @@
 package univ.study.recruitjogbo.member;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import univ.study.recruitjogbo.post.Post;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,11 +27,32 @@ public class Member {
 
     private boolean emailConfirmed;
 
+    @OneToMany(mappedBy = "author", orphanRemoval = true)
+    @JsonBackReference
+    private List<Post> posts;
+
     @Builder
     public Member(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public void update(String username, String email) {
+        if (username != null) {
+            this.username = username;
+        }
+        if (email != null) {
+            this.email = email;
+        }
+    }
+
+    public boolean updatePassword(PasswordEncoder passwordEncoder, String originPassword, String newPassword) {
+        boolean isPasswordCorrect = checkPassword(passwordEncoder, originPassword);
+        if (isPasswordCorrect) {
+            this.password = passwordEncoder.encode(newPassword);
+        }
+        return isPasswordCorrect;
     }
 
     public boolean checkPassword(PasswordEncoder passwordEncoder, String password) {

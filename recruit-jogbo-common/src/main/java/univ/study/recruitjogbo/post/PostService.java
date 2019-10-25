@@ -87,6 +87,14 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    @Transactional
+    public void deleteByAuthorId(Long authorId) {
+        String authorName = memberService.findById(authorId).map(Member::getUsername)
+                .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
+        List<Post> postsByAuthorId = postRepository.findAll(PostSpecs.withAuthorName(authorName));
+        postRepository.deleteAll(postsByAuthorId);
+    }
+
     @Transactional(readOnly = true)
     public Optional<Post> findById(Long postId) {
         return postRepository.findById(postId);

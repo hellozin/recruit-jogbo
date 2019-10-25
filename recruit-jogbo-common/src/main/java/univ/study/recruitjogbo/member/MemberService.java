@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import univ.study.recruitjogbo.api.request.JoinRequest;
+import univ.study.recruitjogbo.api.request.MemberUpdateRequest;
 import univ.study.recruitjogbo.error.NotFoundException;
+import univ.study.recruitjogbo.error.UnauthorizedException;
 import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
 import univ.study.recruitjogbo.member.confirm.ConfirmationTokenRepository;
 import univ.study.recruitjogbo.message.EmailConfirmRequest;
@@ -65,6 +67,32 @@ public class MemberService {
         Member member = join(request);
         sendConfirmEmail(member.getEmail(), confirmUrl);
         return member;
+    }
+
+    @Transactional
+    public Member update(Long memberId, MemberUpdateRequest memberUpdateRequest) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException(Member.class, memberId.toString()));
+        member.update(memberUpdateRequest.getUsername(), memberUpdateRequest.getEmail());
+        return save(member);
+    }
+
+    @Transactional
+    public Member updatePassword(Long memberId, String originPassword, String newPassword) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException(Member.class, memberId.toString()));
+        boolean isUpdated = member.updatePassword(passwordEncoder, originPassword, newPassword);
+        if (!isUpdated) {
+            throw new UnauthorizedException("비밀번호 변경에 실패했습니다.");
+        }
+        return save(member);
+    }
+
+    @Transactional
+    public void delete(Long memberId) {
+        Member member = findById(memberId)
+                .orElseThrow(() -> new NotFoundException(Member.class, memberId.toString()));
+        memberRepository.delete(member);
     }
 
     @Transactional

@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import univ.study.recruitjogbo.api.request.ConfirmEmailRequest;
-import univ.study.recruitjogbo.api.request.ConfirmMailSendingRequest;
-import univ.study.recruitjogbo.api.request.JoinRequest;
+import univ.study.recruitjogbo.api.request.*;
 import univ.study.recruitjogbo.api.response.ApiError;
 import univ.study.recruitjogbo.api.response.ApiResponse;
 import univ.study.recruitjogbo.error.NotFoundException;
@@ -33,11 +31,32 @@ public class MemberController {
             : ApiResponse.OK(memberService.joinWithEmailConfirm(joinRequest, confirmUrl));
     }
 
-    @GetMapping("/member")
+    @GetMapping("/member/me")
     public ApiResponse getMember(@AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
         Member member = memberService.findById(jwtAuthentication.id)
                 .orElseThrow(() -> new NotFoundException(Member.class, jwtAuthentication.id.toString()));
         return ApiResponse.OK(member);
+    }
+
+    @PutMapping("/member/me")
+    public ApiResponse updateMember(@AuthenticationPrincipal JwtAuthentication jwtAuthentication,
+                                    @RequestBody @Valid MemberUpdateRequest memberUpdateRequest) {
+        return ApiResponse.OK(memberService.update(jwtAuthentication.id, memberUpdateRequest));
+    }
+
+    @PatchMapping("/member/me/password")
+    public ApiResponse updateMemberPassword(@AuthenticationPrincipal JwtAuthentication jwtAuthentication,
+                                            @RequestBody @Valid MemberUpdatePasswordRequest memberUpdatePasswordRequest) {
+        return ApiResponse.OK(memberService.updatePassword(
+                jwtAuthentication.id,
+                memberUpdatePasswordRequest.getOriginPassword(),
+                memberUpdatePasswordRequest.getNewPassword()));
+    }
+
+    @DeleteMapping("/member/me")
+    public ApiResponse deleteMember(@AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
+        memberService.delete(jwtAuthentication.id);
+        return ApiResponse.OK(jwtAuthentication.id);
     }
 
     @PostMapping("/member/confirm")

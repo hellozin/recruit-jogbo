@@ -15,7 +15,8 @@
           <template v-slot:button-content>
             <a>{{ username }} 님 </a>
           </template>
-          <b-dropdown-item v-if="!loged" v-on:click="login()">로그인</b-dropdown-item>
+          <b-dropdown-item v-if="loged" v-on:click="forward('/member')">내정보</b-dropdown-item>
+          <b-dropdown-item v-if="!loged" v-on:click="login('/login')">로그인</b-dropdown-item>
           <b-dropdown-item v-if="loged" v-on:click="logout()">로그아웃</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -38,9 +39,6 @@ export default {
         this.$router.push(link)
       }
     },
-    login () {
-      this.$router.push('/login')
-    },
     logout () {
       localStorage.removeItem('apiToken')
       localStorage.removeItem('username')
@@ -59,8 +57,12 @@ export default {
     }
   },
   created: function () {
-    this.$bus.$on('logged', () => {
-      this.loged = this.checkIsLogged()
+    this.$bus.$on('logged', (isLogged) => {
+      if (isLogged) {
+        this.loged = this.checkIsLogged()
+      } else {
+        this.logout()
+      }
     })
     const username = localStorage.getItem('username')
     if (username) {

@@ -23,7 +23,8 @@
 
     <p class="border p-3 lead" style="white-space: pre-line;" v-if="post">{{ post.review }}</p>
 
-    <button class="btn btn-primary" v-if="this.post.author.username === this.username" v-on:click="edit()">수정</button>
+    <button class="btn btn-primary" v-if="this.post && this.post.author.username === this.username" v-on:click="edit()">수정</button>
+    <button class="btn btn-primary" v-if="this.post && this.post.author.username === this.username" v-on:click="deletePost()">삭제</button>
   </div>
 </template>
 
@@ -39,6 +40,23 @@ export default {
     edit () {
       const postId = this.post.id
       this.$router.push(`/post/form/${postId}`)
+    },
+    deletePost () {
+      const postId = this.post.id
+      this.$axios.delete(`post/${postId}`)
+        .then(res => {
+          alert('삭제되었습니다.')
+          this.$router.push('/post/list')
+        })
+        .catch(error => {
+          if (error.response) {
+            const response = error.response.data.response
+            this.$bvToast.toast(response.errorMessage, {
+              title: '포스트 삭제 실패',
+              variant: 'danger'
+            })
+          }
+        })
     }
   },
   created: function () {

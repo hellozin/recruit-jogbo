@@ -7,6 +7,7 @@ import Confirm from '@/components/Confirm'
 import PostList from '@/components/PostList'
 import Post from '@/components/Post'
 import PostForm from '@/components/PostForm'
+import Member from '@/components/Member'
 
 Vue.use(Router)
 
@@ -44,6 +45,10 @@ export default new Router({
       path: '/post/:id',
       name: 'Post',
       component: Post
+    }, {
+      path: '/member',
+      name: 'Member',
+      component: Member
     }
   ]
 })

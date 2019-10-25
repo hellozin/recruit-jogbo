@@ -23,7 +23,7 @@ public class UnivEmailValidator implements ConstraintValidator<UnivEmail, String
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
         if (isBlank(email)) {
-            return false;
+            return true;
         }
 
         return Arrays.stream(domains)

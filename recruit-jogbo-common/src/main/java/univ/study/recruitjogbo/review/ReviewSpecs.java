@@ -59,12 +59,21 @@ public class ReviewSpecs {
         return base == null ? append : base.and(append);
     }
 
+    private static String withLikePattern(String value) {
+        if (isBlank(value)) {
+            return "%";
+        } else {
+            return "%" + value + "%";
+        }
+    }
+
     public static Specification<Review> withCompanyName(String companyName) {
         if (isBlank(companyName)) {
             log.warn("[companyName] is empty.");
             return Specification.where(null);
         }
-        return (Specification<Review>) (root, query, builder) -> builder.like(root.get("companyName"), companyName);
+        return (Specification<Review>) (root, query, builder) ->
+                builder.like(root.get("companyName"), withLikePattern(companyName));
     }
 
     public static Specification<Review> withRecruitType(RecruitType recruitType) {
@@ -83,7 +92,8 @@ public class ReviewSpecs {
             log.warn("[authorName] is empty.");
             return Specification.where(null);
         }
-        return (Specification<Review>) (root, query, builder) -> builder.equal(root.get("author").get("username"), authorName);
+        return (Specification<Review>) (root, query, builder) ->
+                builder.equal(root.get("author").get("username"), authorName);
     }
 
 }

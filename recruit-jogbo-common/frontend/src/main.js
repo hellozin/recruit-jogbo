@@ -40,7 +40,7 @@ instance.interceptors.response.use(
         if (response.status === 'UNAUTHORIZED') {
           localStorage.removeItem('apiToken')
           localStorage.removeItem('username')
-          window.location.href = '#/login'
+          window.location.href = '/login'
         }
       } else {
         console.log(response)

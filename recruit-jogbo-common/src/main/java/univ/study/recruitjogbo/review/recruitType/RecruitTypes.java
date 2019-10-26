@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.post.recruitType;
+package univ.study.recruitjogbo.review.recruitType;
 
 import univ.study.recruitjogbo.util.EnumModel;
 

@@ -5,26 +5,26 @@
     <table class="table table-sm w-auto">
       <tr>
         <td class="font-weight-bold">작성자</td>
-        <td v-if="post">{{ post.author.username }}</td>
+        <td v-if="review">{{ review.author.username }}</td>
       </tr>
       <tr>
         <td class="font-weight-bold">기업 명</td>
-        <td v-if="post">{{ post.companyName }}</td>
+        <td v-if="review">{{ review.companyName }}</td>
       </tr>
       <tr>
         <td class="font-weight-bold">전형 종류</td>
-        <td v-if="post"><span class="mr-2" v-for="type in post.recruitTypesEnum" :key="type.id">{{ type.value }}</span></td>
+        <td v-if="review"><span class="mr-2" v-for="type in review.recruitTypesEnum" :key="type.id">{{ type.value }}</span></td>
       </tr>
       <tr>
         <td class="font-weight-bold">마감일</td>
-        <td v-if="post">{{ post.deadLine }}</td>
+        <td v-if="review">{{ review.deadLine }}</td>
       </tr>
     </table>
 
-    <p class="border p-3 lead" style="white-space: pre-line;" v-if="post">{{ post.review }}</p>
+    <p class="border p-3 lead" style="white-space: pre-line;" v-if="review">{{ review.review }}</p>
 
-    <button class="btn btn-primary" v-if="this.post && this.post.author.username === this.username" v-on:click="edit()">수정</button>
-    <button class="btn btn-primary" v-if="this.post && this.post.author.username === this.username" v-on:click="deletePost()">삭제</button>
+    <button class="btn btn-primary" v-if="this.review && this.review.author.username === this.username" v-on:click="edit()">수정</button>
+    <button class="btn btn-primary" v-if="this.review && this.review.author.username === this.username" v-on:click="deleteReview()">삭제</button>
   </div>
 </template>
 
@@ -32,21 +32,21 @@
 export default {
   data () {
     return {
-      post: undefined,
+      review: undefined,
       username: ''
     }
   },
   methods: {
     edit () {
-      const postId = this.post.id
-      this.$router.push(`/post/form/${postId}`)
+      const reviewId = this.review.id
+      this.$router.push(`/review/form/${reviewId}`)
     },
-    deletePost () {
-      const postId = this.post.id
-      this.$axios.delete(`post/${postId}`)
+    deleteReview () {
+      const reviewId = this.review.id
+      this.$axios.delete(`review/${reviewId}`)
         .then(res => {
           alert('삭제되었습니다.')
-          this.$router.push('/post/list')
+          this.$router.push('/review/list')
         })
         .catch(error => {
           if (error.response) {
@@ -60,9 +60,9 @@ export default {
     }
   },
   created: function () {
-    const postId = this.$route.params.id
-    this.$axios.get(`post/${postId}`).then(res => {
-      this.post = res.data.response
+    const reviewId = this.$route.params.id
+    this.$axios.get(`review/${reviewId}`).then(res => {
+      this.review = res.data.response
     }).catch(error => {
       if (error.response) {
         const response = error.response.data.response

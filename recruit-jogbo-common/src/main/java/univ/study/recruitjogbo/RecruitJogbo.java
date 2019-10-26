@@ -8,11 +8,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberRepository;
-import univ.study.recruitjogbo.post.Post;
-import univ.study.recruitjogbo.post.PostRepository;
-import univ.study.recruitjogbo.post.recruitType.RecruitType;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.Review;
+import univ.study.recruitjogbo.review.ReviewRepository;
+import univ.study.recruitjogbo.review.recruitType.RecruitType;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypeRepository;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -39,7 +39,7 @@ public class RecruitJogbo {
 
         private final MemberRepository memberRepository;
 
-        private final PostRepository postRepository;
+        private final ReviewRepository reviewRepository;
 
         private final RecruitTypeRepository recruitTypeRepository;
 
@@ -57,14 +57,14 @@ public class RecruitJogbo {
             LocalDate today = LocalDate.now();
             for (int i = 0; i < 10; i++) {
                 List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(RecruitTypes.RESUME, RecruitTypes.APTITUDE));
-                Post post = new Post(
+                Review review = new Review(
                         member,
                         "company" + i,
                         "detail" + i,
                         byRecruitTypeIn,
                         today.minusDays(i),
                         "review" + i);
-                postRepository.save(post);
+                reviewRepository.save(review);
             }
         }
     }

@@ -5,7 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
 import univ.study.recruitjogbo.security.JWT;
 import univ.study.recruitjogbo.util.EnumMapper;
 import univ.study.recruitjogbo.util.MessageUtils;

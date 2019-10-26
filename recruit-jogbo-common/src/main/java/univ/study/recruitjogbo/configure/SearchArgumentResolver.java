@@ -6,7 +6,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import univ.study.recruitjogbo.api.request.SearchRequest;
-import univ.study.recruitjogbo.post.PostSpecs.SearchKeys;
+import univ.study.recruitjogbo.review.ReviewSpecs.SearchKeys;
 
 import java.util.HashMap;
 import java.util.Map;

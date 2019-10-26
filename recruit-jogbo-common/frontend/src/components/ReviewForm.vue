@@ -75,15 +75,15 @@ export default {
     onSubmit (event) {
       event.preventDefault()
       const formData = JSON.stringify(this.form)
-      const postId = this.$route.params.id
+      const reviewId = this.$route.params.id
 
       this.$axios({
         method: this.isNew ? 'POST' : 'PUT',
-        url: this.isNew ? `post` : `post/${postId}`,
+        url: this.isNew ? `review` : `review/${reviewId}`,
         data: formData
       })
         .then(res => {
-          this.$router.push('/post/list')
+          this.$router.push('/review/list')
         }).catch(error => {
           if (error.response) {
             const errors = error.response.data.response.errorMessage.split('\n')
@@ -107,17 +107,17 @@ export default {
       })
     })
 
-    const postId = this.$route.params.id
-    if (postId) {
+    const reviewId = this.$route.params.id
+    if (reviewId) {
       this.isNew = false
-      this.$axios.get(`post/${postId}`)
+      this.$axios.get(`review/${reviewId}`)
         .then(res => {
-          const post = res.data.response
-          this.form.companyName = post.companyName
-          this.form.companyDetail = post.companyDetail
-          this.form.deadLine = post.deadLine
-          this.form.recruitTypes = post.recruitTypesEnum.map(type => type.key)
-          this.form.review = post.review
+          const review = res.data.response
+          this.form.companyName = review.companyName
+          this.form.companyDetail = review.companyDetail
+          this.form.deadLine = review.deadLine
+          this.form.recruitTypes = review.recruitTypesEnum.map(type => type.key)
+          this.form.review = review.review
         })
         .catch(error => {
           this.$bvToast.toast(error.response, {

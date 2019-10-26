@@ -8,12 +8,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import univ.study.recruitjogbo.api.request.PostingRequest;
+import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.api.request.SearchRequest;
 import univ.study.recruitjogbo.api.response.ApiResponse;
-import univ.study.recruitjogbo.post.Post;
-import univ.study.recruitjogbo.post.PostService;
-import univ.study.recruitjogbo.post.PostSpecs;
+import univ.study.recruitjogbo.review.Review;
+import univ.study.recruitjogbo.review.ReviewService;
+import univ.study.recruitjogbo.review.ReviewSpecs;
 import univ.study.recruitjogbo.security.JwtAuthentication;
 import univ.study.recruitjogbo.util.EnumMapper;
 import univ.study.recruitjogbo.util.EnumValue;
@@ -26,48 +26,48 @@ import java.util.List;
 @RequestMapping("/api")
 public class PostController {
 
-    private final PostService postService;
+    private final ReviewService reviewService;
 
     private final EnumMapper enumMapper;
 
-    private final PagedResourcesAssembler<Post> assembler;
+    private final PagedResourcesAssembler<Review> assembler;
 
     @GetMapping("/recruit-types")
     public List<EnumValue> recruitTypes() {
         return enumMapper.getEnumValues("recruitTypes");
     }
 
-    @PostMapping("/post")
+    @PostMapping("/review")
     public ApiResponse createPost(@AuthenticationPrincipal JwtAuthentication author,
-                                  @RequestBody @Valid PostingRequest postingRequest) {
-        Post post = postService.write(author.id, postingRequest);
-        return ApiResponse.OK(post);
+                                  @RequestBody @Valid ReviewPublishRequest reviewPublishRequest) {
+        Review review = reviewService.publish(author.id, reviewPublishRequest);
+        return ApiResponse.OK(review);
     }
 
-    @GetMapping("/post/list")
+    @GetMapping("/review/list")
     public ApiResponse showPostList(SearchRequest request,
                                     @PageableDefault(sort = {"createdAt"}, direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Post> postList = request.getSearchKeyMap().isEmpty()
-                ? postService.findAll(pageable)
-                : postService.findAll(PostSpecs.searchWith(request.getSearchKeyMap()), pageable);
+        Page<Review> postList = request.getSearchKeyMap().isEmpty()
+                ? reviewService.findAll(pageable)
+                : reviewService.findAll(ReviewSpecs.searchWith(request.getSearchKeyMap()), pageable);
         return ApiResponse.OK(assembler.toResource(postList));
     }
 
-    @GetMapping("/post/{id}")
-    public ApiResponse getPost(@PathVariable(value = "id") Post post) {
-        return ApiResponse.OK(post);
+    @GetMapping("/review/{id}")
+    public ApiResponse getPost(@PathVariable(value = "id") Review review) {
+        return ApiResponse.OK(review);
     }
 
-    @PutMapping("/post/{id}")
-    public ApiResponse editPost(@PathVariable(value = "id") Long postId, @RequestBody @Valid PostingRequest postingRequest) {
-        Post post = postService.edit(postId, postingRequest);
-        return ApiResponse.OK(post);
+    @PutMapping("/review/{id}")
+    public ApiResponse editPost(@PathVariable(value = "id") Long reviewId, @RequestBody @Valid ReviewPublishRequest reviewPublishRequest) {
+        Review review = reviewService.edit(reviewId, reviewPublishRequest);
+        return ApiResponse.OK(review);
     }
 
-    @DeleteMapping("/post/{id}")
-    public ApiResponse deletePost(@PathVariable(value = "id") Long postId) {
-        postService.delete(postId);
-        return ApiResponse.OK(postId);
+    @DeleteMapping("/review/{id}")
+    public ApiResponse deletePost(@PathVariable(value = "id") Long reviewId) {
+        reviewService.delete(reviewId);
+        return ApiResponse.OK(reviewId);
     }
 
 }

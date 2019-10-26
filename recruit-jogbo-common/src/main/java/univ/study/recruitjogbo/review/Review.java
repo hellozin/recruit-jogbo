@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.post;
+package univ.study.recruitjogbo.review;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.post.recruitType.RecruitType;
+import univ.study.recruitjogbo.review.recruitType.RecruitType;
 import univ.study.recruitjogbo.util.EnumValue;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Review {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,7 +48,7 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(Member author, String companyName, String companyDetail, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
+    public Review(Member author, String companyName, String companyDetail, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
         this.author = author;
         this.companyName = companyName;
         this.companyDetail = companyDetail;

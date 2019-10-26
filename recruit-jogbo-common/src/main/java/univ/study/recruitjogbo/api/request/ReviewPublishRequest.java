@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PostingRequest {
+public class ReviewPublishRequest {
 
     @NotBlank(message = "기업명을 입력해주세요.")
     private String companyName;

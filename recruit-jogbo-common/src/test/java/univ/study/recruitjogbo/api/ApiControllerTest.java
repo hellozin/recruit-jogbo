@@ -13,10 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import univ.study.recruitjogbo.api.request.AuthenticationRequest;
 import univ.study.recruitjogbo.api.request.JoinRequest;
-import univ.study.recruitjogbo.api.request.PostingRequest;
+import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.api.response.ApiResponse;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
@@ -94,8 +94,8 @@ public class ApiControllerTest {
 
     @Test
     @Order(3)
-    void 포스트_목록을_가져온다() throws Exception {
-        mockMvc.perform(get("/api/post/list")
+    void 리뷰_목록을_가져온다() throws Exception {
+        mockMvc.perform(get("/api/review/list")
                 .header("api_key", "Bearer " + APITOKEN)
                 .with(csrf())
         )
@@ -105,15 +105,15 @@ public class ApiControllerTest {
 
     @Test
     @Order(4)
-    void 새_포스트를_작성한다() throws Exception {
-        PostingRequest request = mock(PostingRequest.class);
+    void 새_리뷰를_작성한다() throws Exception {
+        ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn("Company Name");
         when(request.getCompanyDetail()).thenReturn("Company Detail");
         when(request.getRecruitTypes()).thenReturn(new RecruitTypes[]{RecruitTypes.RESUME});
         when(request.getDeadLine()).thenReturn(LocalDate.of(2019,1,1));
         when(request.getReview()).thenReturn("New review");
 
-        mockMvc.perform(post("/api/post")
+        mockMvc.perform(post("/api/review")
                 .header("api_key", "Bearer " + APITOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request))

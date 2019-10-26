@@ -4,9 +4,9 @@ import Welcome from '@/components/Welcome'
 import Login from '@/components/Login'
 import Join from '@/components/Join'
 import Confirm from '@/components/Confirm'
-import PostList from '@/components/PostList'
-import Post from '@/components/Post'
-import PostForm from '@/components/PostForm'
+import ReviewList from '@/components/ReviewList'
+import Review from '@/components/Review'
+import ReviewForm from '@/components/ReviewForm'
 import Member from '@/components/Member'
 
 Vue.use(Router)
@@ -31,21 +31,21 @@ export default new Router({
       name: 'Confirm',
       component: Confirm
     }, {
-      path: '/post/list',
-      name: 'PostList',
-      component: PostList
+      path: '/review/list',
+      name: 'ReviewList',
+      component: ReviewList
     }, {
-      path: '/post/form',
-      name: 'PostCreateForm',
-      component: PostForm
+      path: '/review/form',
+      name: 'ReviewPublishForm',
+      component: ReviewForm
     }, {
-      path: '/post/form/:id',
-      name: 'PostUpdateForm',
-      component: PostForm
+      path: '/review/form/:id',
+      name: 'ReviewUpdateForm',
+      component: ReviewForm
     }, {
-      path: '/post/:id',
-      name: 'Post',
-      component: Post
+      path: '/review/:id',
+      name: 'Review',
+      component: Review
     }, {
       path: '/member',
       name: 'Member',

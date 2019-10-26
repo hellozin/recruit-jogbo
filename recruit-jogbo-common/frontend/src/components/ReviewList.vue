@@ -32,9 +32,9 @@
     </b-form>
 
     <div class="border rounded-lg p-3" style="background-color: azure">
-      <router-link to="/post/form" class="btn btn-outline-primary mb-3" role="button">새 후기 작성</router-link>
+      <router-link to="/review/form" class="btn btn-outline-primary mb-3" role="button">새 후기 작성</router-link>
 
-      <table class="table table-hover" id="postList">
+      <table class="table table-hover">
         <thead class="thead-light">
           <tr>
             <th class="text-center" v-for="header in tableHeaders" :key="header.id">{{ header }}</th>
@@ -42,19 +42,19 @@
         </thead>
 
         <tbody>
-          <tr class="text-center" v-for="post in postList" :key="post.id" v-on:click="showPost(post.id)">
-            <td>{{ post.companyName }}</td>
-            <td>{{ post.companyDetail }}</td>
-            <td><span class="badge badge-info mx-1" v-for="type in post.recruitTypesEnum" :key="type.id">
+          <tr class="text-center" v-for="review in reviewList" :key="review.id" v-on:click="showReview(review.id)">
+            <td>{{ review.companyName }}</td>
+            <td>{{ review.companyDetail }}</td>
+            <td><span class="badge badge-info mx-1" v-for="type in review.recruitTypesEnum" :key="type.id">
               {{ type.value[0] }}
             </span></td>
-            <td>{{ post.deadLine }}</td>
-            <td>{{ post.author.username }}</td>
+            <td>{{ review.deadLine }}</td>
+            <td>{{ review.author.username }}</td>
           </tr>
         </tbody>
       </table>
 
-      <nav aria-label="Page navigation example" v-if="postList">
+      <nav aria-label="Page navigation example" v-if="reviewList">
         <ul class="pagination justify-content-center">
 
           <li class="page-item" v-if="currPage > 0" v-on:click="toPage(prevPage)">
@@ -77,10 +77,9 @@
 
 <script>
 export default {
-  name: 'PostList',
   data () {
     return {
-      postList: [],
+      reviewList: [],
       form: {
         companyName: '',
         recruitTypes: '',
@@ -105,17 +104,17 @@ export default {
     shortRecruitTypes (recruitTypes) {
       return recruitTypes.map((type) => type[0]).join(' | ')
     },
-    showPost (postId) {
-      this.$router.push(`${postId}`)
+    showReview (reviewId) {
+      this.$router.push(`${reviewId}`)
     },
-    getPostList (param) {
+    getReviewList (param) {
       const config = {
         params: param
       }
-      this.$axios.get(`post/list`, config)
+      this.$axios.get(`/review/list`, config)
         .then(res => {
           const response = res.data.response
-          this.postList = response.content
+          this.reviewList = response.content
           this.totalPages = response.page.totalPages
           this.currPage = response.page.number
           this.prevPage = this.currPage > 0 ? this.currPage - 1 : null
@@ -131,19 +130,19 @@ export default {
     },
     toPage (page) {
       const param = { page: page }
-      this.getPostList(param)
+      this.getReviewList(param)
     },
     toPrevPage () {
       const param = { page: this.prevPage }
-      this.getPostList(param)
+      this.getReviewList(param)
     },
     toNextPage () {
       const param = { page: this.nextPage }
-      this.getPostList(param)
+      this.getReviewList(param)
     },
     onSubmit (event) {
       event.preventDefault()
-      this.getPostList(this.form)
+      this.getReviewList(this.form)
     }
   },
   created: function () {
@@ -158,7 +157,7 @@ export default {
           variant: 'danger'
         })
       })
-    this.getPostList()
+    this.getReviewList()
   }
 }
 </script>

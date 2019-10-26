@@ -124,7 +124,7 @@ export default {
     },
     confirmMailResend () {
       const data = {
-        confirmUrl: 'http://localhost:8081/#/confirm'
+        confirmUrl: 'http://localhost:8081/confirm'
       }
       this.$axios.post(`member/confirm/send`, data)
         .then(res => {

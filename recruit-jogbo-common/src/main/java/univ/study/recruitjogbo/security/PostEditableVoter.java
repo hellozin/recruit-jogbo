@@ -8,11 +8,10 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import univ.study.recruitjogbo.api.response.AuthenticationResult;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.post.Post;
-import univ.study.recruitjogbo.post.PostService;
+import univ.study.recruitjogbo.review.Review;
+import univ.study.recruitjogbo.review.ReviewService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -29,7 +28,7 @@ public class PostEditableVoter implements AccessDecisionVoter<FilterInvocation> 
 
     private static final List<String> ignoreMethods = Arrays.asList(HttpMethod.GET.name(), HttpMethod.OPTIONS.name());
 
-    private PostService postService;
+    private ReviewService reviewService;
 
     @Override
     public int vote(Authentication authentication, FilterInvocation object, Collection<ConfigAttribute> attributes) {
@@ -47,11 +46,11 @@ public class PostEditableVoter implements AccessDecisionVoter<FilterInvocation> 
             return ACCESS_ABSTAIN;
         }
 
-        Long requestPostId = idExtractor.apply(request.getRequestURI());
-        Long authorId = postService.findById(requestPostId)
-                .map(Post::getAuthor)
+        Long requestReviewId = idExtractor.apply(request.getRequestURI());
+        Long authorId = reviewService.findById(requestReviewId)
+                .map(Review::getAuthor)
                 .map(Member::getId)
-                .orElseThrow(() -> new NotFoundException(Post.class, requestPostId.toString()));
+                .orElseThrow(() -> new NotFoundException(Review.class, requestReviewId.toString()));
 
         JwtAuthentication currentMember = (JwtAuthentication) authentication.getPrincipal();
         if (currentMember.id.equals(authorId)) {
@@ -72,8 +71,8 @@ public class PostEditableVoter implements AccessDecisionVoter<FilterInvocation> 
     }
 
     @Autowired
-    public void setPostService(PostService postService) {
-        this.postService = postService;
+    public void setReviewService(ReviewService reviewService) {
+        this.reviewService = reviewService;
     }
 
 }

@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.post;
+package univ.study.recruitjogbo.review;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -9,11 +9,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
-import univ.study.recruitjogbo.api.request.PostingRequest;
+import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypeRepository;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
 
@@ -27,10 +27,10 @@ import static org.mockito.Mockito.when;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("local")
 @Slf4j
-class PostServiceTest {
+class ReviewServiceTest {
 
     @Autowired
-    private PostService postService;
+    private ReviewService reviewService;
 
     @Autowired
     private MemberService memberService;
@@ -57,25 +57,25 @@ class PostServiceTest {
     @Test
     @Order(1)
     void 포스트를_작성한다() {
-        PostingRequest request = mock(PostingRequest.class);
+        ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn(companyName);
         when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
         when(request.getDeadLine()).thenReturn(someDay);
-        when(request.getReview()).thenReturn(review);
-        Post post = postService.write(author1.getId(), request);
+        when(request.getReview()).thenReturn(this.review);
+        Review review = reviewService.publish(author1.getId(), request);
 
-        assertThat(post).isNotNull();
-        assertThat(post.getCompanyName()).isEqualTo(companyName);
-        assertThat(post.getRecruitTypes().size()).isEqualTo(RecruitTypes.values().length);
-        assertThat(post.getDeadLine()).isEqualTo(someDay);
-        assertThat(post.getReview()).isEqualTo(review);
-//        log.info("Written post : {}", post);
+        assertThat(review).isNotNull();
+        assertThat(review.getCompanyName()).isEqualTo(companyName);
+        assertThat(review.getRecruitTypes().size()).isEqualTo(RecruitTypes.values().length);
+        assertThat(review.getDeadLine()).isEqualTo(someDay);
+        assertThat(review.getReview()).isEqualTo(this.review);
+//        log.info("Written review : {}", review);
     }
 
     @Test
     @Order(2)
     void 전체_포스트를_조회한다() {
-        Page<Post> posts = postService.findAll(Pageable.unpaged());
+        Page<Review> posts = reviewService.findAll(Pageable.unpaged());
         assertThat(posts).isNotEmpty();
         assertThat(posts.getTotalElements()).isEqualTo(1);
     }
@@ -83,16 +83,16 @@ class PostServiceTest {
     @Test
     @Order(3)
     void 기업명으로_포스트를_조회한다() {
-        PostingRequest request = mock(PostingRequest.class);
+        ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn("newCompany");
         when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
         when(request.getDeadLine()).thenReturn(someDay);
         when(request.getReview()).thenReturn(review);
 
-        postService.write(author1.getId(), request);
-        postService.write(author2.getId(), request);
+        reviewService.publish(author1.getId(), request);
+        reviewService.publish(author2.getId(), request);
 
-        Page<Post> postOfLine = postService.findAll(PostSpecs.withCompanyName("newCompany"), Pageable.unpaged());
+        Page<Review> postOfLine = reviewService.findAll(ReviewSpecs.withCompanyName("newCompany"), Pageable.unpaged());
         assertThat(postOfLine).isNotEmpty();
         assertThat(postOfLine.getTotalElements()).isEqualTo(2);
     }
@@ -100,16 +100,16 @@ class PostServiceTest {
     @Test
     @Order(4)
     void RecruitType으로_포스트를_조회한다() {
-        PostingRequest request = mock(PostingRequest.class);
+        ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn(companyName);
         when(request.getRecruitTypes()).thenReturn(new RecruitTypes[]{RecruitTypes.RESUME});
         when(request.getDeadLine()).thenReturn(someDay);
         when(request.getReview()).thenReturn(review);
 
-        postService.write(author1.getId(), request);
+        reviewService.publish(author1.getId(), request);
 
-        long total = postService.findAll(PostSpecs.withRecruitType(RecruitTypes.INTERVIEW), Pageable.unpaged()).getTotalElements();
-        Page<Post> postWithResume = postService.findAll(PostSpecs.withRecruitType(RecruitTypes.RESUME), Pageable.unpaged());
+        long total = reviewService.findAll(ReviewSpecs.withRecruitType(RecruitTypes.INTERVIEW), Pageable.unpaged()).getTotalElements();
+        Page<Review> postWithResume = reviewService.findAll(ReviewSpecs.withRecruitType(RecruitTypes.RESUME), Pageable.unpaged());
         assertThat(postWithResume).isNotNull();
         assertThat(postWithResume.getTotalElements()).isEqualTo(total+1);
     }
@@ -120,14 +120,14 @@ class PostServiceTest {
         Member newAuthor =
                 memberService.save(new Member("authorNew", "authorNew", "new@ynu.ac.kr"));
 
-        PostingRequest request = mock(PostingRequest.class);
+        ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn(companyName);
         when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
         when(request.getDeadLine()).thenReturn(someDay);
         when(request.getReview()).thenReturn(review);
-        postService.write(newAuthor.getId(), request);
+        reviewService.publish(newAuthor.getId(), request);
 
-        Page<Post> posts = postService.findAll(PostSpecs.withAuthorName(newAuthor.getUsername()), Pageable.unpaged());
+        Page<Review> posts = reviewService.findAll(ReviewSpecs.withAuthorName(newAuthor.getUsername()), Pageable.unpaged());
         assertThat(posts.getTotalElements()).isEqualTo(1);
     }
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import univ.study.recruitjogbo.post.Post;
+import univ.study.recruitjogbo.review.Review;
 
 import javax.persistence.*;
 import java.util.List;
@@ -29,7 +29,7 @@ public class Member {
 
     @OneToMany(mappedBy = "author", orphanRemoval = true)
     @JsonBackReference
-    private List<Post> posts;
+    private List<Review> reviews;
 
     @Builder
     public Member(String username, String password, String email) {

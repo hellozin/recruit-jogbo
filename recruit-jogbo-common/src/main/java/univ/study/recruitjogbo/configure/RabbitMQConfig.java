@@ -25,12 +25,12 @@ public class RabbitMQConfig {
 
     @Bean
     Queue postCreateQueue() {
-        return new Queue(RabbitMQ.POST_CREATE, false);
+        return new Queue(RabbitMQ.REVIEW_CREATE, false);
     }
 
     @Bean
     Queue postUpdateQueue() {
-        return new Queue(RabbitMQ.POST_UPDATE, false);
+        return new Queue(RabbitMQ.REVIEW_UPDATE, false);
     }
 
     @Bean

@@ -2,7 +2,7 @@ package univ.study.recruitjogbo.api.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import univ.study.recruitjogbo.post.PostSpecs;
+import univ.study.recruitjogbo.review.ReviewSpecs;
 
 import java.util.Map;
 import java.util.Set;
@@ -11,13 +11,13 @@ import java.util.Set;
 @Getter
 public class SearchRequest {
 
-    private Map<PostSpecs.SearchKeys, Object> searchKeyMap;
+    private Map<ReviewSpecs.SearchKeys, Object> searchKeyMap;
 
-    public Set<PostSpecs.SearchKeys> keySet() {
+    public Set<ReviewSpecs.SearchKeys> keySet() {
         return this.searchKeyMap.keySet();
     }
 
-    public Object get(PostSpecs.SearchKeys keys) {
+    public Object get(ReviewSpecs.SearchKeys keys) {
         return this.searchKeyMap.get(keys);
     }
 

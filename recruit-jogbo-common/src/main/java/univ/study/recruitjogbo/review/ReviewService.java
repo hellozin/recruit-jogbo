@@ -1,4 +1,4 @@
-package univ.study.recruitjogbo.post;
+package univ.study.recruitjogbo.review;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,14 +10,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import univ.study.recruitjogbo.api.request.PostingRequest;
+import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
-import univ.study.recruitjogbo.message.PostEvent;
+import univ.study.recruitjogbo.message.ReviewEvent;
 import univ.study.recruitjogbo.message.RabbitMQ;
-import univ.study.recruitjogbo.post.recruitType.RecruitType;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypeRepository;
+import univ.study.recruitjogbo.review.recruitType.RecruitType;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypeRepository;
 
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
@@ -28,9 +28,9 @@ import java.util.Optional;
 @AllArgsConstructor
 @Validated
 @Slf4j
-public class PostService {
+public class ReviewService {
 
-    private final PostRepository postRepository;
+    private final ReviewRepository reviewRepository;
 
     private final RecruitTypeRepository recruitTypeRepository;
 
@@ -39,12 +39,12 @@ public class PostService {
     private final RabbitTemplate rabbitTemplate;
 
     @Transactional
-    public Post write(@NotNull Long authorId, PostingRequest request) {
+    public Review publish(@NotNull Long authorId, ReviewPublishRequest request) {
         Member author = memberService.findById(authorId)
                 .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
 
         List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
-        Post post = save(new Post.PostBuilder()
+        Review review = save(new Review.ReviewBuilder()
                 .author(author)
                 .companyName(request.getCompanyName())
                 .companyDetail(request.getCompanyDetail())
@@ -54,65 +54,65 @@ public class PostService {
                 .build());
 
         try {
-            rabbitTemplate.convertAndSend(RabbitMQ.EXCHANGE, RabbitMQ.POST_CREATE,
-                    new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum()));
+            rabbitTemplate.convertAndSend(RabbitMQ.EXCHANGE, RabbitMQ.REVIEW_CREATE,
+                    new ReviewEvent(review.getId(), review.getCompanyName(), review.getRecruitTypesEnum()));
         } catch (AmqpException exception) {
-            log.warn("Fail MQ send post write message. {}", exception.getMessage());
+            log.warn("Fail MQ send review publish message. {}", exception.getMessage());
         }
-        return post;
+        return review;
     }
 
     @Transactional
-    public Post edit(@NotNull Long postId, PostingRequest request) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
+    public Review edit(@NotNull Long reviewId, ReviewPublishRequest request) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new NotFoundException(Review.class, reviewId.toString()));
 
         List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
-        post.edit(request.getCompanyName(), request.getCompanyDetail(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
+        review.edit(request.getCompanyName(), request.getCompanyDetail(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
 
         try {
-            rabbitTemplate.convertAndSend(RabbitMQ.EXCHANGE, RabbitMQ.POST_UPDATE,
-                    new PostEvent(post.getId(), post.getCompanyName(), post.getRecruitTypesEnum()));
+            rabbitTemplate.convertAndSend(RabbitMQ.EXCHANGE, RabbitMQ.REVIEW_UPDATE,
+                    new ReviewEvent(review.getId(), review.getCompanyName(), review.getRecruitTypesEnum()));
         } catch (AmqpException exception) {
-            log.warn("Fail MQ send post edit message. {}", exception.getMessage());
+            log.warn("Fail MQ send review edit message. {}", exception.getMessage());
         }
 
-        return save(post);
+        return save(review);
     }
 
     @Transactional
-    public void delete(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException(Post.class, postId.toString()));
-        postRepository.delete(post);
+    public void delete(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new NotFoundException(Review.class, reviewId.toString()));
+        reviewRepository.delete(review);
     }
 
     @Transactional
     public void deleteByAuthorId(Long authorId) {
         String authorName = memberService.findById(authorId).map(Member::getUsername)
                 .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
-        List<Post> postsByAuthorId = postRepository.findAll(PostSpecs.withAuthorName(authorName));
-        postRepository.deleteAll(postsByAuthorId);
+        List<Review> postsByAuthorId = reviewRepository.findAll(ReviewSpecs.withAuthorName(authorName));
+        reviewRepository.deleteAll(postsByAuthorId);
     }
 
     @Transactional(readOnly = true)
-    public Optional<Post> findById(Long postId) {
-        return postRepository.findById(postId);
+    public Optional<Review> findById(Long reviewId) {
+        return reviewRepository.findById(reviewId);
     }
 
     @Transactional(readOnly = true)
-    public Page<Post> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable);
+    public Page<Review> findAll(Pageable pageable) {
+        return reviewRepository.findAll(pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Post> findAll(Specification<Post> specification, Pageable pageable) {
-        return postRepository.findAll(specification, pageable);
+    public Page<Review> findAll(Specification<Review> specification, Pageable pageable) {
+        return reviewRepository.findAll(specification, pageable);
     }
 
     @Transactional
-    protected Post save(Post post) {
-        return postRepository.save(post);
+    protected Review save(Review review) {
+        return reviewRepository.save(review);
     }
 
 }

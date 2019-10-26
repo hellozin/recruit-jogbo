@@ -6,7 +6,7 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item v-on:click="forward('/post/list')">후기 게시판</b-nav-item>
+        <b-nav-item v-on:click="forward('/review/list')">후기 게시판</b-nav-item>
         <b-nav-item v-on:click="forward('/')">꿀팁 게시판</b-nav-item>
       </b-navbar-nav>
 

@@ -1,8 +1,8 @@
-package univ.study.recruitjogbo.post;
+package univ.study.recruitjogbo.review;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
-import univ.study.recruitjogbo.post.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
 
 import javax.persistence.criteria.Join;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Slf4j
-public class PostSpecs {
+public class ReviewSpecs {
 
     public enum SearchKeys {
         COMPANY_NAME("companyName"),
@@ -28,13 +28,13 @@ public class PostSpecs {
         }
     }
 
-    public static Specification<Post> searchWith(Map<SearchKeys, Object> request) {
+    public static Specification<Review> searchWith(Map<SearchKeys, Object> request) {
         if (request.isEmpty()) {
             log.warn("[request] is empty.");
             return Specification.where(null);
         }
 
-        Specification<Post> spec = null;
+        Specification<Review> spec = null;
         for (SearchKeys key : request.keySet()) {
             switch (key) {
                 case COMPANY_NAME:
@@ -54,35 +54,35 @@ public class PostSpecs {
         return spec;
     }
 
-    private static Specification<Post> appendSpec(Specification<Post> base, Specification<Post> append) {
+    private static Specification<Review> appendSpec(Specification<Review> base, Specification<Review> append) {
         return base == null ? append : base.and(append);
     }
 
-    public static Specification<Post> withCompanyName(String companyName) {
+    public static Specification<Review> withCompanyName(String companyName) {
         if (isBlank(companyName)) {
             log.warn("[companyName] is empty.");
             return Specification.where(null);
         }
-        return (Specification<Post>) (root, query, builder) -> builder.like(root.get("companyName"), companyName);
+        return (Specification<Review>) (root, query, builder) -> builder.like(root.get("companyName"), companyName);
     }
 
-    public static Specification<Post> withRecruitType(RecruitTypes recruitType) {
+    public static Specification<Review> withRecruitType(RecruitTypes recruitType) {
         if (recruitType == null) {
             log.warn("[recruitTypes] is empty.");
             return Specification.where(null);
         }
-        return (Specification<Post>) (root, query, builder) -> {
-            Join<Post, RecruitTypes> joined = root.join("recruitTypes");
+        return (Specification<Review>) (root, query, builder) -> {
+            Join<Review, RecruitTypes> joined = root.join("recruitTypes");
             return builder.equal(joined.get("recruitType"), recruitType);
         };
     }
 
-    public static Specification<Post> withAuthorName(String authorName) {
+    public static Specification<Review> withAuthorName(String authorName) {
         if (isBlank(authorName)) {
             log.warn("[authorName] is empty.");
             return Specification.where(null);
         }
-        return (Specification<Post>) (root, query, builder) -> builder.equal(root.get("author").get("username"), authorName);
+        return (Specification<Review>) (root, query, builder) -> builder.equal(root.get("author").get("username"), authorName);
     }
 
 }

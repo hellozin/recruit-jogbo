@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @ToString
-public class PostEvent {
+public class ReviewEvent {
 
     private Long id;
 

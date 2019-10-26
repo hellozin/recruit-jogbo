@@ -80,7 +80,8 @@ export default {
       const formData = JSON.stringify(this.form)
       this.$axios.patch(`member/me`, formData)
         .then(res => {
-          this.$bus.$emit('logged', false)
+          this.$bvModal.msgBoxOk('처리되었습니다.')
+            .then(value => { this.$bus.$emit('logged', false) })
         }).catch(error => {
           this.edit = false
           if (error.response) {
@@ -128,7 +129,7 @@ export default {
       }
       this.$axios.post(`member/confirm/send`, data)
         .then(res => {
-          alert(`가입 요청이 완료되었습니다.\n인증을 위해 ${this.form.email}을 확인해주세요.`)
+          this.$bvModal.msgBoxOk(`인증 메일이 재발송되었습니다.\n인증을 위해 ${this.form.email}을 확인해주세요.`)
         }).catch(error => {
           if (error.response) {
             const response = error.response.data.response
@@ -142,8 +143,8 @@ export default {
     deleteMember () {
       this.$axios.delete(`member/me`)
         .then(res => {
-          alert(`탈퇴 요청이 완료되었습니다. 이용해주셔서 감사합니다.`)
-          this.$bus.$emit('logged', false)
+          this.$bvModal.msgBoxOk(`탈퇴 요청이 완료되었습니다. 이용해주셔서 감사합니다.`)
+            .then(value => { this.$bus.$emit('logged', false) })
         }).catch(error => {
           if (error.response) {
             const response = error.response.data.response

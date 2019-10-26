@@ -46,8 +46,8 @@ export default {
       const formData = JSON.stringify(this.form)
       this.$axios.post(`member`, formData)
         .then(res => {
-          alert(`가입 요청이 완료되었습니다.\n인증을 위해 ${this.form.email}을 확인해주세요.`)
-          this.$router.push('/login')
+          this.$bvModal.msgBoxOk(`가입 요청이 완료되었습니다.\n인증을 위해 ${this.form.email}을 확인해주세요.`)
+            .then(value => { this.$router.push('/login') })
         }).catch(error => {
           if (error.response) {
             const response = error.response.data.response

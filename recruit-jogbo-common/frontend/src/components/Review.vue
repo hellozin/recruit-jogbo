@@ -45,8 +45,10 @@ export default {
       const reviewId = this.review.id
       this.$axios.delete(`review/${reviewId}`)
         .then(res => {
-          alert('삭제되었습니다.')
-          this.$router.push('/review/list')
+          this.$bvModal.msgBoxOk('처리되었습니다.')
+            .then(value => {
+              this.$router.push('/review/list')
+            })
         })
         .catch(error => {
           if (error.response) {

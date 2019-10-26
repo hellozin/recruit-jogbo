@@ -83,7 +83,10 @@ export default {
         data: formData
       })
         .then(res => {
-          this.$router.push('/review/list')
+          this.$bvModal.msgBoxOk('처리되었습니다.')
+            .then(value => {
+              this.$router.push('/review/list')
+            })
         }).catch(error => {
           if (error.response) {
             const errors = error.response.data.response.errorMessage.split('\n')

@@ -78,7 +78,7 @@ export default {
     onSubmit (event) {
       event.preventDefault()
       const formData = JSON.stringify(this.form)
-      this.$axios.put(`member/me`, formData)
+      this.$axios.patch(`member/me`, formData)
         .then(res => {
           this.$bus.$emit('logged', false)
         }).catch(error => {

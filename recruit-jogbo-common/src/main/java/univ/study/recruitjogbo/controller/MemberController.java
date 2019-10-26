@@ -38,7 +38,7 @@ public class MemberController {
         return ApiResponse.OK(member);
     }
 
-    @PutMapping("/member/me")
+    @PatchMapping("/member/me")
     public ApiResponse updateMember(@AuthenticationPrincipal JwtAuthentication jwtAuthentication,
                                     @RequestBody @Valid MemberUpdateRequest memberUpdateRequest) {
         return ApiResponse.OK(memberService.update(jwtAuthentication.id, memberUpdateRequest));

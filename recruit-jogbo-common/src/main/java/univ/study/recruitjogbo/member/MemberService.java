@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.api.request.MemberUpdateRequest;
+import univ.study.recruitjogbo.error.DuplicatedException;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.error.UnauthorizedException;
 import univ.study.recruitjogbo.member.confirm.ConfirmationToken;
@@ -43,7 +44,7 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundException(Member.class, username));
 
         if (!member.checkPassword(passwordEncoder, password)) {
-            throw new IllegalArgumentException("Incorrect password.");
+            throw new UnauthorizedException("Incorrect password.");
         }
         log.info("Login with [{}]", member.getUsername());
         return member;
@@ -51,6 +52,12 @@ public class MemberService {
 
     @Transactional
     public Member join(JoinRequest request) {
+        if (confirmationTokenRepository.findByUserEmail(request.getEmail()).isPresent()) {
+            throw new DuplicatedException(Member.class, request.getEmail());
+        }
+        if (findByUsername(request.getUsername()).isPresent()) {
+            throw new DuplicatedException(Member.class, request.getUsername());
+        }
         Member member = save(new Member.MemberBuilder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -71,6 +78,14 @@ public class MemberService {
 
     @Transactional
     public Member update(Long memberId, MemberUpdateRequest memberUpdateRequest) {
+        if (memberUpdateRequest.getEmail() != null &&
+                confirmationTokenRepository.findByUserEmail(memberUpdateRequest.getEmail()).isPresent()) {
+            throw new DuplicatedException(Member.class, memberUpdateRequest.getEmail());
+        }
+        if (memberUpdateRequest.getUsername() != null &&
+                findByUsername(memberUpdateRequest.getUsername()).isPresent()) {
+            throw new DuplicatedException(Member.class, memberUpdateRequest.getUsername());
+        }
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(Member.class, memberId.toString()));
         member.update(memberUpdateRequest.getUsername(), memberUpdateRequest.getEmail());
@@ -126,10 +141,6 @@ public class MemberService {
                 .map(member -> member.setEmailConfirmed(true))
                 .map(Member::isEmailConfirmed)
                 .orElseThrow(() -> new NotFoundException(Member.class, confirmedEmail));
-
-        if(isConfirmed) {
-            confirmationTokenRepository.delete(confirmationToken);
-        }
 
         log.info("Email confirmation finished. isConfirmed [{}]", isConfirmed);
         return isConfirmed;

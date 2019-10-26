@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import univ.study.recruitjogbo.api.response.ApiError;
 import univ.study.recruitjogbo.api.response.ApiResponse;
+import univ.study.recruitjogbo.error.ServiceRuntimeException;
 
 import java.util.stream.Collectors;
 
@@ -27,6 +28,12 @@ public class GeneralExceptionHandler {
                 .collect(Collectors.joining("\n"));
         log.error("Bad request exception : [{}]", e.getMessage());
         return newResponse(validationErrorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ServiceRuntimeException.class)
+    public ResponseEntity<?> handleServiceRuntimeException(ServiceRuntimeException e) {
+        log.error("Service runtime exception : [{}]", e.getMessage());
+        return newResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

@@ -2,7 +2,8 @@ package univ.study.recruitjogbo.review;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
-import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitType;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypeEntity;
 
 import javax.persistence.criteria.Join;
 import java.util.Map;
@@ -42,8 +43,8 @@ public class ReviewSpecs {
                     spec = appendSpec(spec, withCompanyName(companyName));
                     break;
                 case RECRUIT_TYPE:
-                    RecruitTypes recruitTypes = RecruitTypes.valueOf(String.valueOf(request.get(key)));
-                    spec = appendSpec(spec, withRecruitType(recruitTypes));
+                    RecruitType recruitType = RecruitType.valueOf(String.valueOf(request.get(key)));
+                    spec = appendSpec(spec, withRecruitType(recruitType));
                     break;
                 case AUTHOR_NAME:
                     String authorName = String.valueOf(request.get(key));
@@ -66,13 +67,13 @@ public class ReviewSpecs {
         return (Specification<Review>) (root, query, builder) -> builder.like(root.get("companyName"), companyName);
     }
 
-    public static Specification<Review> withRecruitType(RecruitTypes recruitType) {
+    public static Specification<Review> withRecruitType(RecruitType recruitType) {
         if (recruitType == null) {
             log.warn("[recruitTypes] is empty.");
             return Specification.where(null);
         }
         return (Specification<Review>) (root, query, builder) -> {
-            Join<Review, RecruitTypes> joined = root.join("recruitTypes");
+            Join<Review, RecruitTypeEntity> joined = root.join("recruitTypes");
             return builder.equal(joined.get("recruitType"), recruitType);
         };
     }

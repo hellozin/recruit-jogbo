@@ -14,9 +14,9 @@ import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
-import univ.study.recruitjogbo.message.ReviewEvent;
 import univ.study.recruitjogbo.message.RabbitMQ;
-import univ.study.recruitjogbo.review.recruitType.RecruitType;
+import univ.study.recruitjogbo.message.ReviewEvent;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypeEntity;
 import univ.study.recruitjogbo.review.recruitType.RecruitTypeRepository;
 
 import javax.validation.constraints.NotNull;
@@ -43,12 +43,12 @@ public class ReviewService {
         Member author = memberService.findById(authorId)
                 .orElseThrow(() -> new NotFoundException(Member.class, authorId.toString()));
 
-        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
+        List<RecruitTypeEntity> byRecruitTypeEntityIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
         Review review = save(new Review.ReviewBuilder()
                 .author(author)
                 .companyName(request.getCompanyName())
                 .companyDetail(request.getCompanyDetail())
-                .recruitTypes(byRecruitTypeIn)
+                .recruitTypes(byRecruitTypeEntityIn)
                 .deadLine(request.getDeadLine())
                 .review(request.getReview())
                 .build());
@@ -67,8 +67,8 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundException(Review.class, reviewId.toString()));
 
-        List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
-        review.edit(request.getCompanyName(), request.getCompanyDetail(), byRecruitTypeIn, request.getDeadLine(), request.getReview());
+        List<RecruitTypeEntity> byRecruitTypeEntityIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(request.getRecruitTypes()));
+        review.edit(request.getCompanyName(), request.getCompanyDetail(), byRecruitTypeEntityIn, request.getDeadLine(), request.getReview());
 
         try {
             rabbitTemplate.convertAndSend(RabbitMQ.EXCHANGE, RabbitMQ.REVIEW_UPDATE,

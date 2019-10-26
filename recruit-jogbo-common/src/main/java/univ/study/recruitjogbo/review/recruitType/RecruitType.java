@@ -1,26 +1,38 @@
 package univ.study.recruitjogbo.review.recruitType;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import univ.study.recruitjogbo.util.EnumModel;
 
-import javax.persistence.*;
+public enum RecruitType implements EnumModel {
 
-@Entity
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecruitType {
+    /*
+    * RESUME : 서류
+    * CODING : 코딩테스트
+    * APTITUDE : 인적성 테스트
+    * NCS : NCS
+    * INTERVIEW : 면접
+    * ETC : 기타
+    * */
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    RESUME("서류"),
+    CODING("코딩테스트"),
+    APTITUDE("인적성"),
+    NCS("NCS"),
+    INTERVIEW("면접"),
+    ETC("기타");
 
-    @Enumerated(EnumType.STRING)
-    private RecruitTypes recruitType;
+    private String value;
 
-    public RecruitType(RecruitTypes recruitType) {
-        this.recruitType = recruitType;
+    RecruitType(String value) {
+        this.value = value;
     }
 
+    @Override
+    public String getKey() {
+        return name();
+    }
+
+    @Override
+    public String getValue() {
+        return value;
+    }
 }
-
-

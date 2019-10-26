@@ -16,7 +16,7 @@ import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.api.response.ApiResponse;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitType;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
@@ -109,7 +109,7 @@ public class ApiControllerTest {
         ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn("Company Name");
         when(request.getCompanyDetail()).thenReturn("Company Detail");
-        when(request.getRecruitTypes()).thenReturn(new RecruitTypes[]{RecruitTypes.RESUME});
+        when(request.getRecruitTypes()).thenReturn(new RecruitType[]{RecruitType.RESUME});
         when(request.getDeadLine()).thenReturn(LocalDate.of(2019,1,1));
         when(request.getReview()).thenReturn("New review");
 

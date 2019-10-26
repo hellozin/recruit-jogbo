@@ -5,7 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
-import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitType;
 import univ.study.recruitjogbo.security.JWT;
 import univ.study.recruitjogbo.util.EnumMapper;
 import univ.study.recruitjogbo.util.MessageUtils;
@@ -40,7 +40,7 @@ public class ServiceConfig {
     @Bean
     public EnumMapper enumMapper() {
         EnumMapper enumMapper = new EnumMapper();
-        enumMapper.put("recruitTypes", RecruitTypes.class);
+        enumMapper.put("recruitTypes", RecruitType.class);
         return enumMapper;
     }
 

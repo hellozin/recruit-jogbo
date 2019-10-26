@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
+import univ.study.recruitjogbo.review.recruitType.RecruitType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -21,7 +21,7 @@ public class ReviewPublishRequest {
     private String companyDetail;
 
     @NotEmpty(message = "전형 종류를 입력해주세요.")
-    private RecruitTypes[] recruitTypes;
+    private RecruitType[] recruitTypes;
 
     @NotNull(message = "날짜를 입력해주세요. 'yyyy-MM-dd'")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

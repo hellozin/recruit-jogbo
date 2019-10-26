@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import univ.study.recruitjogbo.member.Member;
-import univ.study.recruitjogbo.review.recruitType.RecruitType;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypeEntity;
 import univ.study.recruitjogbo.util.EnumValue;
 
 import javax.persistence.*;
@@ -30,7 +30,7 @@ public class Review {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
-    private List<RecruitType> recruitTypes;
+    private List<RecruitTypeEntity> recruitTypes;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadLine;
@@ -48,7 +48,7 @@ public class Review {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Review(Member author, String companyName, String companyDetail, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
+    public Review(Member author, String companyName, String companyDetail, List<RecruitTypeEntity> recruitTypes, LocalDate deadLine, String review) {
         this.author = author;
         this.companyName = companyName;
         this.companyDetail = companyDetail;
@@ -57,18 +57,18 @@ public class Review {
         this.review = review;
     }
 
-    public void edit(String companyName, String companyDetail, List<RecruitType> recruitTypes, LocalDate deadLine, String review) {
+    public void edit(String companyName, String companyDetail, List<RecruitTypeEntity> recruitTypeEntities, LocalDate deadLine, String review) {
         this.companyName = companyName;
         this.companyDetail = companyDetail;
-        this.recruitTypes = recruitTypes;
+        this.recruitTypes = recruitTypeEntities;
         this.deadLine = deadLine;
         this.review = review;
     }
 
     public List<EnumValue> getRecruitTypesEnum() {
         List<EnumValue> recruitTypesList = new ArrayList<>();
-        for (RecruitType recruitType : recruitTypes) {
-            recruitTypesList.add(new EnumValue(recruitType.getRecruitType()));
+        for (RecruitTypeEntity recruitTypeEntity : recruitTypes) {
+            recruitTypesList.add(new EnumValue(recruitTypeEntity.getRecruitType()));
         }
         return recruitTypesList;
     }

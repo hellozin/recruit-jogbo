@@ -12,8 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
+import univ.study.recruitjogbo.review.recruitType.RecruitType;
 import univ.study.recruitjogbo.review.recruitType.RecruitTypeRepository;
-import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
 
@@ -59,14 +59,14 @@ class ReviewServiceTest {
     void 포스트를_작성한다() {
         ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn(companyName);
-        when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
+        when(request.getRecruitTypes()).thenReturn(RecruitType.values());
         when(request.getDeadLine()).thenReturn(someDay);
         when(request.getReview()).thenReturn(this.review);
         Review review = reviewService.publish(author1.getId(), request);
 
         assertThat(review).isNotNull();
         assertThat(review.getCompanyName()).isEqualTo(companyName);
-        assertThat(review.getRecruitTypes().size()).isEqualTo(RecruitTypes.values().length);
+        assertThat(review.getRecruitTypes().size()).isEqualTo(RecruitType.values().length);
         assertThat(review.getDeadLine()).isEqualTo(someDay);
         assertThat(review.getReview()).isEqualTo(this.review);
 //        log.info("Written review : {}", review);
@@ -85,7 +85,7 @@ class ReviewServiceTest {
     void 기업명으로_포스트를_조회한다() {
         ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn("newCompany");
-        when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
+        when(request.getRecruitTypes()).thenReturn(RecruitType.values());
         when(request.getDeadLine()).thenReturn(someDay);
         when(request.getReview()).thenReturn(review);
 
@@ -102,14 +102,14 @@ class ReviewServiceTest {
     void RecruitType으로_포스트를_조회한다() {
         ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn(companyName);
-        when(request.getRecruitTypes()).thenReturn(new RecruitTypes[]{RecruitTypes.RESUME});
+        when(request.getRecruitTypes()).thenReturn(new RecruitType[]{RecruitType.RESUME});
         when(request.getDeadLine()).thenReturn(someDay);
         when(request.getReview()).thenReturn(review);
 
         reviewService.publish(author1.getId(), request);
 
-        long total = reviewService.findAll(ReviewSpecs.withRecruitType(RecruitTypes.INTERVIEW), Pageable.unpaged()).getTotalElements();
-        Page<Review> postWithResume = reviewService.findAll(ReviewSpecs.withRecruitType(RecruitTypes.RESUME), Pageable.unpaged());
+        long total = reviewService.findAll(ReviewSpecs.withRecruitType(RecruitType.INTERVIEW), Pageable.unpaged()).getTotalElements();
+        Page<Review> postWithResume = reviewService.findAll(ReviewSpecs.withRecruitType(RecruitType.RESUME), Pageable.unpaged());
         assertThat(postWithResume).isNotNull();
         assertThat(postWithResume.getTotalElements()).isEqualTo(total+1);
     }
@@ -122,7 +122,7 @@ class ReviewServiceTest {
 
         ReviewPublishRequest request = mock(ReviewPublishRequest.class);
         when(request.getCompanyName()).thenReturn(companyName);
-        when(request.getRecruitTypes()).thenReturn(RecruitTypes.values());
+        when(request.getRecruitTypes()).thenReturn(RecruitType.values());
         when(request.getDeadLine()).thenReturn(someDay);
         when(request.getReview()).thenReturn(review);
         reviewService.publish(newAuthor.getId(), request);

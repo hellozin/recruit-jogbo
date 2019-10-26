@@ -11,8 +11,8 @@ import univ.study.recruitjogbo.member.MemberRepository;
 import univ.study.recruitjogbo.review.Review;
 import univ.study.recruitjogbo.review.ReviewRepository;
 import univ.study.recruitjogbo.review.recruitType.RecruitType;
+import univ.study.recruitjogbo.review.recruitType.RecruitTypeEntity;
 import univ.study.recruitjogbo.review.recruitType.RecruitTypeRepository;
-import univ.study.recruitjogbo.review.recruitType.RecruitTypes;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -47,8 +47,8 @@ public class RecruitJogbo {
 
         @Override
         public void run(String... args) {
-            for (RecruitTypes recruitType : RecruitTypes.values()) {
-                recruitTypeRepository.save(new RecruitType(recruitType));
+            for (RecruitType recruitType : RecruitType.values()) {
+                recruitTypeRepository.save(new RecruitTypeEntity(recruitType));
             }
 
             Member member = new Member("username", passwordEncoder.encode("password"), "user@ynu.ac.kr");
@@ -56,12 +56,12 @@ public class RecruitJogbo {
 
             LocalDate today = LocalDate.now();
             for (int i = 0; i < 10; i++) {
-                List<RecruitType> byRecruitTypeIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(RecruitTypes.RESUME, RecruitTypes.APTITUDE));
+                List<RecruitTypeEntity> byRecruitTypeEntityIn = recruitTypeRepository.findByRecruitTypeIn(Arrays.asList(RecruitType.RESUME, RecruitType.APTITUDE));
                 Review review = new Review(
                         member,
                         "company" + i,
                         "detail" + i,
-                        byRecruitTypeIn,
+                        byRecruitTypeEntityIn,
                         today.minusDays(i),
                         "review" + i);
                 reviewRepository.save(review);

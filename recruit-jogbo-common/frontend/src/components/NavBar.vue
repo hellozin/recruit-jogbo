@@ -16,7 +16,7 @@
             <a>{{ username }} 님 </a>
           </template>
           <b-dropdown-item v-if="loged" v-on:click="forward('/member')">내정보</b-dropdown-item>
-          <b-dropdown-item v-if="!loged" v-on:click="login('/login')">로그인</b-dropdown-item>
+          <b-dropdown-item v-if="!loged" v-on:click="forward('/login')">로그인</b-dropdown-item>
           <b-dropdown-item v-if="loged" v-on:click="logout()">로그아웃</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>

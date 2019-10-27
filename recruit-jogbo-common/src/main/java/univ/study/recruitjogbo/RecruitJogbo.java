@@ -51,7 +51,7 @@ public class RecruitJogbo {
                 recruitTypeRepository.save(new RecruitTypeEntity(recruitType));
             }
 
-            Member member = new Member("username", passwordEncoder.encode("password"), "user@ynu.ac.kr");
+            Member member = new Member("admin", passwordEncoder.encode("admin"), "admin@ynu.ac.kr");
             memberRepository.save(member);
 
             LocalDate today = LocalDate.now();

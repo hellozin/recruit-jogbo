@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"password"})
+@ToString(exclude = {"reviews", "password"})
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

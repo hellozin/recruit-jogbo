@@ -58,6 +58,9 @@ public class MemberService {
         if (findByUsername(request.getUsername()).isPresent()) {
             throw new DuplicatedException(Member.class, request.getUsername());
         }
+        if (findByEmail(request.getEmail()).isPresent()) {
+            throw new DuplicatedException(Member.class, request.getEmail());
+        }
         Member member = save(new Member.MemberBuilder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))

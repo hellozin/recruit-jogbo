@@ -10,8 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.error.DuplicatedException;
+import univ.study.recruitjogbo.error.NotFoundException;
+import univ.study.recruitjogbo.error.UnauthorizedException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -61,6 +64,16 @@ public class MemberServiceExceptionTest {
         when(emailDuplicateRequest.getEmail()).thenReturn(member.getEmail());
 
         assertThrows(DuplicatedException.class, () -> memberService.join(emailDuplicateRequest));
+    }
+
+    @Test
+    void 로그인이_유효한지_검증한다() {
+        Member member = memberService.join(joinRequest);
+
+        assertThrows(NotFoundException.class, () ->
+                memberService.login("NotFoundUsername", member.getPassword()));
+        assertThrows(UnauthorizedException.class, () ->
+                memberService.login(member.getUsername(), "UnauthorizedPassword"));
     }
 
 }

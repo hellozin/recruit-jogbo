@@ -1,0 +1,20 @@
+{
+  "properties": [
+    {
+      "name": "jwt.token.header",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jwt.token.issuer",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jwt.token.clientSecret",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jwt.token.expirySeconds",
+      "type": "java.lang.Integer"
+    }
+  ]
+}

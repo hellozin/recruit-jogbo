@@ -89,6 +89,10 @@ public class MemberService {
                 findByUsername(memberUpdateRequest.getUsername()).isPresent()) {
             throw new DuplicatedException(Member.class, memberUpdateRequest.getUsername());
         }
+        if (memberUpdateRequest.getEmail() != null &&
+                findByEmail(memberUpdateRequest.getEmail()).isPresent()) {
+            throw new DuplicatedException(Member.class, memberUpdateRequest.getEmail());
+        }
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(Member.class, memberId.toString()));
         member.update(memberUpdateRequest.getUsername(), memberUpdateRequest.getEmail());

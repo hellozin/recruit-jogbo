@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import univ.study.recruitjogbo.api.request.JoinRequest;
+import univ.study.recruitjogbo.api.request.MemberUpdateRequest;
 import univ.study.recruitjogbo.error.DuplicatedException;
 import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.error.UnauthorizedException;
@@ -64,6 +65,24 @@ public class MemberServiceExceptionTest {
         when(emailDuplicateRequest.getEmail()).thenReturn(member.getEmail());
 
         assertThrows(DuplicatedException.class, () -> memberService.join(emailDuplicateRequest));
+    }
+
+    @Test
+    void 사용자수정시_아이디중복을_검증한다() {
+        Member member = memberService.join(joinRequest);
+        MemberUpdateRequest memberUpdateRequest = mock(MemberUpdateRequest.class);
+        when(memberUpdateRequest.getUsername()).thenReturn(member.getUsername());
+
+        assertThrows(DuplicatedException.class, () -> memberService.update(member.getId(), memberUpdateRequest));
+    }
+
+    @Test
+    void 사용자수정시_이메일중복을_검증한다() {
+        Member member = memberService.join(joinRequest);
+        MemberUpdateRequest memberUpdateRequest = mock(MemberUpdateRequest.class);
+        when(memberUpdateRequest.getEmail()).thenReturn(member.getEmail());
+
+        assertThrows(DuplicatedException.class, () -> memberService.update(member.getId(), memberUpdateRequest));
     }
 
     @Test

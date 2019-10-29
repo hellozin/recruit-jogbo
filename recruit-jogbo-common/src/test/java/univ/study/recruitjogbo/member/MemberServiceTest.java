@@ -1,10 +1,8 @@
 package univ.study.recruitjogbo.member;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +20,6 @@ import static org.mockito.Mockito.when;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("local")
 @Transactional
-@Slf4j
 class MemberServiceTest {
 
     @Autowired
@@ -58,7 +55,6 @@ class MemberServiceTest {
         assertThat(member).isNotNull();
         assertThat(member.getId()).isNotNull();
         assertThat(member.getEmail()).isEqualTo(joinRequest.getEmail());
-        log.info("Joined member : {}", member);
     }
 
     @Test
@@ -81,7 +77,6 @@ class MemberServiceTest {
         assertThat(updatedMember).isNotNull();
         assertThat(updatedMember.getUsername()).isEqualTo(memberUpdateRequest.getUsername());
         assertThat(updatedMember.getEmail()).isEqualTo(memberUpdateRequest.getEmail());
-        log.info("Updated member : {}", updatedMember);
     }
 
     @Test

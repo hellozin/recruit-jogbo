@@ -1,6 +1,5 @@
 package univ.study.recruitjogbo.member;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.api.request.MemberUpdateRequest;
 import univ.study.recruitjogbo.error.DuplicatedException;
@@ -25,7 +23,6 @@ import static org.mockito.Mockito.when;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles("local")
 @Transactional
-@Slf4j
 public class MemberServiceExceptionTest {
 
     @Autowired

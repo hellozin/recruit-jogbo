@@ -1,6 +1,5 @@
 package univ.study.recruitjogbo.review;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.member.Member;
 import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.review.recruitType.RecruitType;
-import univ.study.recruitjogbo.review.recruitType.RecruitTypeRepository;
 
 import java.time.LocalDate;
 
@@ -26,7 +24,6 @@ import static org.mockito.Mockito.when;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("local")
-@Slf4j
 class ReviewServiceTest {
 
     @Autowired
@@ -34,9 +31,6 @@ class ReviewServiceTest {
 
     @Autowired
     private MemberService memberService;
-
-    @Autowired
-    private RecruitTypeRepository recruitTypeRepository;
 
     @MockBean
     RabbitTemplate rabbitTemplate;
@@ -69,7 +63,6 @@ class ReviewServiceTest {
         assertThat(review.getRecruitTypes().size()).isEqualTo(RecruitType.values().length);
         assertThat(review.getDeadLine()).isEqualTo(someDay);
         assertThat(review.getReview()).isEqualTo(this.review);
-//        log.info("Written review : {}", review);
     }
 
     @Test

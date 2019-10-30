@@ -33,8 +33,8 @@ public class ReviewController {
     private final PagedResourcesAssembler<Review> assembler;
 
     @GetMapping("/recruit-types")
-    public List<EnumValue> recruitTypes() {
-        return enumMapper.getEnumValues("recruitTypes");
+    public ApiResponse recruitTypes() {
+        return ApiResponse.OK(enumMapper.getEnumValues("recruitTypes"));
     }
 
     @PostMapping("/review")

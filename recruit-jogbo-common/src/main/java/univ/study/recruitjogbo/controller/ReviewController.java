@@ -16,10 +16,8 @@ import univ.study.recruitjogbo.review.ReviewService;
 import univ.study.recruitjogbo.review.ReviewSpecs;
 import univ.study.recruitjogbo.security.JwtAuthentication;
 import univ.study.recruitjogbo.util.EnumMapper;
-import univ.study.recruitjogbo.util.EnumValue;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

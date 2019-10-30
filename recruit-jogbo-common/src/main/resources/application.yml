@@ -1,3 +1,9 @@
+spring:
+  profiles:
+    active: local
+
+---
+
 spring.profiles: aws
 spring.profiles.include:
   - rabbitmq-rasp

@@ -3,6 +3,7 @@ HELP.md
 build/
 !gradle/wrapper/gradle-wrapper.jar
 secret-**.yml
+**.env
 
 ### STS ###
 .apt_generated

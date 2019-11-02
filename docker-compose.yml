@@ -10,7 +10,7 @@ services:
   app:
     image: recruit-jogbo
     env_file:
-      - rabbit-properties.env
+      - recruit-jogbo-rabbit-properties.env
       - recruit-jogbo-properties.env
     ports:
       - 8080:8080
@@ -19,4 +19,4 @@ services:
     ports:
       - 8081:8081
     env_file:
-      - rabbit-properties.env
+      - recruit-jogbo-rabbit-properties.env

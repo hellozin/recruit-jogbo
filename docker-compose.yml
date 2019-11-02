@@ -14,9 +14,13 @@ services:
       - recruit-jogbo-properties.env
     ports:
       - 8080:8080
+    depends_on:
+      - rabbit-mq
   mail-server:
     image: recruit-jogbo-mail
     ports:
       - 8081:8081
     env_file:
       - recruit-jogbo-rabbit-properties.env
+    depends_on:
+      - rabbit-mq

@@ -22,5 +22,6 @@ services:
       - 8081:8081
     env_file:
       - recruit-jogbo-rabbit-properties.env
+      - recruit-jogbo-mail-properties.env
     depends_on:
       - rabbit-mq

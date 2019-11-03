@@ -1,7 +1,6 @@
 package univ.study.recruitjogbo.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,9 +22,10 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException e) {
-        String validationErrorMessage = e.getBindingResult().getAllErrors().stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.joining("\n"));
+        String validationErrorMessage = e.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> String.format("Field: [%s] Message: %s Input: [%s]",
+                        fieldError.getField(), fieldError.getDefaultMessage(), fieldError.getRejectedValue()))
+                .collect(Collectors.joining(","));
         log.error("Bad request exception : [{}]", e.getMessage());
         return newResponse(validationErrorMessage, HttpStatus.BAD_REQUEST);
     }

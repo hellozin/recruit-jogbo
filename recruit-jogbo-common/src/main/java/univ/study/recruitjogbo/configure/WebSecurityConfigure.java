@@ -107,8 +107,9 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                     .antMatchers("/api/auth").permitAll()
                     .antMatchers("/api/member").permitAll()
-                    .antMatchers("/member/confirm/request").hasRole("UNCONFIRMED")
-                    .antMatchers("/review/**").hasRole("UNCONFIRMED")
+                    .antMatchers("/api/member/confirm/send").hasRole("UNCONFIRMED")
+                    .antMatchers("/api/review/**").hasRole("MEMBER")
+                    .antMatchers("/api/tip/**").hasRole("MEMBER")
                     .anyRequest().authenticated()
                     .accessDecisionManager(accessDecisionManager())
                     .and()
@@ -124,6 +125,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .antMatchers("/")
                 .antMatchers("/static/**")
                 .antMatchers("/h2/**")
+                .antMatchers("/api/hcheck")
                 .antMatchers("/api/member/confirm")
                 .antMatchers("/api/recruit-types");
     }

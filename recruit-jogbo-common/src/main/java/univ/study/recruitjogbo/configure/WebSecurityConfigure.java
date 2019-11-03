@@ -25,11 +25,11 @@ import univ.study.recruitjogbo.member.MemberService;
 import univ.study.recruitjogbo.security.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 @Configuration
 @EnableWebSecurity
@@ -68,11 +68,18 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PostEditableVoter postEditableVoter() {
-        Pattern pattern = Pattern.compile("^/api/post/(\\d+)$");
+        Pattern pattern = Pattern.compile("^/api/(review|tip)/(\\d+)$");
         RequestMatcher requestMatcher = new RegexRequestMatcher(pattern.pattern(), null);
         return new PostEditableVoter(requestMatcher, (String url) -> {
             Matcher matcher = pattern.matcher(url);
-            return matcher.find() ? toLong(matcher.group(1), -1) : -1;
+            if (matcher.find()) {
+                HashMap<String, String> group = new HashMap<>();
+                group.put("domain", matcher.group(1));
+                group.put("id", matcher.group(2));
+                return group;
+            } else {
+                return Collections.emptyMap();
+            }
         });
     }
 

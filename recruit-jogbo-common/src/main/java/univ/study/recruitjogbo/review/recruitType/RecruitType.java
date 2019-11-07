@@ -15,6 +15,7 @@ public enum RecruitType implements EnumModel {
 
     RESUME("서류"),
     CODING("코딩테스트"),
+    MAJOR("필기테스트"),
     APTITUDE("인적성"),
     NCS("NCS"),
     INTERVIEW("면접"),

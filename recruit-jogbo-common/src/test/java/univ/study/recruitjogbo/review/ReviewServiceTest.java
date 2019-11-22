@@ -42,10 +42,13 @@ class ReviewServiceTest {
     final LocalDate someDay = LocalDate.of(2019,1,1);
     final String review = "review";
 
+    int initReviewCount = 0;
+
     @BeforeAll
     void setUp() {
         author1 = memberService.save(new Member("author1", "author1", "author1@ynu.ac.kr"));
         author2 = memberService.save(new Member("author2", "author2", "author2@ynu.ac.kr"));
+        initReviewCount += reviewService.findAll(Pageable.unpaged()).getTotalElements();
     }
 
     @Test
@@ -70,7 +73,7 @@ class ReviewServiceTest {
     void 전체_포스트를_조회한다() {
         Page<Review> posts = reviewService.findAll(Pageable.unpaged());
         assertThat(posts).isNotEmpty();
-        assertThat(posts.getTotalElements()).isEqualTo(1);
+        assertThat(posts.getTotalElements()).isEqualTo(initReviewCount + 1);
     }
 
     @Test
@@ -104,7 +107,7 @@ class ReviewServiceTest {
         long total = reviewService.findAll(ReviewSpecs.withRecruitType(RecruitType.INTERVIEW), Pageable.unpaged()).getTotalElements();
         Page<Review> postWithResume = reviewService.findAll(ReviewSpecs.withRecruitType(RecruitType.RESUME), Pageable.unpaged());
         assertThat(postWithResume).isNotNull();
-        assertThat(postWithResume.getTotalElements()).isEqualTo(total+1);
+        assertThat(postWithResume.getTotalElements()).isEqualTo(total + initReviewCount + 1);
     }
 
     @Test

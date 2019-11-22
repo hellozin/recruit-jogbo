@@ -15,14 +15,14 @@ import univ.study.recruitjogbo.api.request.AuthenticationRequest;
 import univ.study.recruitjogbo.api.request.JoinRequest;
 import univ.study.recruitjogbo.api.request.ReviewPublishRequest;
 import univ.study.recruitjogbo.api.response.ApiResponse;
+import univ.study.recruitjogbo.error.NotFoundException;
 import univ.study.recruitjogbo.member.Member;
+import univ.study.recruitjogbo.member.MemberRepository;
 import univ.study.recruitjogbo.review.recruitType.RecruitType;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,6 +43,9 @@ public class ApiControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    MemberRepository memberRepository;
+
     @MockBean
     RabbitTemplate rabbitTemplate;
 
@@ -58,14 +61,16 @@ public class ApiControllerTest {
     @Test
     @Order(1)
     void 멤버를_추가한다() throws Exception {
-        JoinRequest joinRequest = mock(JoinRequest.class);
-        when(joinRequest.getUsername()).thenReturn(member.getUsername());
-        when(joinRequest.getPassword()).thenReturn(member.getPassword());
-        when(joinRequest.getEmail()).thenReturn(member.getEmail());
+        JoinRequest joinRequest = new JoinRequest() {
+            @Override public String getUsername() { return member.getUsername(); }
+            @Override public String getPassword() { return member.getPassword(); }
+            @Override public String getEmail() { return member.getEmail(); }
+            @Override public String getConfirmUrl() { return ""; }
+        };
 
         mockMvc.perform(post("/api/member")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(joinRequest))
+                .content(objectMapper.writeValueAsString(joinRequest))
                 .with(csrf())
         )
                 .andDo(print())
@@ -76,7 +81,12 @@ public class ApiControllerTest {
     @Test
     @Order(2)
     void 멤버_인증토큰을_발행한다() throws Exception {
-        AuthenticationRequest request = new AuthenticationRequest(member.getUsername(), member.getPassword());
+        Member find = memberRepository.findByUsername(this.member.getUsername())
+                .orElseThrow(() -> new NotFoundException(Member.class, this.member.getUsername()));
+        find.setEmailConfirmed(true);
+        memberRepository.save(find);
+
+        AuthenticationRequest request = new AuthenticationRequest(this.member.getUsername(), this.member.getPassword());
 
         MvcResult mvcResult = mockMvc.perform(post("/api/auth")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +99,7 @@ public class ApiControllerTest {
         String contentAsString = mvcResult.getResponse().getContentAsString();
         ApiResponse apiResponse = objectMapper.readValue(contentAsString, ApiResponse.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) apiResponse.getResponse();
-        APITOKEN = (String) map.get("apiToken");
+        APITOKEN = String.valueOf(map.get("apiToken"));
     }
 
     @Test
@@ -106,17 +116,18 @@ public class ApiControllerTest {
     @Test
     @Order(4)
     void 새_리뷰를_작성한다() throws Exception {
-        ReviewPublishRequest request = mock(ReviewPublishRequest.class);
-        when(request.getCompanyName()).thenReturn("Company Name");
-        when(request.getCompanyDetail()).thenReturn("Company Detail");
-        when(request.getRecruitTypes()).thenReturn(new RecruitType[]{RecruitType.RESUME});
-        when(request.getDeadLine()).thenReturn(LocalDate.of(2019,1,1));
-        when(request.getReview()).thenReturn("New review");
+        ReviewPublishRequest request = new ReviewPublishRequest() {
+            @Override public String getCompanyName() { return "Company Name"; }
+            @Override public String getCompanyDetail() { return "Company Detail"; }
+            @Override public RecruitType[] getRecruitTypes() { return new RecruitType[]{RecruitType.RESUME}; }
+            @Override public LocalDate getDeadLine() { return LocalDate.of(2019,1,1); }
+            @Override public String getReview() { return "New review"; }
+        };
 
         mockMvc.perform(post("/api/review")
                 .header("api_key", "Bearer " + APITOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(request))
+                .content(objectMapper.writeValueAsString(request))
                 .with(csrf())
         )
                 .andDo(print())

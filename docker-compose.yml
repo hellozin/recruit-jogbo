@@ -8,7 +8,7 @@ services:
     env_file:
       - ../env/rabbit-properties.env
   app:
-    image: recruit-jogbo
+    image: hellozin/recruit-jogbo-api
     env_file:
       - ../env/recruit-jogbo-rabbit-properties.env
       - ../env/recruit-jogbo-properties.env
@@ -17,7 +17,7 @@ services:
     depends_on:
       - rabbit-mq
   mail-server:
-    image: recruit-jogbo-mail
+    image: hellozin/recruit-jogbo-mail
     ports:
       - 8081:8081
     env_file:

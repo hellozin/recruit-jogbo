@@ -6,7 +6,7 @@ services:
       - 5672:5672
       - 8090:15672
     env_file:
-      - rabbit-properties.env
+      - ../env/rabbit-properties.env
   app:
     image: recruit-jogbo
     env_file:

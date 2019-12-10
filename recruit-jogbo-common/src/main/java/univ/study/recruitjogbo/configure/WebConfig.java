@@ -17,7 +17,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final Environment environment;
 
-    private static String frontEndOrigin = "http://www.recruit-jogbo.tk";
+//    private static String frontEndOrigin = "http://www.hellozin.net";
+    private static String frontEndOrigin = "*";
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

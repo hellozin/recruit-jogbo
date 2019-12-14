@@ -114,6 +114,8 @@ public class MemberService {
     public void delete(Long memberId) {
         Member member = findById(memberId)
                 .orElseThrow(() -> new NotFoundException(Member.class, memberId.toString()));
+        confirmationTokenRepository.findByUserEmail(member.getUsername())
+                .ifPresent(confirmationTokenRepository::delete);
         memberRepository.delete(member);
     }
 

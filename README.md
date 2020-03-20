@@ -2,6 +2,10 @@
 
 학과 내 취업 후기, 취업 팁을 공유하는 커뮤니티 Recruit Jogbo의 API 서버입니다.
 
+## Requirement
+
+`docker`
+
 ## Project Run
 
 ```
